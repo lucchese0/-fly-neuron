@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Fly Neuron</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #02040a;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    #brain {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+
+    #info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      padding: 14px 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      background: rgba(5,8,16,.75);
+      backdrop-filter: blur(10px);
+    }
+
+    #info h1 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    #info p {
+      margin: 0;
+      opacity: .65;
+      font-size: 12px;
+    }
+
+    #status {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 10;
+      color: #8fb8ff;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="info">
+    <h1>FLY NEURON</h1>
+    <p>Drosophila neural connectome</p>
+  </div>
+
+  <div id="status">
+    Neural simulation initializing...
+  </div>
+
+  <canvas id="brain"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <script>
+
+    const canvas = document.getElementById("brain");
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+      55,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    camera.position.z = 18;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Neural network container
+    const brain = new THREE.Group();
+    scene.add(brain);
+
+    // ------------------------------------------------
+    // TEMPORARY NEURAL STRUCTURE
+    // Gerçek connectome verisi sonraki aşamada gelecek.
+    // ------------------------------------------------
+
+    const neurons = [];
+
+    const neuronGeometry = new THREE.SphereGeometry(
+      0.045,
+      6,
+      6
+    );
+
+    const neuronMaterial = new THREE.MeshBasicMaterial({
+      color: 0x6ea8ff
+    });
+
+    // Beyin şeklinde yoğunlaşan 3D nöron bulutu
+    for (let i = 0; i < 5000; i++) {
+
+      const x = (Math.random() - 0.5) * 10;
+      const y = (Math.random() - 0.5) * 7;
+      const z = (Math.random() - 0.5) * 5;
+
+      // Eliptik beyin hacmi
+      const normalized =
+        (x*x)/(5*5) +
+        (y*y)/(3.5*3.5) +
+        (z*z)/(2.5*2.5);
+
+      if (normalized > 1) continue;
+
+      const neuron =
+        new THREE.Mesh(
+          neuronGeometry,
+          neuronMaterial.clone()
+        );
+
+      neuron.position.set(x, y, z);
+
+      brain.add(neuron);
+      neurons.push(neuron);
+    }
+
+    // ------------------------------------------------
+    // NÖRON BAĞLANTILARI
+    // ------------------------------------------------
+
+    const lineMaterial =
+      new THREE.LineBasicMaterial({
+        color: 0x31558c,
+        transparent: true,
+        opacity: 0.12
+      });
+
+    const positions = [];
+
+    for (let i = 0; i < 900; i++) {
+
+      const a =
+        neurons[Math.floor(Math.random() * neurons.length)];
+
+      const b =
+        neurons[Math.floor(Math.random() * neurons.length)];
+
+      positions.push(
+        a.position.x,
+        a.position.y,
+        a.position.z,
+
+        b.position.x,
+        b.position.y,
+        b.position.z
+      );
+    }
+
+    const lineGeometry =
+      new THREE.BufferGeometry();
+
+    lineGeometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(
+        positions,
+        3
+      )
+    );
+
+    const connections =
+      new THREE.LineSegments(
+        lineGeometry,
+        lineMaterial
+      );
+
+    brain.add(connections);
+
+    // ------------------------------------------------
+    // ANİMASYON
+    // ------------------------------------------------
+
+    let time = 0;
+
+    function animate() {
+
+      requestAnimationFrame(animate);
+
+      time += 0.01;
+
+      brain.rotation.y += 0.0015;
+      brain.rotation.x =
+        Math.sin(time * 0.3) * 0.05;
+
+      // Nöron aktivitesi
+      neurons.forEach((neuron, i) => {
+
+        const pulse =
+          Math.sin(
+            time * 3 +
+            i * 0.17
+          );
+
+        const brightness =
+          0.25 + (pulse + 1) * 0.35;
+
+        neuron.material.color.setRGB(
+          0.25 * brightness,
+          0.5 * brightness,
+          brightness
+        );
+
+        neuron.scale.setScalar(
+          0.7 + brightness * 0.6
+        );
+      });
+
+      renderer.render(
+        scene,
+        camera
+      );
+    }
+
+    animate();
+
+    // ------------------------------------------------
+    // EKRAN BOYUTU
+    // ------------------------------------------------
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        camera.aspect =
+          window.innerWidth /
+          window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+          window.innerWidth,
+          window.innerHeight
+        );
+      }
+    );
+
+    document.getElementById("status").textContent =
+      "Neural visualization running";
+
+  </script>
+
+</body>
+</html>
