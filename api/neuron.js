@@ -3,7 +3,9 @@ module.exports = async (req, res) => {
     const id = String(req.query.id || "");
 
     if (!/^\d+$/.test(id)) {
-      return res.status(400).send("Invalid neuron ID");
+      return res.status(400).json({
+        error: "Invalid neuron ID"
+      });
     }
 
     const url =
@@ -15,12 +17,15 @@ module.exports = async (req, res) => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      return res
-        .status(response.status)
-        .send(`Neuron ${id} could not be loaded`);
+      return res.status(response.status).json({
+        error: `Neuron ${id} could not be loaded`
+      });
     }
 
-    const buffer = await response.arrayBuffer();
+    const buffer =
+      Buffer.from(
+        await response.arrayBuffer()
+      );
 
     res.setHeader(
       "Content-Type",
@@ -32,14 +37,19 @@ module.exports = async (req, res) => {
       "public, max-age=86400, immutable"
     );
 
-    return res.status(200).send(Buffer.from(buffer));
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "*"
+    );
+
+    return res.status(200).send(buffer);
 
   } catch (error) {
 
     console.error(error);
 
-    return res
-      .status(500)
-      .send("Failed to fetch precomputed neuron");
+    return res.status(500).json({
+      error: "Failed to fetch neuron"
+    });
   }
 };

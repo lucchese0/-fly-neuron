@@ -5,16 +5,12 @@
 
 <meta
   name="viewport"
-  content="width=device-width,
-           initial-scale=1,
-           maximum-scale=1,
-           user-scalable=no"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 />
 
 <title>FLY NEURON · Male CNS</title>
 
 <style>
-
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -44,10 +40,6 @@ body.viewer-fullscreen {
   overflow: hidden;
 }
 
-/* =========================================================
-   PAGE
-========================================================= */
-
 .page {
   width: 100%;
   min-height: 100vh;
@@ -59,10 +51,6 @@ body.viewer-fullscreen {
     ),
     #05070b;
 }
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 .header {
   width: 100%;
@@ -98,10 +86,6 @@ body.viewer-fullscreen {
   color: rgba(255,255,255,.45);
   letter-spacing: .12em;
 }
-
-/* =========================================================
-   HERO
-========================================================= */
 
 .hero {
   width: min(1120px, calc(100% - 32px));
@@ -143,12 +127,7 @@ body.viewer-fullscreen {
     rgba(255,255,255,.53);
 }
 
-/* =========================================================
-   BRAIN CARD
-========================================================= */
-
 .brain-window {
-
   position: relative;
 
   width: min(1120px, calc(100% - 32px));
@@ -189,12 +168,7 @@ body.viewer-fullscreen {
   touch-action: none;
 }
 
-/* =========================================================
-   LABEL
-========================================================= */
-
 .brain-label {
-
   position: absolute;
 
   top: 25px;
@@ -218,12 +192,7 @@ body.viewer-fullscreen {
   color: #fff;
 }
 
-/* =========================================================
-   STATUS
-========================================================= */
-
 .status {
-
   position: absolute;
 
   top: 25px;
@@ -249,7 +218,6 @@ body.viewer-fullscreen {
 }
 
 .status-dot {
-
   width: 7px;
   height: 7px;
 
@@ -261,12 +229,7 @@ body.viewer-fullscreen {
     0 0 12px rgba(109,255,155,.8);
 }
 
-/* =========================================================
-   FULLSCREEN
-========================================================= */
-
 .brain-window.fullscreen {
-
   position: fixed;
 
   inset: 0;
@@ -284,7 +247,6 @@ body.viewer-fullscreen {
 }
 
 .fullscreen-tools {
-
   position: absolute;
 
   top: 82px;
@@ -316,7 +278,6 @@ body.viewer-fullscreen {
 }
 
 .fullscreen-tools button {
-
   width: 36px;
   height: 32px;
 
@@ -340,7 +301,6 @@ body.viewer-fullscreen {
 }
 
 .fullscreen-close {
-
   position: absolute;
 
   right: 26px;
@@ -365,12 +325,7 @@ body.viewer-fullscreen {
   cursor: pointer;
 }
 
-/* =========================================================
-   LEGEND
-========================================================= */
-
 .legend {
-
   position: absolute;
 
   left: 28px;
@@ -388,7 +343,6 @@ body.viewer-fullscreen {
 }
 
 .legend-row {
-
   display: flex;
 
   align-items: center;
@@ -402,7 +356,6 @@ body.viewer-fullscreen {
 }
 
 .legend-dot {
-
   width: 7px;
   height: 7px;
 
@@ -421,12 +374,7 @@ body.viewer-fullscreen {
   background: #6dff9b;
 }
 
-/* =========================================================
-   STATS
-========================================================= */
-
 .stats {
-
   position: absolute;
 
   left: 50%;
@@ -470,7 +418,6 @@ body.viewer-fullscreen {
 }
 
 .stat-value {
-
   font-size: 14px;
 
   font-weight: 800;
@@ -479,7 +426,6 @@ body.viewer-fullscreen {
 }
 
 .stat-label {
-
   margin-top: 3px;
 
   font-size: 8px;
@@ -492,12 +438,7 @@ body.viewer-fullscreen {
     rgba(255,255,255,.35);
 }
 
-/* =========================================================
-   FULLSCREEN BUTTON
-========================================================= */
-
 .fullscreen-button {
-
   position: absolute;
 
   right: 26px;
@@ -522,12 +463,7 @@ body.viewer-fullscreen {
   cursor: pointer;
 }
 
-/* =========================================================
-   SELECTED NEURON PANEL
-========================================================= */
-
 .neuron-panel {
-
   position: absolute;
 
   top: 80px;
@@ -563,7 +499,6 @@ body.viewer-fullscreen {
 }
 
 .neuron-panel.visible {
-
   opacity: 1;
 
   transform:
@@ -573,7 +508,6 @@ body.viewer-fullscreen {
 }
 
 .neuron-panel-title {
-
   font-size: 9px;
 
   letter-spacing: .12em;
@@ -585,14 +519,12 @@ body.viewer-fullscreen {
 }
 
 .neuron-panel-id {
-
   font-size: 16px;
 
   font-weight: 800;
 }
 
 .neuron-panel-info {
-
   margin-top: 8px;
 
   font-size: 10px;
@@ -603,12 +535,7 @@ body.viewer-fullscreen {
     rgba(255,255,255,.45);
 }
 
-/* =========================================================
-   BELOW BRAIN
-========================================================= */
-
 .info-section {
-
   width: min(1120px, calc(100% - 32px));
 
   margin: 0 auto;
@@ -619,7 +546,6 @@ body.viewer-fullscreen {
 }
 
 .info-grid {
-
   display: grid;
 
   grid-template-columns:
@@ -629,7 +555,6 @@ body.viewer-fullscreen {
 }
 
 .info-card {
-
   padding: 24px;
 
   border:
@@ -642,14 +567,12 @@ body.viewer-fullscreen {
 }
 
 .info-card h3 {
-
   margin: 0 0 10px;
 
   font-size: 13px;
 }
 
 .info-card p {
-
   margin: 0;
 
   font-size: 12px;
@@ -659,10 +582,6 @@ body.viewer-fullscreen {
   color:
     rgba(255,255,255,.4);
 }
-
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media (max-width: 700px) {
 
@@ -676,7 +595,6 @@ body.viewer-fullscreen {
   }
 
   .hero {
-
     width:
       calc(100% - 28px);
 
@@ -686,7 +604,6 @@ body.viewer-fullscreen {
   }
 
   .brain-window {
-
     width:
       calc(100% - 20px);
 
@@ -706,18 +623,15 @@ body.viewer-fullscreen {
   }
 
   .fullscreen-tools {
-
     top: 72px;
   }
 
   .legend {
-
     left: 18px;
     bottom: 110px;
   }
 
   .stats {
-
     bottom: 12px;
 
     width:
@@ -736,19 +650,16 @@ body.viewer-fullscreen {
   }
 
   .fullscreen-button {
-
     right: 16px;
     bottom: 12px;
   }
 
   .fullscreen-close {
-
     right: 16px;
     bottom: 108px;
   }
 
   .neuron-panel {
-
     left: 18px;
     top: 70px;
 
@@ -764,7 +675,6 @@ body.viewer-fullscreen {
     grid-template-columns: 1fr;
   }
 }
-
 </style>
 </head>
 
@@ -907,7 +817,7 @@ body.viewer-fullscreen {
           id="neuronCount"
           class="stat-value"
         >
-          0
+          166,700
         </div>
 
         <div class="stat-label">
@@ -1040,7 +950,6 @@ body.viewer-fullscreen {
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 
-
 <script>
 
 /* =========================================================
@@ -1050,46 +959,41 @@ body.viewer-fullscreen {
 const PRECOMPUTED_BASE =
   "/api/neuron?id=";
 
-
-/*
- * These are real MaleCNS IDs.
-
- * They are used as the initial high-detail
- * verification set.
-
- * The overview architecture is prepared so
- * that we can replace this seed set with the
- * full atlas LOD asset without changing the
- * visual interface.
- */
-
-const seedNeuronIds = [
-  12781,
-  556329
-];
+let seedNeuronIds = [];
 
 
 /* =========================================================
-   THREE
+   THREE.JS
 ========================================================= */
 
 const canvas =
-  document.getElementById("brainCanvas");
+  document.getElementById(
+    "brainCanvas"
+  );
 
 const brainWindow =
-  document.getElementById("brainWindow");
+  document.getElementById(
+    "brainWindow"
+  );
+
 
 const renderer =
   new THREE.WebGLRenderer({
     canvas,
     antialias: true,
     alpha: true,
-    powerPreference: "high-performance"
+    powerPreference:
+      "high-performance"
   });
 
+
 renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio, 2)
+  Math.min(
+    window.devicePixelRatio,
+    2
+  )
 );
+
 
 renderer.setClearColor(
   0x030509,
@@ -1113,7 +1017,10 @@ const camera =
 const brainGroup =
   new THREE.Group();
 
-scene.add(brainGroup);
+
+scene.add(
+  brainGroup
+);
 
 
 /* =========================================================
@@ -1133,13 +1040,15 @@ let loadedSegmentCount = 0;
 let simSeconds = 0;
 
 let rotationX = -0.12;
+
 let rotationY = 0.35;
 
-let zoom = 1.0;
+let zoom = 1;
 
 let dragging = false;
 
 let pointerX = 0;
+
 let pointerY = 0;
 
 
@@ -1148,10 +1057,14 @@ let pointerY = 0;
 ========================================================= */
 
 const COLOR_OVERVIEW =
-  new THREE.Color(0x398cff);
+  new THREE.Color(
+    0x398cff
+  );
 
 const COLOR_SELECTED =
-  new THREE.Color(0xffd65a);
+  new THREE.Color(
+    0xffd65a
+  );
 
 
 /* =========================================================
@@ -1164,10 +1077,17 @@ function resize() {
     brainWindow.getBoundingClientRect();
 
   const width =
-    Math.max(1, rect.width);
+    Math.max(
+      1,
+      rect.width
+    );
 
   const height =
-    Math.max(1, rect.height);
+    Math.max(
+      1,
+      rect.height
+    );
+
 
   renderer.setSize(
     width,
@@ -1175,11 +1095,14 @@ function resize() {
     false
   );
 
+
   camera.aspect =
     width / height;
 
+
   camera.updateProjectionMatrix();
 }
+
 
 window.addEventListener(
   "resize",
@@ -1188,29 +1111,17 @@ window.addEventListener(
 
 
 /* =========================================================
-   PRECOMPUTED BINARY PARSER
+   PRECOMPUTED SKELETON PARSER
 ========================================================= */
-
-/*
- * Official Neuroglancer skeleton format:
- *
- * uint32  num_vertices
- * uint32  num_edges
- *
- * float32 x/y/z positions
- *
- * uint32 edge pairs
- *
- * We only need positions and edges
- * for our morphology renderer.
- */
 
 function parsePrecomputedSkeleton(
   arrayBuffer
 ) {
 
   const view =
-    new DataView(arrayBuffer);
+    new DataView(
+      arrayBuffer
+    );
 
   let offset = 0;
 
@@ -1252,6 +1163,7 @@ function parsePrecomputedSkeleton(
       );
 
     offset += 4;
+
   }
 
 
@@ -1274,6 +1186,7 @@ function parsePrecomputedSkeleton(
       );
 
     offset += 4;
+
   }
 
 
@@ -1283,11 +1196,12 @@ function parsePrecomputedSkeleton(
     positions,
     edges
   };
+
 }
 
 
 /* =========================================================
-   NORMALIZE
+   NORMALIZATION
 ========================================================= */
 
 function normalizeSkeletons(
@@ -1318,19 +1232,53 @@ function normalizeSkeletons(
     ) {
 
       const x = p[i];
-      const y = p[i + 1];
-      const z = p[i + 2];
+
+      const y =
+        p[i + 1];
+
+      const z =
+        p[i + 2];
 
 
-      if (x < minX) minX = x;
-      if (y < minY) minY = y;
-      if (z < minZ) minZ = z;
+      minX =
+        Math.min(
+          minX,
+          x
+        );
+
+      minY =
+        Math.min(
+          minY,
+          y
+        );
+
+      minZ =
+        Math.min(
+          minZ,
+          z
+        );
 
 
-      if (x > maxX) maxX = x;
-      if (y > maxY) maxY = y;
-      if (z > maxZ) maxZ = z;
+      maxX =
+        Math.max(
+          maxX,
+          x
+        );
+
+      maxY =
+        Math.max(
+          maxY,
+          y
+        );
+
+      maxZ =
+        Math.max(
+          maxZ,
+          z
+        );
+
     }
+
   }
 
 
@@ -1374,11 +1322,12 @@ function normalizeSkeletons(
     centerZ,
     scale
   };
+
 }
 
 
 /* =========================================================
-   BUILD OVERVIEW
+   OVERVIEW
 ========================================================= */
 
 function buildOverview(
@@ -1393,8 +1342,12 @@ function buildOverview(
 
   const totalVertices =
     skeletons.reduce(
-      (sum, s) =>
-        sum + s.vertexCount,
+      (
+        sum,
+        skeleton
+      ) =>
+        sum +
+        skeleton.vertexCount,
       0
     );
 
@@ -1428,34 +1381,58 @@ function buildOverview(
       i += 3
     ) {
 
-      positions[outputIndex] =
-        (p[i] -
-          normalized.centerX) *
-        normalized.scale;
-
-      positions[outputIndex + 1] =
-        (p[i + 1] -
-          normalized.centerY) *
-        normalized.scale;
-
-      positions[outputIndex + 2] =
-        (p[i + 2] -
-          normalized.centerZ) *
+      positions[
+        outputIndex
+      ] =
+        (
+          p[i] -
+          normalized.centerX
+        ) *
         normalized.scale;
 
 
-      colors[outputIndex] =
+      positions[
+        outputIndex + 1
+      ] =
+        (
+          p[i + 1] -
+          normalized.centerY
+        ) *
+        normalized.scale;
+
+
+      positions[
+        outputIndex + 2
+      ] =
+        (
+          p[i + 2] -
+          normalized.centerZ
+        ) *
+        normalized.scale;
+
+
+      colors[
+        outputIndex
+      ] =
         COLOR_OVERVIEW.r;
 
-      colors[outputIndex + 1] =
+
+      colors[
+        outputIndex + 1
+      ] =
         COLOR_OVERVIEW.g;
 
-      colors[outputIndex + 2] =
+
+      colors[
+        outputIndex + 2
+      ] =
         COLOR_OVERVIEW.b;
 
 
       outputIndex += 3;
+
     }
+
   }
 
 
@@ -1483,13 +1460,20 @@ function buildOverview(
 
   const material =
     new THREE.PointsMaterial({
+
       size: 1.25,
+
       vertexColors: true,
+
       transparent: true,
+
       opacity: .75,
+
       depthWrite: false,
+
       blending:
         THREE.AdditiveBlending
+
     });
 
 
@@ -1500,7 +1484,8 @@ function buildOverview(
     );
 
 
-  points.frustumCulled = false;
+  points.frustumCulled =
+    false;
 
 
   if (overviewPoints) {
@@ -1509,8 +1494,14 @@ function buildOverview(
       overviewPoints
     );
 
-    overviewPoints.geometry.dispose();
-    overviewPoints.material.dispose();
+    overviewPoints
+      .geometry
+      .dispose();
+
+    overviewPoints
+      .material
+      .dispose();
+
   }
 
 
@@ -1532,6 +1523,88 @@ function buildOverview(
 
 
   updateStats();
+
+}
+
+
+/* =========================================================
+   ATLAS CATALOG
+========================================================= */
+
+async function loadAtlasCatalog() {
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/atlas?mode=overview"
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Atlas request failed"
+      );
+
+    }
+
+
+    const atlas =
+      await response.json();
+
+
+    seedNeuronIds =
+      atlas.neurons.map(
+        neuron =>
+          neuron.id
+      );
+
+
+    /*
+     * The official dataset contains
+     * approximately 166,700 neurons.
+     *
+     * Keep the full catalog count
+     * visible while only loading the
+     * requested LOD geometry.
+     */
+
+    document
+      .getElementById(
+        "neuronCount"
+      )
+      .textContent =
+      Number(
+        atlas.totalNeurons ||
+        166700
+      ).toLocaleString();
+
+
+    return atlas;
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    seedNeuronIds = [
+      12781,
+      556329
+    ];
+
+
+    document
+      .getElementById(
+        "neuronCount"
+      )
+      .textContent =
+      "166,700";
+
+  }
+
 }
 
 
@@ -1546,7 +1619,9 @@ async function loadPrecomputedNeuron(
   const response =
     await fetch(
       PRECOMPUTED_BASE +
-      encodeURIComponent(id)
+      encodeURIComponent(
+        id
+      )
     );
 
 
@@ -1556,6 +1631,7 @@ async function loadPrecomputedNeuron(
       "Failed to load neuron " +
       id
     );
+
   }
 
 
@@ -1566,11 +1642,12 @@ async function loadPrecomputedNeuron(
   return parsePrecomputedSkeleton(
     buffer
   );
+
 }
 
 
 /* =========================================================
-   LOAD INITIAL DATA
+   INITIAL LOD
 ========================================================= */
 
 async function loadInitialData() {
@@ -1578,8 +1655,23 @@ async function loadInitialData() {
   const skeletons = [];
 
 
+  /*
+   * Only a small real subset is loaded
+   * at first.
+   *
+   * The complete catalog is already known
+   * from /api/atlas.
+   */
+
+  const initialIds =
+    seedNeuronIds.slice(
+      0,
+      2
+    );
+
+
   for (
-    const id of seedNeuronIds
+    const id of initialIds
   ) {
 
     try {
@@ -1590,7 +1682,9 @@ async function loadInitialData() {
         );
 
 
-      skeleton.id = id;
+      skeleton.id =
+        id;
+
 
       skeletons.push(
         skeleton
@@ -1599,24 +1693,31 @@ async function loadInitialData() {
     } catch (error) {
 
       console.error(
+        "Neuron load failed:",
+        id,
         error
       );
+
     }
+
   }
 
 
-  if (skeletons.length) {
+  if (
+    skeletons.length
+  ) {
 
     buildOverview(
       skeletons
     );
 
   }
+
 }
 
 
 /* =========================================================
-   SELECTED NEURON
+   SELECT NEURON
 ========================================================= */
 
 async function selectNeuron(
@@ -1655,9 +1756,11 @@ async function selectNeuron(
         "neuronPanelInfo"
       )
       .textContent =
-      skeleton.vertexCount.toLocaleString() +
+      skeleton.vertexCount
+        .toLocaleString() +
       " vertices · " +
-      skeleton.edgeCount.toLocaleString() +
+      skeleton.edgeCount
+        .toLocaleString() +
       " edges";
 
 
@@ -1673,7 +1776,8 @@ async function selectNeuron(
       .getElementById(
         "selectedCount"
       )
-      .textContent = "1";
+      .textContent =
+      "1";
 
 
   } catch (error) {
@@ -1681,12 +1785,14 @@ async function selectNeuron(
     console.error(
       error
     );
+
   }
+
 }
 
 
 /* =========================================================
-   RENDER SELECTED NEURON
+   SELECTED NEURON RENDER
 ========================================================= */
 
 function renderSelectedNeuron() {
@@ -1694,18 +1800,30 @@ function renderSelectedNeuron() {
   if (
     !selectedNeuron
   ) {
+
     return;
+
   }
 
 
-  if (selectedPoints) {
+  if (
+    selectedPoints
+  ) {
 
     brainGroup.remove(
       selectedPoints
     );
 
-    selectedPoints.geometry.dispose();
-    selectedPoints.material.dispose();
+
+    selectedPoints
+      .geometry
+      .dispose();
+
+
+    selectedPoints
+      .material
+      .dispose();
+
   }
 
 
@@ -1723,23 +1841,93 @@ function renderSelectedNeuron() {
     );
 
 
-  /*
-   * Selected neuron is centered using
-   * the same global normalization.
-   *
-   * For now use the current overview
-   * coordinate bounds.
-   */
+  let minX = Infinity;
+  let minY = Infinity;
+  let minZ = Infinity;
 
-  const skeletons = [
-    selectedNeuron
-  ];
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let maxZ = -Infinity;
 
 
-  const n =
-    normalizeSkeletons(
-      skeletons
+  for (
+    let i = 0;
+    i < p.length;
+    i += 3
+  ) {
+
+    const x =
+      p[i];
+
+    const y =
+      p[i + 1];
+
+    const z =
+      p[i + 2];
+
+
+    minX =
+      Math.min(
+        minX,
+        x
+      );
+
+    minY =
+      Math.min(
+        minY,
+        y
+      );
+
+    minZ =
+      Math.min(
+        minZ,
+        z
+      );
+
+
+    maxX =
+      Math.max(
+        maxX,
+        x
+      );
+
+    maxY =
+      Math.max(
+        maxY,
+        y
+      );
+
+    maxZ =
+      Math.max(
+        maxZ,
+        z
+      );
+
+  }
+
+
+  const cx =
+    (minX + maxX) / 2;
+
+  const cy =
+    (minY + maxY) / 2;
+
+  const cz =
+    (minZ + maxZ) / 2;
+
+
+  const size =
+    Math.max(
+      maxX - minX,
+      maxY - minY,
+      maxZ - minZ
     );
+
+
+  const scale =
+    size > 0
+      ? 520 / size
+      : 1;
 
 
   for (
@@ -1749,16 +1937,28 @@ function renderSelectedNeuron() {
   ) {
 
     positions[i] =
-      (p[i] - n.centerX) *
-      n.scale;
+      (
+        p[i] -
+        cx
+      ) *
+      scale;
+
 
     positions[i + 1] =
-      (p[i + 1] - n.centerY) *
-      n.scale;
+      (
+        p[i + 1] -
+        cy
+      ) *
+      scale;
+
 
     positions[i + 2] =
-      (p[i + 2] - n.centerZ) *
-      n.scale;
+      (
+        p[i + 2] -
+        cz
+      ) *
+      scale;
+
   }
 
 
@@ -1773,14 +1973,21 @@ function renderSelectedNeuron() {
 
   const material =
     new THREE.PointsMaterial({
+
       size: 2.1,
+
       color:
         COLOR_SELECTED,
+
       transparent: true,
+
       opacity: .95,
+
       depthWrite: false,
+
       blending:
         THREE.AdditiveBlending
+
     });
 
 
@@ -1798,6 +2005,7 @@ function renderSelectedNeuron() {
   brainGroup.add(
     selectedPoints
   );
+
 }
 
 
@@ -1813,16 +2021,18 @@ function applyCamera() {
     900 / zoom
   );
 
+
   camera.lookAt(
     0,
     0,
     0
   );
+
 }
 
 
 /* =========================================================
-   POINTER
+   POINTER ROTATION
 ========================================================= */
 
 canvas.addEventListener(
@@ -1837,9 +2047,11 @@ canvas.addEventListener(
     pointerY =
       event.clientY;
 
+
     canvas.setPointerCapture(
       event.pointerId
     );
+
   }
 );
 
@@ -1849,7 +2061,9 @@ canvas.addEventListener(
   event => {
 
     if (!dragging) {
+
       return;
+
     }
 
 
@@ -1864,6 +2078,7 @@ canvas.addEventListener(
 
     rotationY +=
       dx * .006;
+
 
     rotationX +=
       dy * .006;
@@ -1884,6 +2099,7 @@ canvas.addEventListener(
 
     pointerY =
       event.clientY;
+
   }
 );
 
@@ -1909,7 +2125,7 @@ canvas.addEventListener(
 
 
 /* =========================================================
-   WHEEL
+   WHEEL ZOOM
 ========================================================= */
 
 canvas.addEventListener(
@@ -2007,10 +2223,14 @@ document
     "click",
     () => {
 
-      rotationX = -.12;
-      rotationY = .35;
+      rotationX =
+        -.12;
 
-      zoom = 1;
+      rotationY =
+        .35;
+
+      zoom =
+        1;
 
     }
   );
@@ -2025,6 +2245,7 @@ const fullscreenButton =
     "fullscreenButton"
   );
 
+
 const fullscreenClose =
   document.getElementById(
     "fullscreenClose"
@@ -2037,6 +2258,7 @@ function enterFullscreen() {
     .classList
     .add("fullscreen");
 
+
   document.body
     .classList
     .add("viewer-fullscreen");
@@ -2045,11 +2267,13 @@ function enterFullscreen() {
   fullscreenButton.style.display =
     "none";
 
+
   fullscreenClose.style.display =
     "block";
 
 
   resize();
+
 }
 
 
@@ -2059,6 +2283,7 @@ function exitFullscreen() {
     .classList
     .remove("fullscreen");
 
+
   document.body
     .classList
     .remove("viewer-fullscreen");
@@ -2067,11 +2292,13 @@ function exitFullscreen() {
   fullscreenButton.style.display =
     "block";
 
+
   fullscreenClose.style.display =
     "none";
 
 
   resize();
+
 }
 
 
@@ -2092,6 +2319,7 @@ fullscreenClose.addEventListener(
 ========================================================= */
 
 let lastTouchTime = 0;
+
 
 canvas.addEventListener(
   "touchend",
@@ -2127,14 +2355,13 @@ canvas.addEventListener(
 
 function updateStats() {
 
-  document
-    .getElementById(
-      "neuronCount"
-    )
-    .textContent =
-    loadedNeuronCount
-      .toLocaleString();
-
+  /*
+   * neuronCount is the full MaleCNS
+   * catalog count.
+   *
+   * segmentCount represents geometry
+   * currently resident in the GPU.
+   */
 
   document
     .getElementById(
@@ -2143,6 +2370,7 @@ function updateStats() {
     .textContent =
     loadedSegmentCount
       .toLocaleString();
+
 }
 
 
@@ -2166,12 +2394,15 @@ function animate() {
       "simTime"
     )
     .textContent =
-    simSeconds.toFixed(2) +
+    simSeconds.toFixed(
+      2
+    ) +
     "s";
 
 
   brainGroup.rotation.x =
     rotationX;
+
 
   brainGroup.rotation.y =
     rotationY;
@@ -2184,6 +2415,7 @@ function animate() {
     scene,
     camera
   );
+
 }
 
 
@@ -2193,7 +2425,23 @@ function animate() {
 
 resize();
 
-loadInitialData();
+
+loadAtlasCatalog()
+  .then(() => {
+
+    return loadInitialData();
+
+  })
+  .catch(
+    error => {
+
+      console.error(
+        error
+      );
+
+    }
+  );
+
 
 animate();
 
