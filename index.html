@@ -10,8 +10,7 @@
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       width: 100%;
       height: 100%;
@@ -27,6 +26,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
+      touch-action: none;
     }
 
     #ui {
@@ -37,10 +37,10 @@
 
       padding: 18px 20px;
 
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,.18);
       border-radius: 14px;
 
-      background: rgba(8,8,10,0.78);
+      background: rgba(8,8,10,.8);
       backdrop-filter: blur(12px);
 
       min-width: 250px;
@@ -74,7 +74,7 @@
 
       border-radius: 8px;
 
-      background: rgba(5,5,6,0.7);
+      background: rgba(5,5,6,.72);
 
       color: #777;
       font-size: 12px;
@@ -104,25 +104,26 @@
 
   <script>
 
-    /* =========================
-       THREE.JS SETUP
-    ========================= */
+    /* =========================================
+       THREE.JS
+    ========================================= */
 
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(
-      50,
+      45,
       window.innerWidth / window.innerHeight,
       0.1,
-      100000
+      5000
     );
 
     camera.position.set(0, 0, 700);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      powerPreference: "high-performance"
-    });
+    const renderer =
+      new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: "high-performance"
+      });
 
     renderer.setPixelRatio(
       Math.min(window.devicePixelRatio || 1, 2)
@@ -133,23 +134,29 @@
       window.innerHeight
     );
 
-    renderer.setClearColor(0x020203, 1);
+    renderer.setClearColor(
+      0x020203,
+      1
+    );
 
-    document.body.appendChild(renderer.domElement);
+    document.body.appendChild(
+      renderer.domElement
+    );
 
 
-    /* =========================
-       BRAIN CONTAINER
-    ========================= */
+    /* =========================================
+       BRAIN
+    ========================================= */
 
-    const brain = new THREE.Group();
+    const brain =
+      new THREE.Group();
 
     scene.add(brain);
 
 
-    /* =========================
-       REAL MALecns NEURONS
-    ========================= */
+    /* =========================================
+       NEURON IDS
+    ========================================= */
 
     const neuronIDs = [
       12781,
@@ -157,18 +164,22 @@
     ];
 
 
+    /* =========================================
+       MATERIALS
+    ========================================= */
+
     const lineMaterials = [
 
       new THREE.LineBasicMaterial({
         color: 0x55ccff,
         transparent: true,
-        opacity: 0.9
+        opacity: 0.95
       }),
 
       new THREE.LineBasicMaterial({
-        color: 0xff66cc,
+        color: 0xff55cc,
         transparent: true,
-        opacity: 0.9
+        opacity: 0.95
       })
 
     ];
@@ -177,41 +188,47 @@
     const pointMaterials = [
 
       new THREE.PointsMaterial({
-        color: 0x8de3ff,
-        size: 2.8,
+        color: 0x8de8ff,
+        size: 5,
         sizeAttenuation: false,
         transparent: true,
-        opacity: 0.95
+        opacity: 1
       }),
 
       new THREE.PointsMaterial({
         color: 0xff8ddd,
-        size: 2.8,
+        size: 5,
         sizeAttenuation: false,
         transparent: true,
-        opacity: 0.95
+        opacity: 1
       })
 
     ];
 
 
-    /* =========================
-       SWC PARSER
-    ========================= */
+    /* =========================================
+       PARSE SWC
+    ========================================= */
 
     function parseSWC(text) {
 
       const nodes = [];
 
-      const lines = text.split(/\r?\n/);
+      const lines =
+        text.split(/\r?\n/);
 
       for (const line of lines) {
 
-        const trimmed = line.trim();
+        const trimmed =
+          line.trim();
 
-        if (!trimmed) continue;
+        if (!trimmed) {
+          continue;
+        }
 
-        if (trimmed.startsWith("#")) {
+        if (
+          trimmed.startsWith("#")
+        ) {
           continue;
         }
 
@@ -265,9 +282,112 @@
     }
 
 
-    /* =========================
+    /* =========================================
+       NORMALIZE COORDINATES
+    ========================================= */
+
+    function normalizeNodes(nodes) {
+
+      if (!nodes.length) {
+        return nodes;
+      }
+
+      let minX = Infinity;
+      let minY = Infinity;
+      let minZ = Infinity;
+
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+      let maxZ = -Infinity;
+
+
+      for (const n of nodes) {
+
+        minX =
+          Math.min(minX, n.x);
+
+        minY =
+          Math.min(minY, n.y);
+
+        minZ =
+          Math.min(minZ, n.z);
+
+        maxX =
+          Math.max(maxX, n.x);
+
+        maxY =
+          Math.max(maxY, n.y);
+
+        maxZ =
+          Math.max(maxZ, n.z);
+
+      }
+
+
+      const centerX =
+        (minX + maxX) / 2;
+
+      const centerY =
+        (minY + maxY) / 2;
+
+      const centerZ =
+        (minZ + maxZ) / 2;
+
+
+      const sizeX =
+        maxX - minX;
+
+      const sizeY =
+        maxY - minY;
+
+      const sizeZ =
+        maxZ - minZ;
+
+
+      const largest =
+        Math.max(
+          sizeX,
+          sizeY,
+          sizeZ
+        );
+
+
+      if (
+        !Number.isFinite(largest) ||
+        largest <= 0
+      ) {
+        return nodes;
+      }
+
+
+      const scale =
+        480 / largest;
+
+
+      return nodes.map(n => ({
+
+        ...n,
+
+        x:
+          (n.x - centerX) *
+          scale,
+
+        y:
+          (n.y - centerY) *
+          scale,
+
+        z:
+          (n.z - centerZ) *
+          scale
+
+      }));
+
+    }
+
+
+    /* =========================================
        CREATE NEURON
-    ========================= */
+    ========================================= */
 
     function createNeuron(
       nodes,
@@ -277,6 +397,7 @@
 
       const nodeMap =
         new Map();
+
 
       for (const node of nodes) {
 
@@ -288,7 +409,9 @@
       }
 
 
-      /* ---- BRANCH LINES ---- */
+      /* -------------------------
+         BRANCHES
+      ------------------------- */
 
       const linePositions = [];
 
@@ -300,7 +423,10 @@
         }
 
         const parent =
-          nodeMap.get(node.parent);
+          nodeMap.get(
+            node.parent
+          );
+
 
         if (!parent) {
           continue;
@@ -308,7 +434,6 @@
 
 
         linePositions.push(
-
           node.x,
           node.y,
           node.z,
@@ -316,7 +441,6 @@
           parent.x,
           parent.y,
           parent.z
-
         );
 
       }
@@ -324,6 +448,7 @@
 
       const lineGeometry =
         new THREE.BufferGeometry();
+
 
       lineGeometry.setAttribute(
         "position",
@@ -335,6 +460,9 @@
       );
 
 
+      lineGeometry.computeBoundingSphere();
+
+
       const lines =
         new THREE.LineSegments(
           lineGeometry,
@@ -342,7 +470,9 @@
         );
 
 
-      /* ---- NEURON POINTS ---- */
+      /* -------------------------
+         NODE POINTS
+      ------------------------- */
 
       const pointPositions = [];
 
@@ -361,6 +491,7 @@
       const pointGeometry =
         new THREE.BufferGeometry();
 
+
       pointGeometry.setAttribute(
         "position",
 
@@ -371,6 +502,9 @@
       );
 
 
+      pointGeometry.computeBoundingSphere();
+
+
       const points =
         new THREE.Points(
           pointGeometry,
@@ -378,24 +512,29 @@
         );
 
 
-      /* ---- GROUP ---- */
+      /* -------------------------
+         GROUP
+      ------------------------- */
 
-      const neuronGroup =
+      const group =
         new THREE.Group();
 
-      neuronGroup.add(lines);
-      neuronGroup.add(points);
 
-      neuronGroup.userData.nodeCount =
+      group.add(lines);
+      group.add(points);
+
+
+      group.userData.nodeCount =
         nodes.length;
 
-      return neuronGroup;
+
+      return group;
     }
 
 
-    /* =========================
+    /* =========================================
        LOAD NEURON
-    ========================= */
+    ========================================= */
 
     async function loadNeuron(
       id,
@@ -413,7 +552,8 @@
         if (!response.ok) {
 
           throw new Error(
-            "HTTP " + response.status
+            "HTTP " +
+            response.status
           );
 
         }
@@ -423,17 +563,29 @@
           await response.text();
 
 
-        const nodes =
+        const rawNodes =
           parseSWC(text);
 
 
-        if (nodes.length === 0) {
+        if (!rawNodes.length) {
 
           throw new Error(
-            "No SWC nodes found"
+            "No SWC nodes"
           );
 
         }
+
+
+        /*
+         * IMPORTANT:
+         * Normalize BEFORE sending
+         * coordinates to Three.js.
+         */
+
+        const nodes =
+          normalizeNodes(
+            rawNodes
+          );
 
 
         const neuron =
@@ -448,126 +600,35 @@
 
 
         console.log(
-          "Neuron",
+          "Loaded neuron:",
           id,
-          "loaded:",
           nodes.length,
           "nodes"
         );
 
 
-        return true;
+        return nodes.length;
 
       }
 
       catch (error) {
 
         console.error(
-          "Neuron",
+          "Neuron error:",
           id,
-          "failed:",
           error
         );
 
-        return false;
+        return 0;
 
       }
 
     }
 
 
-    /* =========================
-       CENTER AND SCALE BRAIN
-    ========================= */
-
-    function fitBrain() {
-
-      const box =
-        new THREE.Box3()
-          .setFromObject(brain);
-
-
-      if (box.isEmpty()) {
-        return;
-      }
-
-
-      const center =
-        new THREE.Vector3();
-
-      box.getCenter(center);
-
-
-      /* Move geometry to origin */
-
-      brain.position.x =
-        -center.x;
-
-      brain.position.y =
-        -center.y;
-
-      brain.position.z =
-        -center.z;
-
-
-      const size =
-        new THREE.Vector3();
-
-      box.getSize(size);
-
-
-      const largest =
-        Math.max(
-          size.x,
-          size.y,
-          size.z
-        );
-
-
-      if (
-        !Number.isFinite(largest) ||
-        largest <= 0
-      ) {
-        return;
-      }
-
-
-      /* Make brain a comfortable size */
-
-      const targetSize =
-        420;
-
-
-      const scale =
-        targetSize / largest;
-
-
-      brain.scale.set(
-        scale,
-        scale,
-        scale
-      );
-
-
-      camera.position.set(
-        0,
-        0,
-        650
-      );
-
-
-      camera.lookAt(
-        0,
-        0,
-        0
-      );
-
-    }
-
-
-    /* =========================
+    /* =========================================
        LOAD BRAIN
-    ========================= */
+    ========================================= */
 
     async function loadBrain() {
 
@@ -582,6 +643,7 @@
 
 
       let loaded = 0;
+      let totalNodes = 0;
 
 
       for (
@@ -590,21 +652,25 @@
         i++
       ) {
 
-        const success =
+        const count =
           await loadNeuron(
             neuronIDs[i],
             i
           );
 
 
-        if (success) {
+        if (count > 0) {
+
           loaded++;
+
+          totalNodes += count;
+
         }
 
       }
 
 
-      if (loaded === 0) {
+      if (!loaded) {
 
         status.textContent =
           "Neuron data could not be loaded.";
@@ -614,26 +680,29 @@
       }
 
 
-      fitBrain();
+      /*
+       * Everything is already
+       * normalized around 0,0,0.
+       */
+
+      brain.position.set(
+        0,
+        0,
+        0
+      );
 
 
-      let totalNodes = 0;
+      camera.position.set(
+        0,
+        0,
+        700
+      );
 
 
-      brain.traverse(
-        object => {
-
-          if (
-            object.userData &&
-            object.userData.nodeCount
-          ) {
-
-            totalNodes +=
-              object.userData.nodeCount;
-
-          }
-
-        }
+      camera.lookAt(
+        0,
+        0,
+        0
       );
 
 
@@ -649,14 +718,14 @@
     }
 
 
-    /* =========================
-       MOUSE / TOUCH ROTATION
-    ========================= */
+    /* =========================================
+       ROTATION
+    ========================================= */
 
     let dragging = false;
 
-    let previousX = 0;
-    let previousY = 0;
+    let lastX = 0;
+    let lastY = 0;
 
 
     renderer.domElement.addEventListener(
@@ -665,10 +734,10 @@
 
         dragging = true;
 
-        previousX =
+        lastX =
           event.clientX;
 
-        previousY =
+        lastY =
           event.clientY;
 
       }
@@ -696,11 +765,11 @@
 
         const dx =
           event.clientX -
-          previousX;
+          lastX;
 
         const dy =
           event.clientY -
-          previousY;
+          lastY;
 
 
         brain.rotation.y +=
@@ -710,19 +779,19 @@
           dy * 0.008;
 
 
-        previousX =
+        lastX =
           event.clientX;
 
-        previousY =
+        lastY =
           event.clientY;
 
       }
     );
 
 
-    /* =========================
-       ZOOM
-    ========================= */
+    /* =========================================
+       WHEEL ZOOM
+    ========================================= */
 
     renderer.domElement.addEventListener(
       "wheel",
@@ -734,7 +803,7 @@
 
         camera.position.z =
           Math.max(
-            180,
+            200,
             Math.min(
               1800,
               camera.position.z
@@ -748,11 +817,11 @@
     );
 
 
-    /* =========================
-       TOUCH PINCH ZOOM
-    ========================= */
+    /* =========================================
+       PINCH ZOOM
+    ========================================= */
 
-    let touchDistance = null;
+    let pinchDistance = null;
 
 
     renderer.domElement.addEventListener(
@@ -790,21 +859,21 @@
 
 
         if (
-          touchDistance !== null
+          pinchDistance !== null
         ) {
 
-          const difference =
-            touchDistance -
+          const change =
+            pinchDistance -
             distance;
 
 
           camera.position.z +=
-            difference * 1.5;
+            change * 1.5;
 
 
           camera.position.z =
             Math.max(
-              180,
+              200,
               Math.min(
                 1800,
                 camera.position.z
@@ -814,7 +883,7 @@
         }
 
 
-        touchDistance =
+        pinchDistance =
           distance;
 
       },
@@ -828,15 +897,15 @@
       "touchend",
       () => {
 
-        touchDistance = null;
+        pinchDistance = null;
 
       }
     );
 
 
-    /* =========================
+    /* =========================================
        RESIZE
-    ========================= */
+    ========================================= */
 
     window.addEventListener(
       "resize",
@@ -859,9 +928,9 @@
     );
 
 
-    /* =========================
+    /* =========================================
        ANIMATION
-    ========================= */
+    ========================================= */
 
     function animate() {
 
@@ -870,10 +939,8 @@
       );
 
 
-      /* Very slow automatic rotation */
-
       brain.rotation.z +=
-        0.0005;
+        0.0004;
 
 
       renderer.render(
@@ -884,9 +951,9 @@
     }
 
 
-    /* =========================
+    /* =========================================
        START
-    ========================= */
+    ========================================= */
 
     loadBrain();
 
