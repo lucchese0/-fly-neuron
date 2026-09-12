@@ -496,35 +496,23 @@ h1{
 }
 
 .blue{
-
   background:#42a5ff;
-
-  box-shadow:
-    0 0 9px #42a5ff;
+  box-shadow:0 0 9px #42a5ff;
 }
 
 .yellow{
-
   background:#ffc247;
-
-  box-shadow:
-    0 0 9px #ffc247;
+  box-shadow:0 0 9px #ffc247;
 }
 
 .green{
-
   background:#62e2b2;
-
-  box-shadow:
-    0 0 9px #62e2b2;
+  box-shadow:0 0 9px #62e2b2;
 }
 
 .red{
-
   background:#ff5147;
-
-  box-shadow:
-    0 0 9px #ff5147;
+  box-shadow:0 0 9px #ff5147;
 }
 
 
@@ -594,7 +582,7 @@ h1{
 
 
 /* =========================
-   FULLSCREEN MODE
+   FULLSCREEN
 ========================= */
 
 .brain-window.fullscreen{
@@ -617,53 +605,27 @@ h1{
   box-shadow:none;
 }
 
-
-/* FULLSCREEN LABEL */
-
-.brain-window.fullscreen
-.brain-label{
-
+.brain-window.fullscreen .brain-label{
   top:25px;
   left:25px;
 }
 
-
-/* FULLSCREEN LIVE */
-
-.brain-window.fullscreen
-.status{
-
+.brain-window.fullscreen .status{
   top:28px;
   right:28px;
 }
 
-
-/* FULLSCREEN LEGEND */
-
-.brain-window.fullscreen
-.legend{
-
+.brain-window.fullscreen .legend{
   left:30px;
-
   bottom:145px;
 }
 
-
-/* FULLSCREEN CLOSE */
-
-.brain-window.fullscreen
-.fullscreen-button{
-
+.brain-window.fullscreen .fullscreen-button{
   right:28px;
-
   bottom:132px;
 }
 
-
-/* FULLSCREEN STATS */
-
-.brain-window.fullscreen
-.stats{
+.brain-window.fullscreen .stats{
 
   left:28px;
   right:28px;
@@ -722,9 +684,7 @@ h1{
   backdrop-filter:blur(18px);
 }
 
-.brain-window.fullscreen
-.fullscreen-tools{
-
+.brain-window.fullscreen .fullscreen-tools{
   display:flex;
 }
 
@@ -794,27 +754,19 @@ h1{
 }
 
 .info-card span{
-
   color:#555561;
-
   font-size:11px;
 }
 
 .info-card h3{
-
   margin-top:35px;
-
   font-size:17px;
 }
 
 .info-card p{
-
   margin-top:10px;
-
   color:#7f7f8b;
-
   line-height:1.55;
-
   font-size:13px;
 }
 
@@ -873,273 +825,171 @@ footer{
   }
 
   .brain-window{
-
     height:560px;
-
     border-radius:22px;
   }
 
   .legend{
-
     left:16px;
-
     bottom:112px;
   }
 
   .stats{
-
     height:94px;
   }
 
   .stat{
-
     padding:16px 10px;
   }
 
   .stat-value{
-
     font-size:18px;
   }
 
   .stat-name{
-
     font-size:9px;
-
     letter-spacing:1px;
   }
 
   .info-grid{
-
-    grid-template-columns:
-      1fr 1fr;
+    grid-template-columns:1fr 1fr;
   }
 
-
-  /* MOBILE FULLSCREEN */
-
-  .brain-window.fullscreen
-  .brain-label{
-
+  .brain-window.fullscreen .brain-label{
     top:20px;
     left:16px;
   }
 
-
-  .brain-window.fullscreen
-  .status{
-
+  .brain-window.fullscreen .status{
     top:24px;
     right:16px;
   }
 
-
-  .brain-window.fullscreen
-  .fullscreen-tools{
-
+  .brain-window.fullscreen .fullscreen-tools{
     top:74px;
   }
 
-
-  .brain-window.fullscreen
-  .legend{
-
+  .brain-window.fullscreen .legend{
     left:16px;
-
     bottom:110px;
   }
 
-
-  .brain-window.fullscreen
-  .fullscreen-button{
-
+  .brain-window.fullscreen .fullscreen-button{
     right:16px;
-
     bottom:112px;
-
     width:42px;
     height:42px;
   }
 
-
-  .brain-window.fullscreen
-  .stats{
-
+  .brain-window.fullscreen .stats{
     left:12px;
     right:12px;
-
     bottom:12px;
-
-    width:
-      calc(100% - 24px);
-
+    width:calc(100% - 24px);
     height:82px;
-
     border-radius:16px;
   }
 
 }
 
-
 @media(max-width:500px){
 
   .container{
-
-    width:
-      min(
-        100% - 24px,
-        1180px
-      );
+    width:min(
+      100% - 24px,
+      1180px
+    );
   }
 
   .brain-window{
-
     height:520px;
   }
 
   .info-grid{
-
     grid-template-columns:1fr;
   }
 
   .legend-row{
-
     font-size:11px;
   }
 
-
-  .brain-window.fullscreen
-  .fullscreen-tools{
-
+  .brain-window.fullscreen .fullscreen-tools{
     top:72px;
   }
 
-
-  .brain-window.fullscreen
-  .fullscreen-button{
-
+  .brain-window.fullscreen .fullscreen-button{
     bottom:108px;
   }
 
-
-  .brain-window.fullscreen
-  .stats{
-
+  .brain-window.fullscreen .stats{
     height:80px;
   }
 
 }
 
-
-/* =========================
-   FULLSCREEN BODY
-========================= */
-
 body.viewer-fullscreen{
-
   overflow:hidden;
-
 }
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div class="container">
-
-
-<!-- =========================
-     HEADER
-========================= -->
 
 <header>
 
   <div class="logo">
-
     FLY
     <span>NEURON</span>
-
   </div>
 
-
   <nav>
-
-    <a href="#brain">
-      Brain
-    </a>
-
-    <a href="#explore">
-      Explore
-    </a>
-
-    <a href="#about">
-      About
-    </a>
-
+    <a href="#brain">Brain</a>
+    <a href="#explore">Explore</a>
+    <a href="#about">About</a>
   </nav>
 
 </header>
 
 
-<!-- =========================
-     HERO
-========================= -->
-
 <section class="hero">
 
   <div class="kicker">
-
     MALE CNS · NEURAL SIMULATION
-
   </div>
 
-
   <h1>
-
     Bir sineğin
     <br>
     beyninin içine gir.
-
   </h1>
 
-
   <p>
-
     Gerçek Drosophila connectome verisini canlı bir
     sinir sistemi gibi keşfet. Nöronları gör,
     aktivitelerini izle ve beynin nasıl çalıştığını
     deneyimle.
-
   </p>
 
 </section>
 
 
-<!-- =========================
-     FEATURES
-========================= -->
-
 <section class="features">
-
 
   <div class="feature">
 
-    <div class="feature-number">
-      01
-    </div>
+    <div class="feature-number">01</div>
 
     <h3>
       Gerçek beyin verisi
     </h3>
 
     <p>
-
       Male Drosophila merkezi sinir sistemi
       verileri doğrudan görselleştirilir.
-
     </p>
 
   </div>
@@ -1147,20 +997,16 @@ body.viewer-fullscreen{
 
   <div class="feature">
 
-    <div class="feature-number">
-      02
-    </div>
+    <div class="feature-number">02</div>
 
     <h3>
       Canlı nöron aktivitesi
     </h3>
 
     <p>
-
       Nöronlar pasif bir model değil.
       Aktivite değiştikçe görsel sistem
       de tepki verir.
-
     </p>
 
   </div>
@@ -1168,40 +1014,29 @@ body.viewer-fullscreen{
 
   <div class="feature">
 
-    <div class="feature-number">
-      03
-    </div>
+    <div class="feature-number">03</div>
 
     <h3>
       Beyni keşfet
     </h3>
 
     <p>
-
       Tek tek nöronlara yaklaş,
       bölgeleri incele ve bağlantıların
       nasıl organize olduğunu keşfet.
-
     </p>
 
   </div>
 
-
 </section>
 
-
-<!-- =========================
-     BRAIN SECTION
-========================= -->
 
 <section
   class="brain-section"
   id="brain"
 >
 
-
   <div class="section-top">
-
 
     <div>
 
@@ -1215,41 +1050,26 @@ body.viewer-fullscreen{
 
     </div>
 
-
     <p>
-
       Gerçek nöron morfolojileri WebGL
       üzerinde işleniyor. Noktalar canlı
       aktiviteyi temsil ediyor.
-
     </p>
-
 
   </div>
 
-
-  <!-- =====================
-       BRAIN WINDOW
-  ====================== -->
 
   <div
     class="brain-window"
     id="brainWindow"
   >
 
+    <canvas id="brainCanvas"></canvas>
 
-    <canvas
-      id="brainCanvas"
-    ></canvas>
-
-
-    <!-- LABEL -->
 
     <div class="brain-label">
 
-      <strong>
-        MALE CNS
-      </strong>
+      <strong>MALE CNS</strong>
 
       <span>
         · LIVE ACTIVITY
@@ -1257,8 +1077,6 @@ body.viewer-fullscreen{
 
     </div>
 
-
-    <!-- LIVE -->
 
     <div class="status">
 
@@ -1269,121 +1087,79 @@ body.viewer-fullscreen{
     </div>
 
 
-    <!-- =================
-         FULLSCREEN TOOLS
-    ================== -->
-
     <div class="fullscreen-tools">
-
 
       <button
         class="tool-button"
         id="zoomOut"
       >
-
         −
-
       </button>
-
 
       <button
         class="tool-button"
         id="resetView"
       >
-
         RESET
-
       </button>
-
 
       <button
         class="tool-button"
         id="zoomIn"
       >
-
         +
-
       </button>
-
 
     </div>
 
 
-    <!-- =================
-         LEGEND
-    ================== -->
-
     <div class="legend">
-
 
       <div class="legend-row">
 
-        <span
-          class="legend-dot blue"
-        ></span>
+        <span class="legend-dot blue"></span>
 
         optic lobe
 
       </div>
 
-
       <div class="legend-row">
 
-        <span
-          class="legend-dot yellow"
-        ></span>
+        <span class="legend-dot yellow"></span>
 
         central brain
 
       </div>
 
-
       <div class="legend-row">
 
-        <span
-          class="legend-dot green"
-        ></span>
+        <span class="legend-dot green"></span>
 
         sensory input
 
       </div>
 
-
       <div class="legend-row">
 
-        <span
-          class="legend-dot red"
-        ></span>
+        <span class="legend-dot red"></span>
 
         motor output
 
       </div>
 
-
     </div>
 
-
-    <!-- =================
-         FULLSCREEN BUTTON
-    ================== -->
 
     <button
       class="fullscreen-button"
       id="fullscreenButton"
       aria-label="Tam ekran"
     >
-
       ⛶
-
     </button>
 
 
-    <!-- =================
-         STATS
-    ================== -->
-
     <div class="stats">
-
 
       <div class="stat">
 
@@ -1391,15 +1167,11 @@ body.viewer-fullscreen{
           class="stat-value"
           id="fired"
         >
-
           —
-
         </div>
 
         <div class="stat-name">
-
           neurons fired
-
         </div>
 
       </div>
@@ -1411,15 +1183,11 @@ body.viewer-fullscreen{
           class="stat-value"
           id="spikes"
         >
-
           —
-
         </div>
 
         <div class="stat-name">
-
           spikes
-
         </div>
 
       </div>
@@ -1431,15 +1199,11 @@ body.viewer-fullscreen{
           class="stat-value"
           id="motor"
         >
-
           —
-
         </div>
 
         <div class="stat-name">
-
           motor spikes
-
         </div>
 
       </div>
@@ -1451,56 +1215,40 @@ body.viewer-fullscreen{
           class="stat-value"
           id="simTime"
         >
-
           0.00 s
-
         </div>
 
         <div class="stat-name">
-
           sim time
-
         </div>
 
       </div>
 
-
     </div>
-
 
   </div>
 
 </section>
 
-
-<!-- =========================
-     EXPLORE
-========================= -->
 
 <section
   class="info"
   id="explore"
 >
 
-
   <div class="info-grid">
-
 
     <div class="info-card">
 
-      <span>
-        01
-      </span>
+      <span>01</span>
 
       <h3>
         Nöronları gör
       </h3>
 
       <p>
-
         Gerçek neuron skeleton verileri
         3D uzayda görüntülenir.
-
       </p>
 
     </div>
@@ -1508,20 +1256,16 @@ body.viewer-fullscreen{
 
     <div class="info-card">
 
-      <span>
-        02
-      </span>
+      <span>02</span>
 
       <h3>
         Aktiviteyi izle
       </h3>
 
       <p>
-
         Sinirsel aktivite noktaların
         parlaklığını ve davranışını
         değiştirir.
-
       </p>
 
     </div>
@@ -1529,20 +1273,16 @@ body.viewer-fullscreen{
 
     <div class="info-card">
 
-      <span>
-        03
-      </span>
+      <span>03</span>
 
       <h3>
         Bir nöron seç
       </h3>
 
       <p>
-
         Herhangi bir nöronu seçip
         bağlantılarını inceleyebileceğin
         bir sistem oluşturacağız.
-
       </p>
 
     </div>
@@ -1550,33 +1290,24 @@ body.viewer-fullscreen{
 
     <div class="info-card">
 
-      <span>
-        04
-      </span>
+      <span>04</span>
 
       <h3>
         Beyne müdahale et
       </h3>
 
       <p>
-
         Nöronları kapatıp sistemin
         davranışının nasıl değiştiğini
         simüle edeceğiz.
-
       </p>
 
     </div>
-
 
   </div>
 
 </section>
 
-
-<!-- =========================
-     FOOTER
-========================= -->
 
 <footer id="about">
 
@@ -1587,15 +1318,10 @@ body.viewer-fullscreen{
 
 </footer>
 
-
 </div>
 
 
 <script>
-
-/* =====================================================
-   THREE.JS
-===================================================== */
 
 const canvas =
   document.getElementById(
@@ -1606,11 +1332,11 @@ const canvas =
 const renderer =
   new THREE.WebGLRenderer({
 
-    canvas:canvas,
+    canvas: canvas,
 
-    antialias:true,
+    antialias: true,
 
-    alpha:true
+    alpha: true
 
   });
 
@@ -1628,10 +1354,6 @@ renderer.setClearColor(
   0
 );
 
-
-/* =====================================================
-   SCENE
-===================================================== */
 
 const scene =
   new THREE.Scene();
@@ -1662,29 +1384,19 @@ scene.add(
 );
 
 
-/* =====================================================
-   REAL MALE CNS NEURONS
-===================================================== */
+/* =========================================
+   REAL MALE CNS DATA
+========================================= */
 
 const neuronIds = [
-
   12781,
-
   556329
-
 ];
 
 
 const neuronColors = [
-
-  new THREE.Color(
-    "#42a5ff"
-  ),
-
-  new THREE.Color(
-    "#ffc247"
-  )
-
+  new THREE.Color("#42a5ff"),
+  new THREE.Color("#ffc247")
 ];
 
 
@@ -1693,13 +1405,11 @@ let loadedNeuronCount = 0;
 let loadedNodeCount = 0;
 
 
-/* =====================================================
+/* =========================================
    SWC PARSER
-===================================================== */
+========================================= */
 
-function parseSWC(
-  text
-){
+function parseSWC(text){
 
   const points = [];
 
@@ -1741,33 +1451,23 @@ function parseSWC(
     const x =
       Number(p[2]);
 
-
     const y =
       Number(p[3]);
-
 
     const z =
       Number(p[4]);
 
 
     if(
-
       Number.isFinite(x) &&
-
       Number.isFinite(y) &&
-
       Number.isFinite(z)
-
     ){
 
       points.push({
-
-        x:x,
-
-        y:y,
-
-        z:z
-
+        x,
+        y,
+        z
       });
 
     }
@@ -1780,13 +1480,11 @@ function parseSWC(
 }
 
 
-/* =====================================================
-   LOAD REAL NEURON
-===================================================== */
+/* =========================================
+   LOAD NEURON
+========================================= */
 
-async function loadNeuron(
-  id
-){
+async function loadNeuron(id){
 
   try{
 
@@ -1846,7 +1544,6 @@ async function loadNeuron(
       error
     );
 
-
     return [];
 
   }
@@ -1854,20 +1551,18 @@ async function loadNeuron(
 }
 
 
-/* =====================================================
+/* =========================================
    BUILD BRAIN
-===================================================== */
+========================================= */
 
 async function buildBrain(){
 
   const results =
     await Promise.all(
-
       neuronIds.map(
         id =>
           loadNeuron(id)
       )
-
     );
 
 
@@ -1949,13 +1644,11 @@ async function buildBrain(){
 }
 
 
-/* =====================================================
+/* =========================================
    CREATE POINT CLOUD
-===================================================== */
+========================================= */
 
-function createBrainPoints(
-  points
-){
+function createBrainPoints(points){
 
   const positions =
     new Float32Array(
@@ -1970,15 +1663,11 @@ function createBrainPoints(
 
 
   let minX = Infinity;
-
   let minY = Infinity;
-
   let minZ = Infinity;
 
   let maxX = -Infinity;
-
   let maxY = -Infinity;
-
   let maxZ = -Infinity;
 
 
@@ -1992,13 +1681,11 @@ function createBrainPoints(
         point.x
       );
 
-
     maxX =
       Math.max(
         maxX,
         point.x
       );
-
 
     minY =
       Math.min(
@@ -2006,20 +1693,17 @@ function createBrainPoints(
         point.y
       );
 
-
     maxY =
       Math.max(
         maxY,
         point.y
       );
 
-
     minZ =
       Math.min(
         minZ,
         point.z
       );
-
 
     maxZ =
       Math.max(
@@ -2033,10 +1717,8 @@ function createBrainPoints(
   const centerX =
     (minX + maxX) / 2;
 
-
   const centerY =
     (minY + maxY) / 2;
-
 
   const centerZ =
     (minZ + maxZ) / 2;
@@ -2045,10 +1727,8 @@ function createBrainPoints(
   const sizeX =
     maxX - minX;
 
-
   const sizeY =
     maxY - minY;
-
 
   const sizeZ =
     maxZ - minZ;
@@ -2102,10 +1782,8 @@ function createBrainPoints(
       colorArray[i] =
         point.color.r;
 
-
       colorArray[i + 1] =
         point.color.g;
-
 
       colorArray[i + 2] =
         point.color.b;
@@ -2120,7 +1798,6 @@ function createBrainPoints(
 
   geometry.setAttribute(
     "position",
-
     new THREE.BufferAttribute(
       positions,
       3
@@ -2130,7 +1807,6 @@ function createBrainPoints(
 
   geometry.setAttribute(
     "color",
-
     new THREE.BufferAttribute(
       colorArray,
       3
@@ -2197,9 +1873,9 @@ function createBrainPoints(
 }
 
 
-/* =====================================================
-   POINTER / TOUCH ROTATION
-===================================================== */
+/* =========================================
+   ROTATION
+========================================= */
 
 let pointerDown = false;
 
@@ -2263,7 +1939,6 @@ canvas.addEventListener(
     lastPointerX =
       event.clientX;
 
-
     lastPointerY =
       event.clientY;
 
@@ -2300,9 +1975,9 @@ canvas.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================================
    WHEEL ZOOM
-===================================================== */
+========================================= */
 
 canvas.addEventListener(
   "wheel",
@@ -2331,61 +2006,9 @@ canvas.addEventListener(
 );
 
 
-/* =====================================================
-   DOUBLE CLICK ZOOM KAPAT
-===================================================== */
-
-canvas.addEventListener(
-  "dblclick",
-  event => {
-
-    event.preventDefault();
-
-    event.stopPropagation();
-
-  }
-);
-
-
-/* =====================================================
-   DOUBLE TAP ZOOM KAPAT
-===================================================== */
-
-let lastTapTime = 0;
-
-
-canvas.addEventListener(
-  "touchend",
-  event => {
-
-    const now =
-      Date.now();
-
-
-    if(
-      now - lastTapTime < 350
-    ){
-
-      event.preventDefault();
-
-      event.stopPropagation();
-
-    }
-
-
-    lastTapTime =
-      now;
-
-  },
-  {
-    passive:false
-  }
-);
-
-
-/* =====================================================
+/* =========================================
    RESIZE
-===================================================== */
+========================================= */
 
 function resize(){
 
@@ -2429,9 +2052,9 @@ window.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================================
    FULLSCREEN
-===================================================== */
+========================================= */
 
 const brainWindow =
   document.getElementById(
@@ -2520,9 +2143,9 @@ fullscreenButton.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================================
    ZOOM BUTTONS
-===================================================== */
+========================================= */
 
 document.getElementById(
   "zoomIn"
@@ -2566,9 +2189,9 @@ document.getElementById(
 );
 
 
-/* =====================================================
+/* =========================================
    RESET
-===================================================== */
+========================================= */
 
 document.getElementById(
   "resetView"
@@ -2605,9 +2228,9 @@ document.getElementById(
 );
 
 
-/* =====================================================
+/* =========================================
    ESCAPE
-===================================================== */
+========================================= */
 
 document.addEventListener(
   "keydown",
@@ -2631,9 +2254,9 @@ document.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================================
    SIMULATION CLOCK
-===================================================== */
+========================================= */
 
 let simTime = 0;
 
@@ -2664,9 +2287,9 @@ function animate(){
 }
 
 
-/* =====================================================
+/* =========================================
    START
-===================================================== */
+========================================= */
 
 resize();
 
