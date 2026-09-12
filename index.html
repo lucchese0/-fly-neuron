@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>FLY NEURON</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -22,7 +28,12 @@ html{
 body{
   background:#050506;
   color:#f4f4f6;
-  font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Inter",
+    "Segoe UI",
+    sans-serif;
   overflow-x:hidden;
 }
 
@@ -31,6 +42,7 @@ body:before{
   position:fixed;
   inset:0;
   pointer-events:none;
+
   background:
     radial-gradient(
       circle at 50% 15%,
@@ -42,23 +54,33 @@ body:before{
       rgba(0,210,180,.045),
       transparent 28%
     );
+
   z-index:-1;
 }
 
 .container{
-  width:min(1180px,calc(100% - 36px));
+  width:min(
+    1180px,
+    calc(100% - 36px)
+  );
+
   margin:auto;
 }
 
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 header{
   height:78px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  border-bottom:1px solid rgba(255,255,255,.07);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
 }
 
 .logo{
@@ -88,7 +110,9 @@ nav a:hover{
 }
 
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero{
   padding:115px 0 90px;
@@ -97,67 +121,103 @@ nav a:hover{
 
 .kicker{
   display:inline-flex;
+
   padding:8px 12px;
-  border:1px solid rgba(255,255,255,.09);
+
+  border:
+    1px solid rgba(255,255,255,.09);
+
   border-radius:999px;
+
   color:#858590;
+
   font-size:11px;
+
   letter-spacing:1.8px;
+
   text-transform:uppercase;
-  background:rgba(255,255,255,.025);
+
+  background:
+    rgba(255,255,255,.025);
 }
 
 h1{
   margin-top:25px;
-  font-size:clamp(46px,8vw,86px);
+
+  font-size:
+    clamp(46px,8vw,86px);
+
   line-height:.96;
+
   letter-spacing:-4px;
 }
 
 .hero p{
   max-width:650px;
+
   margin:27px auto 0;
+
   color:#8c8c98;
+
   font-size:17px;
+
   line-height:1.7;
 }
 
 
-/* FEATURES */
+/* =========================
+   FEATURES
+========================= */
 
 .features{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+    repeat(3,1fr);
+
   gap:14px;
 }
 
 .feature{
   padding:28px;
-  border:1px solid rgba(255,255,255,.08);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
   border-radius:22px;
-  background:rgba(255,255,255,.025);
+
+  background:
+    rgba(255,255,255,.025);
 }
 
 .feature-number{
   color:#555560;
+
   font-size:11px;
+
   letter-spacing:2px;
 }
 
 .feature h3{
   margin-top:28px;
+
   font-size:18px;
 }
 
 .feature p{
   margin-top:10px;
+
   color:#858591;
+
   font-size:14px;
+
   line-height:1.65;
 }
 
 
-/* BRAIN SECTION */
+/* =========================
+   BRAIN SECTION
+========================= */
 
 .brain-section{
   padding:130px 0 80px;
@@ -165,33 +225,49 @@ h1{
 
 .section-top{
   display:flex;
+
   justify-content:space-between;
+
   align-items:end;
+
   margin-bottom:28px;
 }
 
 .section-top h2{
-  font-size:clamp(30px,5vw,48px);
-  letter-spacing:-2px;
   margin-top:15px;
+
+  font-size:
+    clamp(30px,5vw,48px);
+
+  letter-spacing:-2px;
 }
 
 .section-top p{
   max-width:380px;
+
   color:#777783;
+
   font-size:14px;
+
   line-height:1.6;
 }
 
 
-/* BRAIN WINDOW */
+/* =========================
+   BRAIN WINDOW
+========================= */
 
 .brain-window{
+
   position:relative;
+
   height:680px;
+
   overflow:hidden;
 
-  border:1px solid rgba(255,255,255,.11);
+  border:
+    1px solid rgba(255,255,255,.11);
+
   border-radius:28px;
 
   background:#020204;
@@ -202,37 +278,47 @@ h1{
 }
 
 #brainCanvas{
+
   position:absolute;
+
   inset:0;
 
   width:100%;
   height:100%;
 
   display:block;
+
+  touch-action:none;
 }
 
 
-/* BRAIN LABEL */
+/* =========================
+   BRAIN LABEL
+========================= */
 
 .brain-label{
+
   position:absolute;
 
   top:18px;
   left:18px;
 
-  z-index:5;
+  z-index:10;
 
   padding:9px 12px;
 
   border-radius:11px;
 
-  background:rgba(10,10,14,.78);
+  background:
+    rgba(10,10,14,.78);
 
-  border:1px solid rgba(255,255,255,.08);
+  border:
+    1px solid rgba(255,255,255,.08);
 
   backdrop-filter:blur(12px);
 
   font-size:11px;
+
   letter-spacing:1.7px;
 
   color:#a5a5b0;
@@ -244,17 +330,21 @@ h1{
 }
 
 
-/* LIVE STATUS */
+/* =========================
+   LIVE
+========================= */
 
 .status{
+
   position:absolute;
 
   right:20px;
   top:20px;
 
-  z-index:5;
+  z-index:10;
 
   display:flex;
+
   align-items:center;
 
   gap:8px;
@@ -262,10 +352,12 @@ h1{
   color:#92929e;
 
   font-size:11px;
+
   letter-spacing:1.5px;
 }
 
 .status-dot{
+
   width:7px;
   height:7px;
 
@@ -294,24 +386,86 @@ h1{
 }
 
 
-/* LEGEND */
+/* =========================
+   FULLSCREEN BUTTON
+========================= */
+
+.fullscreen-button{
+
+  position:absolute;
+
+  right:20px;
+  bottom:124px;
+
+  z-index:20;
+
+  width:44px;
+  height:44px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  border-radius:13px;
+
+  background:
+    rgba(12,12,17,.82);
+
+  color:#d8d8df;
+
+  font-size:20px;
+
+  cursor:pointer;
+
+  backdrop-filter:blur(14px);
+
+  transition:
+    transform .2s,
+    background .2s,
+    border-color .2s;
+}
+
+.fullscreen-button:hover{
+
+  transform:scale(1.05);
+
+  background:
+    rgba(30,30,38,.92);
+
+  border-color:
+    rgba(255,255,255,.22);
+}
+
+
+/* =========================
+   LEGEND
+========================= */
 
 .legend{
+
   position:absolute;
 
   left:24px;
+
   bottom:116px;
 
-  z-index:5;
+  z-index:10;
 
   display:flex;
+
   flex-direction:column;
 
   gap:10px;
 }
 
 .legend-row{
+
   display:flex;
+
   align-items:center;
 
   gap:10px;
@@ -322,6 +476,7 @@ h1{
 }
 
 .legend-dot{
+
   width:10px;
   height:10px;
 
@@ -329,29 +484,44 @@ h1{
 }
 
 .blue{
+
   background:#42a5ff;
-  box-shadow:0 0 9px #42a5ff;
+
+  box-shadow:
+    0 0 9px #42a5ff;
 }
 
 .yellow{
+
   background:#ffc247;
-  box-shadow:0 0 9px #ffc247;
+
+  box-shadow:
+    0 0 9px #ffc247;
 }
 
 .green{
+
   background:#62e2b2;
-  box-shadow:0 0 9px #62e2b2;
+
+  box-shadow:
+    0 0 9px #62e2b2;
 }
 
 .red{
+
   background:#ff5147;
-  box-shadow:0 0 9px #ff5147;
+
+  box-shadow:
+    0 0 9px #ff5147;
 }
 
 
-/* STATS */
+/* =========================
+   STATS
+========================= */
 
 .stats{
+
   position:absolute;
 
   left:0;
@@ -361,19 +531,27 @@ h1{
   height:104px;
 
   display:grid;
-  grid-template-columns:repeat(4,1fr);
 
-  background:rgba(12,12,17,.94);
+  grid-template-columns:
+    repeat(4,1fr);
 
-  border-top:1px solid rgba(255,255,255,.09);
+  background:
+    rgba(12,12,17,.94);
+
+  border-top:
+    1px solid rgba(255,255,255,.09);
 
   backdrop-filter:blur(14px);
+
+  z-index:10;
 }
 
 .stat{
+
   padding:20px 22px;
 
-  border-right:1px solid rgba(255,255,255,.08);
+  border-right:
+    1px solid rgba(255,255,255,.08);
 }
 
 .stat:last-child{
@@ -381,6 +559,7 @@ h1{
 }
 
 .stat-value{
+
   font-size:25px;
 
   color:#eeeef2;
@@ -389,6 +568,7 @@ h1{
 }
 
 .stat-name{
+
   margin-top:10px;
 
   color:#858590;
@@ -401,42 +581,201 @@ h1{
 }
 
 
-/* INFO */
+/* =========================
+   FULLSCREEN MODE
+========================= */
+
+.brain-window.fullscreen{
+
+  position:fixed;
+
+  inset:0;
+
+  width:100vw;
+  height:100vh;
+
+  z-index:99999;
+
+  border:0;
+
+  border-radius:0;
+
+  background:#000;
+
+  box-shadow:none;
+}
+
+.brain-window.fullscreen
+.fullscreen-button{
+
+  right:28px;
+  bottom:28px;
+}
+
+.brain-window.fullscreen
+.stats{
+
+  left:28px;
+  right:28px;
+  bottom:28px;
+
+  width:min(
+    700px,
+    calc(100% - 56px)
+  );
+
+  height:90px;
+
+  border:
+    1px solid rgba(255,255,255,.1);
+
+  border-radius:18px;
+
+  overflow:hidden;
+}
+
+.brain-window.fullscreen
+.legend{
+
+  left:30px;
+  bottom:145px;
+}
+
+.brain-window.fullscreen
+.brain-label{
+
+  top:25px;
+  left:25px;
+}
+
+.brain-window.fullscreen
+.status{
+
+  top:28px;
+  right:28px;
+}
+
+
+/* =========================
+   FULLSCREEN TOOLBAR
+========================= */
+
+.fullscreen-tools{
+
+  position:absolute;
+
+  top:24px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  z-index:30;
+
+  display:none;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:6px;
+
+  border:
+    1px solid rgba(255,255,255,.09);
+
+  border-radius:14px;
+
+  background:
+    rgba(10,10,14,.76);
+
+  backdrop-filter:blur(18px);
+}
+
+.brain-window.fullscreen
+.fullscreen-tools{
+
+  display:flex;
+}
+
+.tool-button{
+
+  min-width:38px;
+  height:36px;
+
+  padding:0 10px;
+
+  border:0;
+
+  border-radius:9px;
+
+  background:transparent;
+
+  color:#a8a8b2;
+
+  cursor:pointer;
+
+  font-size:12px;
+
+  transition:.2s;
+}
+
+.tool-button:hover{
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:white;
+}
+
+
+/* =========================
+   INFO
+========================= */
 
 .info{
   padding:90px 0;
 }
 
 .info-grid{
+
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:
+    repeat(4,1fr);
 
   gap:14px;
 }
 
 .info-card{
+
   padding:25px;
 
   min-height:190px;
 
   border-radius:20px;
 
-  border:1px solid rgba(255,255,255,.07);
+  border:
+    1px solid rgba(255,255,255,.07);
 
-  background:rgba(255,255,255,.022);
+  background:
+    rgba(255,255,255,.022);
 }
 
 .info-card span{
+
   color:#555561;
+
   font-size:11px;
 }
 
 .info-card h3{
+
   margin-top:35px;
+
   font-size:17px;
 }
 
 .info-card p{
+
   margin-top:10px;
 
   color:#7f7f8b;
@@ -447,9 +786,12 @@ h1{
 }
 
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 footer{
+
   padding:50px 0 70px;
 
   color:#555560;
@@ -458,11 +800,14 @@ footer{
 
   line-height:1.7;
 
-  border-top:1px solid rgba(255,255,255,.06);
+  border-top:
+    1px solid rgba(255,255,255,.06);
 }
 
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:800px){
 
@@ -500,6 +845,7 @@ footer{
   }
 
   .legend{
+
     left:16px;
     bottom:112px;
   }
@@ -517,12 +863,24 @@ footer{
   }
 
   .stat-name{
+
     font-size:9px;
+
     letter-spacing:1px;
   }
 
   .info-grid{
     grid-template-columns:1fr 1fr;
+  }
+
+  .fullscreen-button{
+
+    right:14px;
+
+    bottom:108px;
+
+    width:40px;
+    height:40px;
   }
 
 }
@@ -531,7 +889,12 @@ footer{
 @media(max-width:500px){
 
   .container{
-    width:min(100% - 24px,1180px);
+
+    width:
+      min(
+        100% - 24px,
+        1180px
+      );
   }
 
   .brain-window{
@@ -546,8 +909,39 @@ footer{
     font-size:11px;
   }
 
+  .brain-window.fullscreen
+  .stats{
+
+    left:12px;
+    right:12px;
+    bottom:12px;
+
+    width:
+      calc(100% - 24px);
+
+    height:82px;
+  }
+
+  .brain-window.fullscreen
+  .legend{
+
+    left:16px;
+    bottom:110px;
+  }
+
 }
+
+
+/* =========================
+   HIDE PAGE WHEN FULLSCREEN
+========================= */
+
+body.viewer-fullscreen{
+  overflow:hidden;
+}
+
 </style>
+
 </head>
 
 
@@ -556,24 +950,42 @@ footer{
 <div class="container">
 
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
   <div class="logo">
-    FLY <span>NEURON</span>
+
+    FLY
+    <span>NEURON</span>
+
   </div>
 
+
   <nav>
-    <a href="#brain">Brain</a>
-    <a href="#explore">Explore</a>
-    <a href="#about">About</a>
+
+    <a href="#brain">
+      Brain
+    </a>
+
+    <a href="#explore">
+      Explore
+    </a>
+
+    <a href="#about">
+      About
+    </a>
+
   </nav>
 
 </header>
 
 
-<!-- HERO -->
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero">
 
@@ -581,23 +993,34 @@ footer{
     MALE CNS · NEURAL SIMULATION
   </div>
 
+
   <h1>
-    Bir sineğin<br>
+
+    Bir sineğin
+    <br>
     beyninin içine gir.
+
   </h1>
 
+
   <p>
-    Gerçek Drosophila connectome verisini canlı bir sinir sistemi
-    gibi keşfet. Nöronları gör, aktivitelerini izle ve beynin
-    nasıl çalıştığını deneyimle.
+
+    Gerçek Drosophila connectome verisini canlı bir
+    sinir sistemi gibi keşfet. Nöronları gör,
+    aktivitelerini izle ve beynin nasıl çalıştığını
+    deneyimle.
+
   </p>
 
 </section>
 
 
-<!-- FEATURES -->
+<!-- =========================
+     FEATURES
+========================= -->
 
 <section class="features">
+
 
   <div class="feature">
 
@@ -610,8 +1033,10 @@ footer{
     </h3>
 
     <p>
-      Male Drosophila merkezi sinir sistemi verileri
-      doğrudan görselleştirilir.
+
+      Male Drosophila merkezi sinir sistemi
+      verileri doğrudan görselleştirilir.
+
     </p>
 
   </div>
@@ -628,8 +1053,11 @@ footer{
     </h3>
 
     <p>
-      Nöronlar pasif bir model değil. Aktivite değiştikçe
-      görsel sistem de tepki verir.
+
+      Nöronlar pasif bir model değil.
+      Aktivite değiştikçe görsel sistem
+      de tepki verir.
+
     </p>
 
   </div>
@@ -646,20 +1074,31 @@ footer{
     </h3>
 
     <p>
-      Tek tek nöronlara yaklaş, bölgeleri incele ve
-      bağlantıların nasıl organize olduğunu keşfet.
+
+      Tek tek nöronlara yaklaş,
+      bölgeleri incele ve bağlantıların
+      nasıl organize olduğunu keşfet.
+
     </p>
 
   </div>
 
+
 </section>
 
 
-<!-- BRAIN -->
+<!-- =========================
+     BRAIN
+========================= -->
 
-<section class="brain-section" id="brain">
+<section
+  class="brain-section"
+  id="brain"
+>
+
 
   <div class="section-top">
+
 
     <div>
 
@@ -675,17 +1114,31 @@ footer{
 
 
     <p>
-      Gerçek nöron morfolojileri WebGL üzerinde işleniyor.
-      Noktalar canlı aktiviteyi temsil ediyor.
+
+      Gerçek nöron morfolojileri WebGL
+      üzerinde işleniyor. Noktalar canlı
+      aktiviteyi temsil ediyor.
+
     </p>
+
 
   </div>
 
 
-  <div class="brain-window">
+  <!-- BRAIN WINDOW -->
 
-    <canvas id="brainCanvas"></canvas>
+  <div
+    class="brain-window"
+    id="brainWindow"
+  >
 
+
+    <canvas
+      id="brainCanvas"
+    ></canvas>
+
+
+    <!-- LABEL -->
 
     <div class="brain-label">
 
@@ -700,6 +1153,8 @@ footer{
     </div>
 
 
+    <!-- LIVE -->
+
     <div class="status">
 
       <span class="status-dot"></span>
@@ -709,13 +1164,48 @@ footer{
     </div>
 
 
+    <!-- FULLSCREEN TOOLS -->
+
+    <div class="fullscreen-tools">
+
+
+      <button
+        class="tool-button"
+        id="zoomOut"
+      >
+        −
+      </button>
+
+
+      <button
+        class="tool-button"
+        id="resetView"
+      >
+        RESET
+      </button>
+
+
+      <button
+        class="tool-button"
+        id="zoomIn"
+      >
+        +
+      </button>
+
+
+    </div>
+
+
     <!-- LEGEND -->
 
     <div class="legend">
 
+
       <div class="legend-row">
 
-        <span class="legend-dot blue"></span>
+        <span
+          class="legend-dot blue"
+        ></span>
 
         optic lobe
 
@@ -724,7 +1214,9 @@ footer{
 
       <div class="legend-row">
 
-        <span class="legend-dot yellow"></span>
+        <span
+          class="legend-dot yellow"
+        ></span>
 
         central brain
 
@@ -733,7 +1225,9 @@ footer{
 
       <div class="legend-row">
 
-        <span class="legend-dot green"></span>
+        <span
+          class="legend-dot green"
+        ></span>
 
         sensory input
 
@@ -742,13 +1236,29 @@ footer{
 
       <div class="legend-row">
 
-        <span class="legend-dot red"></span>
+        <span
+          class="legend-dot red"
+        ></span>
 
         motor output
 
       </div>
 
+
     </div>
+
+
+    <!-- FULLSCREEN -->
+
+    <button
+      class="fullscreen-button"
+      id="fullscreenButton"
+      aria-label="Tam ekran"
+    >
+
+      ⛶
+
+    </button>
 
 
     <!-- STATS -->
@@ -822,17 +1332,21 @@ footer{
 
     </div>
 
+
   </div>
 
 </section>
 
 
-<!-- EXPLORE -->
+<!-- =========================
+     EXPLORE
+========================= -->
 
 <section
   class="info"
   id="explore"
 >
+
 
   <div class="info-grid">
 
@@ -848,8 +1362,10 @@ footer{
       </h3>
 
       <p>
-        Gerçek neuron skeleton verileri 3D uzayda
-        görüntülenir.
+
+        Gerçek neuron skeleton verileri
+        3D uzayda görüntülenir.
+
       </p>
 
     </div>
@@ -866,8 +1382,11 @@ footer{
       </h3>
 
       <p>
-        Sinirsel aktivite noktaların parlaklığını
-        ve davranışını değiştirir.
+
+        Sinirsel aktivite noktaların
+        parlaklığını ve davranışını
+        değiştirir.
+
       </p>
 
     </div>
@@ -884,8 +1403,11 @@ footer{
       </h3>
 
       <p>
-        İlerleyen aşamada herhangi bir nöronu seçip
-        bağlantılarını inceleyebileceksin.
+
+        Herhangi bir nöronu seçip
+        bağlantılarını inceleyebileceğin
+        bir sistem oluşturacağız.
+
       </p>
 
     </div>
@@ -902,8 +1424,11 @@ footer{
       </h3>
 
       <p>
-        Nöronları kapatıp sistemin davranışının nasıl
-        değiştiğini simüle edeceğiz.
+
+        Nöronları kapatıp sistemin
+        davranışının nasıl değiştiğini
+        simüle edeceğiz.
+
       </p>
 
     </div>
@@ -914,13 +1439,16 @@ footer{
 </section>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer id="about">
 
-  FLY NEURON · Male Drosophila melanogaster central nervous system.
-  Male CNS v1.0 data from HHMI Janelia + Google Research.
-  Connectome data licensed CC-BY.
+  FLY NEURON · Male Drosophila melanogaster
+  central nervous system.
+  Male CNS v1.0 data from HHMI Janelia +
+  Google Research. Connectome data licensed CC-BY.
 
 </footer>
 
@@ -930,9 +1458,9 @@ footer{
 
 <script>
 
-/* =========================================
-   THREE.JS BRAIN VIEWER
-   ========================================= */
+/* =====================================================
+   THREE.JS
+===================================================== */
 
 const canvas =
   document.getElementById(
@@ -943,11 +1471,11 @@ const canvas =
 const renderer =
   new THREE.WebGLRenderer({
 
-    canvas: canvas,
+    canvas:canvas,
 
-    antialias: true,
+    antialias:true,
 
-    alpha: true
+    alpha:true
 
   });
 
@@ -965,6 +1493,10 @@ renderer.setClearColor(
   0
 );
 
+
+/* =====================================================
+   SCENE
+===================================================== */
 
 const scene =
   new THREE.Scene();
@@ -995,9 +1527,9 @@ scene.add(
 );
 
 
-/* =========================================
-   REAL MALE CNS NEURON IDS
-   ========================================= */
+/* =====================================================
+   REAL MALE CNS IDS
+===================================================== */
 
 const neuronIds = [
 
@@ -1026,11 +1558,13 @@ let loadedNeuronCount = 0;
 let loadedNodeCount = 0;
 
 
-/* =========================================
+/* =====================================================
    SWC PARSER
-   ========================================= */
+===================================================== */
 
-function parseSWC(text){
+function parseSWC(
+  text
+){
 
   const points = [];
 
@@ -1072,8 +1606,10 @@ function parseSWC(text){
     const x =
       Number(p[2]);
 
+
     const y =
       Number(p[3]);
+
 
     const z =
       Number(p[4]);
@@ -1091,11 +1627,11 @@ function parseSWC(text){
 
       points.push({
 
-        x: x,
+        x:x,
 
-        y: y,
+        y:y,
 
-        z: z
+        z:z
 
       });
 
@@ -1109,9 +1645,9 @@ function parseSWC(text){
 }
 
 
-/* =========================================
-   LOAD REAL NEURON
-   ========================================= */
+/* =====================================================
+   LOAD NEURON
+===================================================== */
 
 async function loadNeuron(
   id,
@@ -1149,7 +1685,9 @@ async function loadNeuron(
 
 
     const points =
-      parseSWC(text);
+      parseSWC(
+        text
+      );
 
 
     if(
@@ -1182,9 +1720,9 @@ async function loadNeuron(
 }
 
 
-/* =========================================
+/* =====================================================
    BUILD BRAIN
-   ========================================= */
+===================================================== */
 
 async function buildBrain(){
 
@@ -1226,13 +1764,13 @@ async function buildBrain(){
 
           allPoints.push({
 
-            x: point.x,
+            x:point.x,
 
-            y: point.y,
+            y:point.y,
 
-            z: point.z,
+            z:point.z,
 
-            color: color
+            color:color
 
           });
 
@@ -1248,27 +1786,8 @@ async function buildBrain(){
   ){
 
     console.error(
-      "Hiçbir gerçek SWC noktası yüklenmedi."
+      "Gerçek SWC verisi yüklenemedi."
     );
-
-
-    document.getElementById(
-      "fired"
-    ).textContent =
-      "0";
-
-
-    document.getElementById(
-      "spikes"
-    ).textContent =
-      "0";
-
-
-    document.getElementById(
-      "motor"
-    ).textContent =
-      "0";
-
 
     return;
 
@@ -1279,10 +1798,6 @@ async function buildBrain(){
     allPoints
   );
 
-
-  /*
-    Gerçek veriden gelen değerler.
-  */
 
   document.getElementById(
     "fired"
@@ -1306,9 +1821,9 @@ async function buildBrain(){
 }
 
 
-/* =========================================
+/* =====================================================
    CREATE POINT CLOUD
-   ========================================= */
+===================================================== */
 
 function createBrainPoints(
   points
@@ -1326,29 +1841,18 @@ function createBrainPoints(
     );
 
 
-  let minX =
-    Infinity;
+  let minX = Infinity;
 
-  let minY =
-    Infinity;
+  let minY = Infinity;
 
-  let minZ =
-    Infinity;
+  let minZ = Infinity;
 
+  let maxX = -Infinity;
 
-  let maxX =
-    -Infinity;
+  let maxY = -Infinity;
 
-  let maxY =
-    -Infinity;
+  let maxZ = -Infinity;
 
-  let maxZ =
-    -Infinity;
-
-
-  /*
-    Koordinat sınırlarını bul.
-  */
 
   for(
     const point of points
@@ -1398,10 +1902,6 @@ function createBrainPoints(
   }
 
 
-  /*
-    Beynin merkezini bul.
-  */
-
   const centerX =
     (minX + maxX) / 2;
 
@@ -1413,10 +1913,6 @@ function createBrainPoints(
   const centerZ =
     (minZ + maxZ) / 2;
 
-
-  /*
-    Boyutları hesapla.
-  */
 
   const sizeX =
     maxX - minX;
@@ -1438,19 +1934,11 @@ function createBrainPoints(
     );
 
 
-  /*
-    Ekrana sığacak şekilde normalize et.
-  */
-
   const scale =
     largest > 0
       ? 500 / largest
       : 1;
 
-
-  /*
-    Noktaları Three.js koordinatlarına çevir.
-  */
 
   points.forEach(
     (
@@ -1558,10 +2046,6 @@ function createBrainPoints(
   );
 
 
-  /*
-    Görsel olarak biraz yukarı konumlandır.
-  */
-
   brainGroup.position.set(
     0,
     15,
@@ -1585,9 +2069,9 @@ function createBrainPoints(
 }
 
 
-/* =========================================
-   POINTER INTERACTION
-   ========================================= */
+/* =====================================================
+   MOUSE / TOUCH ROTATION
+===================================================== */
 
 let targetX = 0;
 
@@ -1597,55 +2081,129 @@ let currentX = 0;
 
 let currentY = 0;
 
+let pointerDown = false;
+
+let lastPointerX = 0;
+
+let lastPointerY = 0;
+
+
+canvas.addEventListener(
+  "pointerdown",
+  event => {
+
+    pointerDown = true;
+
+    lastPointerX =
+      event.clientX;
+
+    lastPointerY =
+      event.clientY;
+
+    canvas.setPointerCapture(
+      event.pointerId
+    );
+
+  }
+);
+
 
 canvas.addEventListener(
   "pointermove",
   event => {
 
-    const rect =
-      canvas.getBoundingClientRect();
+    if(
+      pointerDown
+    ){
+
+      const dx =
+        event.clientX -
+        lastPointerX;
 
 
-    targetX =
-      (
-        (
-          event.clientX -
-          rect.left
-        ) /
-        rect.width
-        - .5
-      ) * 2;
+      const dy =
+        event.clientY -
+        lastPointerY;
 
 
-    targetY =
-      (
-        (
-          event.clientY -
-          rect.top
-        ) /
-        rect.height
-        - .5
-      ) * 2;
+      brainGroup.rotation.y +=
+        dx * .006;
+
+
+      brainGroup.rotation.x +=
+        dy * .004;
+
+
+      lastPointerX =
+        event.clientX;
+
+
+      lastPointerY =
+        event.clientY;
+
+    }
 
   }
 );
 
 
 canvas.addEventListener(
-  "pointerleave",
-  () => {
+  "pointerup",
+  event => {
 
-    targetX = 0;
+    pointerDown = false;
 
-    targetY = 0;
+    canvas.releasePointerCapture(
+      event.pointerId
+    );
 
   }
 );
 
 
-/* =========================================
+canvas.addEventListener(
+  "pointercancel",
+  () => {
+
+    pointerDown = false;
+
+  }
+);
+
+
+/* =====================================================
+   WHEEL ZOOM
+===================================================== */
+
+canvas.addEventListener(
+  "wheel",
+  event => {
+
+    event.preventDefault();
+
+    camera.position.z +=
+      event.deltaY * .5;
+
+
+    camera.position.z =
+      Math.max(
+        250,
+        Math.min(
+          1800,
+          camera.position.z
+        )
+      );
+
+  },
+  {
+    passive:false
+  }
+);
+
+
+/* =====================================================
    RESIZE
-   ========================================= */
+===================================================== */
 
 function resize(){
 
@@ -1689,9 +2247,186 @@ window.addEventListener(
 );
 
 
-/* =========================================
-   ANIMATION
-   ========================================= */
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+const brainWindow =
+  document.getElementById(
+    "brainWindow"
+  );
+
+
+const fullscreenButton =
+  document.getElementById(
+    "fullscreenButton"
+  );
+
+
+function enterFullscreen(){
+
+  brainWindow.classList.add(
+    "fullscreen"
+  );
+
+  document.body.classList.add(
+    "viewer-fullscreen"
+  );
+
+
+  fullscreenButton.textContent =
+    "✕";
+
+
+  setTimeout(
+    resize,
+    50
+  );
+
+}
+
+
+function exitFullscreen(){
+
+  brainWindow.classList.remove(
+    "fullscreen"
+  );
+
+  document.body.classList.remove(
+    "viewer-fullscreen"
+  );
+
+
+  fullscreenButton.textContent =
+    "⛶";
+
+
+  setTimeout(
+    resize,
+    50
+  );
+
+}
+
+
+fullscreenButton.addEventListener(
+  "click",
+  () => {
+
+    if(
+      brainWindow.classList.contains(
+        "fullscreen"
+      )
+    ){
+
+      exitFullscreen();
+
+    }else{
+
+      enterFullscreen();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   ZOOM BUTTONS
+===================================================== */
+
+document.getElementById(
+  "zoomIn"
+).addEventListener(
+  "click",
+  () => {
+
+    camera.position.z =
+      Math.max(
+        250,
+        camera.position.z - 100
+      );
+
+  }
+);
+
+
+document.getElementById(
+  "zoomOut"
+).addEventListener(
+  "click",
+  () => {
+
+    camera.position.z =
+      Math.min(
+        1800,
+        camera.position.z + 100
+      );
+
+  }
+);
+
+
+/* =====================================================
+   RESET VIEW
+===================================================== */
+
+document.getElementById(
+  "resetView"
+).addEventListener(
+  "click",
+  () => {
+
+    brainGroup.rotation.set(
+      0,
+      0,
+      0
+    );
+
+
+    camera.position.set(
+      0,
+      0,
+      720
+    );
+
+
+    camera.lookAt(
+      0,
+      0,
+      0
+    );
+
+  }
+);
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      brainWindow.classList.contains(
+        "fullscreen"
+      )
+    ){
+
+      exitFullscreen();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   SIMULATION CLOCK
+===================================================== */
 
 let simTime = 0;
 
@@ -1703,43 +2438,8 @@ function animate(){
   );
 
 
-  simTime +=
-    0.016;
+  simTime += .016;
 
-
-  /*
-    Yumuşak mouse hareketi.
-  */
-
-  currentX +=
-    (
-      targetX -
-      currentX
-    ) * .04;
-
-
-  currentY +=
-    (
-      targetY -
-      currentY
-    ) * .04;
-
-
-  /*
-    Beynin hafif dönüşü.
-  */
-
-  brainGroup.rotation.y =
-    currentX * .15;
-
-
-  brainGroup.rotation.x =
-    currentY * .08;
-
-
-  /*
-    Gerçek simülasyon zaman sayacı.
-  */
 
   document.getElementById(
     "simTime"
@@ -1756,9 +2456,9 @@ function animate(){
 }
 
 
-/* =========================================
+/* =====================================================
    START
-   ========================================= */
+===================================================== */
 
 resize();
 
