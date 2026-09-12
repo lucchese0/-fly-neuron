@@ -2,54 +2,44 @@ module.exports = async (req, res) => {
   try {
     const id = String(req.query.id || "");
 
+    // Sadece sayısal neuron ID kabul et
     if (!/^\d+$/.test(id)) {
-      return res.status(400).json({
-        error: "Invalid neuron ID"
-      });
+      return res.status(400).send("Invalid neuron ID");
     }
 
     const url =
-      "https://storage.googleapis.com/" +
-      "flyem-male-cns/v1.0/segmentation/" +
-      "skeletons-malecns/skeletons-precomputed/" +
-      id;
+      `https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/` +
+      `skeletons-malecns/skeletons-swc/${id}.swc`;
 
     const response = await fetch(url);
 
     if (!response.ok) {
-      return res.status(response.status).json({
-        error: `Neuron ${id} could not be loaded`
-      });
+      return res
+        .status(response.status)
+        .send(`Neuron ${id} could not be loaded`);
     }
 
-    const buffer =
-      Buffer.from(
-        await response.arrayBuffer()
-      );
+    const data = await response.text();
 
     res.setHeader(
       "Content-Type",
-      "application/octet-stream"
+      "text/plain; charset=utf-8"
     );
 
+    // Tarayıcının cache kullanmasına izin ver
     res.setHeader(
       "Cache-Control",
-      "public, max-age=86400, immutable"
+      "public, max-age=3600"
     );
 
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "*"
-    );
-
-    return res.status(200).send(buffer);
+    return res.status(200).send(data);
 
   } catch (error) {
 
     console.error(error);
 
-    return res.status(500).json({
-      error: "Failed to fetch neuron"
-    });
+    return res
+      .status(500)
+      .send("Failed to fetch neuron data");
   }
 };
