@@ -2,14 +2,15 @@ module.exports = async (req, res) => {
   try {
     const id = String(req.query.id || "");
 
-    // Sadece sayısal neuron ID kabul et
     if (!/^\d+$/.test(id)) {
       return res.status(400).send("Invalid neuron ID");
     }
 
     const url =
-      `https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/` +
-      `skeletons-malecns/skeletons-swc/${id}.swc`;
+      "https://storage.googleapis.com/" +
+      "flyem-male-cns/v1.0/segmentation/" +
+      "skeletons-malecns/skeletons-precomputed/" +
+      id;
 
     const response = await fetch(url);
 
@@ -19,20 +20,19 @@ module.exports = async (req, res) => {
         .send(`Neuron ${id} could not be loaded`);
     }
 
-    const data = await response.text();
+    const buffer = await response.arrayBuffer();
 
     res.setHeader(
       "Content-Type",
-      "text/plain; charset=utf-8"
+      "application/octet-stream"
     );
 
-    // Tarayıcının cache kullanmasına izin ver
     res.setHeader(
       "Cache-Control",
-      "public, max-age=3600"
+      "public, max-age=86400, immutable"
     );
 
-    return res.status(200).send(data);
+    return res.status(200).send(Buffer.from(buffer));
 
   } catch (error) {
 
@@ -40,6 +40,6 @@ module.exports = async (req, res) => {
 
     return res
       .status(500)
-      .send("Failed to fetch neuron data");
+      .send("Failed to fetch precomputed neuron");
   }
 };
