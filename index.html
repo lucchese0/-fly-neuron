@@ -3,348 +3,1076 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <title>Fly Neuron</title>
+<title>FLY NEURON — Dijital Sinek Beyni</title>
 
+<style>
 
-  <style>
+* {
+  box-sizing: border-box;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+html {
+  scroll-behavior: smooth;
+}
 
+body {
 
-    html,
-    body {
+  margin: 0;
 
-      margin: 0;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      #111827 0%,
+      #05070b 35%,
+      #020304 70%
+    );
 
-      width: 100%;
-      height: 100%;
+  color: #fff;
 
-      overflow: hidden;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
 
-      background: #000;
+  overflow-x: hidden;
+}
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
 
-      color: white;
+/* =================================
+   BACKGROUND
+================================= */
 
-    }
+body::before {
 
+  content: "";
 
-    /* =========================
-       BRAIN
-    ========================= */
+  position: fixed;
 
-    #brainWindow {
+  inset: 0;
 
-      position: fixed;
+  pointer-events: none;
 
-      inset: 0;
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(80,170,255,.07),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 60%,
+      rgba(160,90,255,.06),
+      transparent 30%
+    );
 
-      overflow: hidden;
+  z-index: -1;
+}
 
-      background: #000;
 
-    }
+/* =================================
+   HEADER
+================================= */
 
+header {
 
-    #brain {
+  width: 100%;
 
-      position: absolute;
+  padding:
+    28px 7vw
+    10px;
 
-      border: 0;
+  display: flex;
 
-      width: 145%;
-      height: 145%;
+  align-items: center;
 
-      left: -22.5%;
-      top: -22.5%;
+  justify-content: space-between;
 
-    }
+  position: relative;
 
+  z-index: 20;
+}
 
-    /* =========================
-       DARK OVERLAY
-    ========================= */
 
-    #shade {
+.logo {
 
-      position: fixed;
+  font-size: 18px;
 
-      inset: 0;
+  font-weight: 700;
 
-      pointer-events: none;
+  letter-spacing: 4px;
+}
 
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,.35),
-          transparent 22%,
-          transparent 75%,
-          rgba(0,0,0,.45)
-        );
 
-      z-index: 5;
+.logo span {
 
-    }
+  color: #63c8ff;
 
+}
 
-    /* =========================
-       MAIN CARD
-    ========================= */
 
-    #card {
+.nav {
 
-      position: fixed;
+  display: flex;
 
-      top: 24px;
+  gap: 24px;
 
-      left: 24px;
+  color: #777;
 
-      z-index: 20;
+  font-size: 13px;
+}
 
-      width: 310px;
 
-      padding: 22px;
+.nav a {
 
-      border-radius: 18px;
+  color: #888;
 
-      background:
-        rgba(8,8,10,.88);
+  text-decoration: none;
 
-      border:
-        1px solid
-        rgba(255,255,255,.15);
+}
 
-      backdrop-filter:
-        blur(14px);
 
-    }
+.nav a:hover {
 
+  color: #fff;
 
-    #title {
+}
 
-      font-size: 28px;
 
-      font-weight: 700;
+/* =================================
+   HERO
+================================= */
 
-      letter-spacing: 4px;
+.hero {
 
-    }
+  max-width: 1050px;
 
+  margin:
+    90px auto
+    70px;
 
-    #subtitle {
+  padding:
+    0 24px;
 
-      margin-top: 7px;
+  text-align: center;
+}
 
-      font-size: 14px;
 
-      color: #aaa;
+.eyebrow {
 
-      line-height: 1.4;
+  display: inline-block;
 
-    }
+  padding:
+    7px 12px;
 
+  border:
+    1px solid
+    rgba(110,200,255,.2);
 
-    #description {
+  border-radius: 999px;
 
-      margin-top: 18px;
+  color: #6ccfff;
 
-      font-size: 13px;
+  background:
+    rgba(70,170,255,.07);
 
-      color: #999;
+  font-size: 11px;
 
-      line-height: 1.55;
+  letter-spacing: 1.5px;
 
-    }
+  text-transform: uppercase;
+}
 
 
-    /* =========================
-       STATUS
-    ========================= */
+.hero h1 {
 
-    #status {
+  margin:
+    20px 0 16px;
 
-      display: flex;
+  font-size:
+    clamp(44px, 8vw, 86px);
 
-      align-items: center;
+  line-height: .95;
 
-      gap: 8px;
+  letter-spacing:
+    -4px;
 
-      margin-top: 18px;
+  font-weight: 700;
 
-      font-size: 12px;
+}
 
-      color: #aaa;
 
-    }
+.hero h1 span {
 
+  background:
+    linear-gradient(
+      90deg,
+      #fff,
+      #73d1ff,
+      #a58bff
+    );
 
-    #dot {
+  -webkit-background-clip: text;
 
-      width: 8px;
-      height: 8px;
+  background-clip: text;
 
-      border-radius: 50%;
+  color: transparent;
+}
 
-      background: #65d6a0;
 
-      box-shadow:
-        0 0 10px
-        rgba(101,214,160,.7);
+.hero p {
 
-    }
+  max-width: 690px;
 
+  margin:
+    0 auto;
 
-    /* =========================
-       SIMPLE CONTROLS
-    ========================= */
+  color: #9096a3;
 
-    #controls {
+  font-size:
+    clamp(15px, 2vw, 18px);
 
-      position: fixed;
+  line-height: 1.7;
+}
 
-      left: 24px;
 
-      bottom: 24px;
+/* =================================
+   FEATURES
+================================= */
 
-      z-index: 20;
+.features {
 
-      display: flex;
+  max-width: 1000px;
 
-      gap: 8px;
+  margin:
+    0 auto
+    100px;
 
-      flex-wrap: wrap;
+  padding:
+    0 24px;
 
-    }
+  display: grid;
 
+  grid-template-columns:
+    repeat(3, 1fr);
 
-    .button {
+  gap: 14px;
+}
 
-      padding:
-        11px
-        15px;
 
-      border-radius: 10px;
+.feature {
 
-      border:
-        1px solid
-        rgba(255,255,255,.14);
+  padding: 22px;
 
-      background:
-        rgba(8,8,10,.85);
+  border:
+    1px solid
+    rgba(255,255,255,.08);
 
-      color: #bbb;
+  border-radius: 16px;
 
-      font-size: 12px;
+  background:
+    rgba(255,255,255,.025);
 
-      backdrop-filter:
-        blur(10px);
+  transition:
+    transform .3s,
+    border-color .3s,
+    background .3s;
+}
 
-    }
 
+.feature:hover {
 
-    /* =========================
-       HELP
-    ========================= */
+  transform:
+    translateY(-4px);
 
-    #help {
+  border-color:
+    rgba(100,200,255,.25);
 
-      position: fixed;
+  background:
+    rgba(100,200,255,.04);
+}
 
-      right: 24px;
 
-      bottom: 24px;
+.feature-icon {
 
-      z-index: 20;
+  font-size: 22px;
 
-      padding:
-        11px
-        15px;
+  margin-bottom: 12px;
+}
 
-      border-radius: 10px;
 
-      background:
-        rgba(8,8,10,.82);
+.feature h3 {
 
-      border:
-        1px solid
-        rgba(255,255,255,.12);
+  margin: 0 0 7px;
 
-      color: #999;
+  font-size: 15px;
+}
 
-      font-size: 12px;
 
-    }
+.feature p {
 
+  margin: 0;
 
-    /* =========================
-       MOBILE
-    ========================= */
+  color: #777;
 
-    @media (max-width: 600px) {
+  font-size: 12px;
 
-      #card {
+  line-height: 1.6;
+}
 
-        top: 16px;
 
-        left: 16px;
+/* =================================
+   BRAIN SECTION
+================================= */
 
-        width:
-          calc(100% - 32px);
+.brain-section {
 
-        padding: 18px;
+  max-width: 1180px;
 
-      }
+  margin:
+    0 auto
+    120px;
 
+  padding:
+    0 22px;
+}
 
-      #title {
 
-        font-size: 24px;
+.section-title {
 
-      }
+  margin-bottom: 22px;
+}
 
 
-      #description {
+.section-title small {
 
-        margin-top: 12px;
+  color: #63c8ff;
 
-        font-size: 12px;
+  font-size: 11px;
 
-      }
+  letter-spacing: 2px;
 
+  text-transform: uppercase;
+}
 
-      #controls {
 
-        left: 16px;
+.section-title h2 {
 
-        bottom: 16px;
+  margin:
+    8px 0 0;
 
-      }
+  font-size:
+    clamp(26px, 4vw, 42px);
 
+  letter-spacing:
+    -1.5px;
+}
 
-      #help {
 
-        right: 16px;
+.section-title p {
 
-        bottom: 16px;
+  margin-top: 10px;
 
-      }
+  max-width: 620px;
 
-    }
+  color: #777;
 
-  </style>
+  line-height: 1.6;
+
+  font-size: 14px;
+}
+
+
+/* =================================
+   BRAIN VIEWPORT
+================================= */
+
+.brain-card {
+
+  position: relative;
+
+  width: 100%;
+
+  height:
+    min(650px, 70vh);
+
+  min-height: 430px;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.13);
+
+  background: #000;
+
+  box-shadow:
+
+    0 30px 100px
+    rgba(0,0,0,.65),
+
+    inset 0 0 100px
+    rgba(70,150,255,.025);
+}
+
+
+/* =================================
+   REAL NEUROGLANCER
+================================= */
+
+#brain {
+
+  position: absolute;
+
+  width: 150%;
+
+  height: 150%;
+
+  left: -25%;
+
+  top: -22%;
+
+  border: 0;
+
+  transform:
+    scale(1);
+
+}
+
+
+/* =================================
+   VISUAL MASK
+================================= */
+
+.brain-mask-top {
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 105px;
+
+  z-index: 5;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #000 0%,
+      rgba(0,0,0,.9) 55%,
+      transparent
+    );
+}
+
+
+.brain-mask-right {
+
+  position: absolute;
+
+  top: 0;
+
+  right: 0;
+
+  width: 150px;
+
+  height: 100%;
+
+  z-index: 5;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      #000
+    );
+}
+
+
+.brain-mask-bottom {
+
+  position: absolute;
+
+  bottom: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 90px;
+
+  z-index: 5;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to top,
+      #000,
+      transparent
+    );
+}
+
+
+/* =================================
+   GLOW
+================================= */
+
+.brain-glow {
+
+  position: absolute;
+
+  width: 55%;
+
+  height: 65%;
+
+  left: 22.5%;
+
+  top: 20%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(70,190,255,.08),
+      transparent 65%
+    );
+
+  filter:
+    blur(30px);
+
+  pointer-events: none;
+
+  z-index: 4;
+
+  animation:
+    breathing 4s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes breathing {
+
+  0%,
+  100% {
+
+    opacity: .45;
+
+    transform:
+      scale(.92);
+
+  }
+
+  50% {
+
+    opacity: 1;
+
+    transform:
+      scale(1.08);
+
+  }
+
+}
+
+
+/* =================================
+   BRAIN LABEL
+================================= */
+
+.brain-label {
+
+  position: absolute;
+
+  top: 24px;
+
+  left: 24px;
+
+  z-index: 10;
+
+  padding:
+    13px 16px;
+
+  border-radius: 12px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.1);
+
+  background:
+    rgba(5,7,10,.72);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+
+.brain-label strong {
+
+  display: block;
+
+  font-size: 13px;
+
+  letter-spacing: 1px;
+}
+
+
+.brain-label span {
+
+  display: block;
+
+  margin-top: 5px;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+
+/* =================================
+   LIVE INDICATOR
+================================= */
+
+.live {
+
+  position: absolute;
+
+  top: 24px;
+
+  right: 24px;
+
+  z-index: 10;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    9px 12px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(5,7,10,.75);
+
+  border:
+    1px solid
+    rgba(255,255,255,.1);
+
+  color: #aaa;
+
+  font-size: 11px;
+}
+
+
+.live-dot {
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #5fe0a4;
+
+  box-shadow:
+    0 0 12px
+    #5fe0a4;
+
+  animation:
+    pulse 1.5s
+    infinite;
+}
+
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: .4;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+/* =================================
+   BRAIN FOOTER
+================================= */
+
+.brain-footer {
+
+  position: absolute;
+
+  bottom: 20px;
+
+  left: 24px;
+
+  right: 24px;
+
+  z-index: 10;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  color: #666;
+
+  font-size: 11px;
+}
+
+
+/* =================================
+   STATS
+================================= */
+
+.stats {
+
+  max-width: 1050px;
+
+  margin:
+    -60px auto
+    130px;
+
+  padding:
+    0 24px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 1px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255,255,255,.06);
+}
+
+
+.stat {
+
+  padding:
+    25px 20px;
+
+  background:
+    #080a0e;
+}
+
+
+.stat-number {
+
+  font-size: 25px;
+
+  font-weight: 600;
+
+  letter-spacing: -1px;
+}
+
+
+.stat-label {
+
+  margin-top: 7px;
+
+  color: #666;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+
+/* =================================
+   EXPLAINER
+================================= */
+
+.explainer {
+
+  max-width: 1050px;
+
+  margin:
+    0 auto
+    120px;
+
+  padding:
+    0 24px;
+}
+
+
+.explainer-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 16px;
+}
+
+
+.explain-card {
+
+  padding: 28px;
+
+  min-height: 220px;
+
+  border-radius: 20px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+
+.explain-card .number {
+
+  color: #63c8ff;
+
+  font-size: 11px;
+
+  letter-spacing: 2px;
+}
+
+
+.explain-card h3 {
+
+  margin:
+    14px 0 10px;
+
+  font-size: 20px;
+}
+
+
+.explain-card p {
+
+  margin: 0;
+
+  color: #777;
+
+  line-height: 1.7;
+
+  font-size: 13px;
+}
+
+
+/* =================================
+   FOOTER
+================================= */
+
+footer {
+
+  max-width: 1050px;
+
+  margin:
+    0 auto;
+
+  padding:
+    40px 24px 70px;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.07);
+
+  color: #555;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 700px) {
+
+  header {
+
+    padding:
+      22px 18px 5px;
+
+  }
+
+
+  .nav {
+
+    display: none;
+
+  }
+
+
+  .hero {
+
+    margin:
+      65px auto
+      60px;
+
+  }
+
+
+  .hero h1 {
+
+    letter-spacing:
+      -2px;
+
+  }
+
+
+  .features {
+
+    grid-template-columns:
+      1fr;
+
+    margin-bottom:
+      75px;
+
+  }
+
+
+  .brain-section {
+
+    padding:
+      0 14px;
+
+    margin-bottom:
+      90px;
+
+  }
+
+
+  .brain-card {
+
+    height: 500px;
+
+    min-height: 500px;
+
+    border-radius:
+      20px;
+
+  }
+
+
+  #brain {
+
+    width: 190%;
+
+    height: 150%;
+
+    left: -45%;
+
+    top: -15%;
+
+  }
+
+
+  .brain-label {
+
+    left: 14px;
+
+    top: 14px;
+
+  }
+
+
+  .live {
+
+    right: 14px;
+
+    top: 14px;
+
+  }
+
+
+  .brain-footer {
+
+    left: 14px;
+
+    right: 14px;
+
+  }
+
+
+  .stats {
+
+    grid-template-columns:
+      1fr 1fr;
+
+    margin:
+      -35px 14px
+      90px;
+
+  }
+
+
+  .stat {
+
+    padding:
+      20px 16px;
+
+  }
+
+
+  .stat-number {
+
+    font-size: 20px;
+
+  }
+
+
+  .explainer {
+
+    padding:
+      0 18px;
+
+  }
+
+
+  .explainer-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -352,11 +1080,155 @@
 <body>
 
 
-  <!-- =========================
-       REAL MALE CNS
-  ========================== -->
+<!-- =================================
+     HEADER
+================================= -->
 
-  <div id="brainWindow">
+<header>
+
+  <div class="logo">
+    FLY <span>NEURON</span>
+  </div>
+
+  <nav class="nav">
+
+    <a href="#brain-section">
+      Beyni keşfet
+    </a>
+
+    <a href="#how">
+      Nasıl çalışır?
+    </a>
+
+  </nav>
+
+</header>
+
+
+<!-- =================================
+     HERO
+================================= -->
+
+<section class="hero">
+
+  <div class="eyebrow">
+    REAL MALE CNS CONNECTOME
+  </div>
+
+
+  <h1>
+    Bir sineğin<br>
+    <span>beyninin içine gir.</span>
+  </h1>
+
+
+  <p>
+
+    Fly Neuron, gerçek bir meyve sineğinin
+    sinir sistemi bağlantılarını keşfetmeni
+    sağlayan interaktif bir beyin simülasyonudur.
+
+    Nöronları incele, aktivitelerini izle ve
+    beynin nasıl çalıştığını keşfet.
+
+  </p>
+
+</section>
+
+
+<!-- =================================
+     FEATURES
+================================= -->
+
+<section class="features">
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      🧠
+    </div>
+
+    <h3>
+      Gerçek beyin verisi
+    </h3>
+
+    <p>
+      Görüntüleme, gerçek MaleCNS
+      connectome verilerine dayanır.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      ⚡
+    </div>
+
+    <h3>
+      Canlı nöron aktivitesi
+    </h3>
+
+    <p>
+      Aktif nöronların zaman içinde
+      nasıl tepki verdiğini gör.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      🔬
+    </div>
+
+    <h3>
+      Beyni keşfet
+    </h3>
+
+    <p>
+      Farklı nöronları ve bağlantıları
+      yakından incele.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =================================
+     BRAIN
+================================= -->
+
+<section
+  class="brain-section"
+  id="brain-section"
+>
+
+  <div class="section-title">
+
+    <small>
+      INTERACTIVE BRAIN
+    </small>
+
+    <h2>
+      Sinek beynini canlı olarak keşfet.
+    </h2>
+
+    <p>
+      Aşağıdaki görüntü gerçek MaleCNS
+      sinir sistemi verisini kullanır.
+      Beyni hareket ettirerek farklı
+      açılardan inceleyebilirsin.
+    </p>
+
+  </div>
+
+
+  <div class="brain-card">
+
 
     <iframe
       id="brain"
@@ -364,86 +1236,244 @@
       allow="fullscreen"
     ></iframe>
 
-  </div>
+
+    <div class="brain-glow"></div>
 
 
-  <div id="shade"></div>
+    <div class="brain-mask-top"></div>
+
+    <div class="brain-mask-right"></div>
+
+    <div class="brain-mask-bottom"></div>
 
 
-  <!-- =========================
-       SIMPLE INFORMATION
-  ========================== -->
+    <div class="brain-label">
 
-  <div id="card">
+      <strong>
+        MALE CNS
+      </strong>
 
-    <div id="title">
-      FLY NEURON
-    </div>
-
-
-    <div id="subtitle">
-      Dijital Meyve Sineği Beyni
-    </div>
-
-
-    <div id="description">
-
-      Gerçek bir meyve sineğinin
-      sinir sistemi bağlantılarını
-      keşfet.
-
-      <br><br>
-
-      Beyindeki noktalar ve bağlantılar,
-      sinir hücrelerinin birbirleriyle
-      nasıl iletişim kurduğunu gösterir.
+      <span>
+        Gerçek sinir sistemi
+      </span>
 
     </div>
 
 
-    <div id="status">
+    <div class="live">
 
-      <span id="dot"></span>
+      <span class="live-dot"></span>
 
-      Gerçek MaleCNS verisi
+      CANLI VERİ
 
     </div>
 
-  </div>
 
+    <div class="brain-footer">
 
-  <!-- =========================
-       SIMPLE INFO BUTTONS
-  ========================== -->
+      <span>
+        Gerçek MaleCNS v1.0
+      </span>
 
-  <div id="controls">
+      <span>
+        Sürükle · Yakınlaştır
+      </span>
 
-    <div class="button">
-      🧠 Beyin
-    </div>
-
-    <div class="button">
-      ⚡ Aktivite
-    </div>
-
-    <div class="button">
-      🔬 Nöron
     </div>
 
   </div>
 
+</section>
 
-  <!-- =========================
-       HELP
-  ========================== -->
 
-  <div id="help">
+<!-- =================================
+     STATS
+================================= -->
 
-    Sürükle: incele
-    ·
-    İki parmak: yakınlaştır
+<section class="stats">
+
+
+  <div class="stat">
+
+    <div class="stat-number">
+      166.700
+    </div>
+
+    <div class="stat-label">
+      Nöron
+    </div>
 
   </div>
+
+
+  <div class="stat">
+
+    <div class="stat-number">
+      11.710
+    </div>
+
+    <div class="stat-label">
+      Nöron tipi
+    </div>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-number">
+      Male CNS
+    </div>
+
+    <div class="stat-label">
+      Sinir sistemi
+    </div>
+
+  </div>
+
+
+  <div class="stat">
+
+    <div class="stat-number">
+      v1.0
+    </div>
+
+    <div class="stat-label">
+      Connectome
+    </div>
+
+  </div>
+
+
+</section>
+
+
+<!-- =================================
+     HOW IT WORKS
+================================= -->
+
+<section
+  class="explainer"
+  id="how"
+>
+
+  <div class="section-title">
+
+    <small>
+      NASIL ÇALIŞIR?
+    </small>
+
+    <h2>
+      Karmaşık bir beyni basitçe keşfet.
+    </h2>
+
+  </div>
+
+
+  <div class="explainer-grid">
+
+
+    <div class="explain-card">
+
+      <div class="number">
+        01
+      </div>
+
+      <h3>
+        Nöronları gör
+      </h3>
+
+      <p>
+        Beynin içindeki sinir hücrelerini
+        ve birbirleriyle olan bağlantılarını
+        üç boyutlu olarak incele.
+      </p>
+
+    </div>
+
+
+    <div class="explain-card">
+
+      <div class="number">
+        02
+      </div>
+
+      <h3>
+        Aktiviteyi izle
+      </h3>
+
+      <p>
+        Beyindeki farklı bölgelerin
+        nasıl aktif olduğunu gör ve
+        sinyallerin ağ boyunca ilerleyişini
+        takip et.
+      </p>
+
+    </div>
+
+
+    <div class="explain-card">
+
+      <div class="number">
+        03
+      </div>
+
+      <h3>
+        Bir nöron seç
+      </h3>
+
+      <p>
+        Belirli bir nörona dokunarak
+        bağlantılarını ve sistemdeki
+        rolünü incele.
+      </p>
+
+    </div>
+
+
+    <div class="explain-card">
+
+      <div class="number">
+        04
+      </div>
+
+      <h3>
+        Beyne müdahale et
+      </h3>
+
+      <p>
+        İlerleyen aşamada belirli nöronları
+        kapatıp simülasyondaki etkilerini
+        gözlemleyebileceksin.
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =================================
+     FOOTER
+================================= -->
+
+<footer>
+
+  FLY NEURON · Dijital Meyve Sineği Beyni
+
+  <br>
+
+  Male Drosophila central nervous system
+  · MaleCNS v1.0
+
+  <br>
+
+  Neural data provided by the Janelia
+  FlyEM project.
+
+</footer>
 
 
 </body>
