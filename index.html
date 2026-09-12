@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -9,139 +12,440 @@
 
   <title>Fly Neuron</title>
 
+
   <style>
+
     * {
       box-sizing: border-box;
     }
 
+
     html,
     body {
+
       margin: 0;
+
       width: 100%;
       height: 100%;
+
       overflow: hidden;
-      background: #050505;
-      font-family: Arial, Helvetica, sans-serif;
+
+      background: #000;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       color: white;
+
     }
+
+
+    /* =========================
+       BRAIN
+    ========================= */
+
+    #brainWindow {
+
+      position: fixed;
+
+      inset: 0;
+
+      overflow: hidden;
+
+      background: #000;
+
+    }
+
 
     #brain {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+
+      position: absolute;
+
       border: 0;
-      background: #000;
+
+      width: 145%;
+      height: 145%;
+
+      left: -22.5%;
+      top: -22.5%;
+
     }
 
-    #panel {
+
+    /* =========================
+       DARK OVERLAY
+    ========================= */
+
+    #shade {
+
       position: fixed;
-      top: 20px;
-      left: 20px;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,.35),
+          transparent 22%,
+          transparent 75%,
+          rgba(0,0,0,.45)
+        );
+
+      z-index: 5;
+
+    }
+
+
+    /* =========================
+       MAIN CARD
+    ========================= */
+
+    #card {
+
+      position: fixed;
+
+      top: 24px;
+
+      left: 24px;
+
       z-index: 20;
 
-      width: 280px;
-      padding: 20px;
+      width: 310px;
 
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 16px;
+      padding: 22px;
 
-      background: rgba(8,8,10,.82);
-      backdrop-filter: blur(14px);
+      border-radius: 18px;
+
+      background:
+        rgba(8,8,10,.88);
+
+      border:
+        1px solid
+        rgba(255,255,255,.15);
+
+      backdrop-filter:
+        blur(14px);
+
     }
+
 
     #title {
-      font-size: 25px;
+
+      font-size: 28px;
+
       font-weight: 700;
+
       letter-spacing: 4px;
+
     }
+
 
     #subtitle {
+
       margin-top: 7px;
+
+      font-size: 14px;
+
       color: #aaa;
-      font-size: 13px;
+
+      line-height: 1.4;
+
     }
+
+
+    #description {
+
+      margin-top: 18px;
+
+      font-size: 13px;
+
+      color: #999;
+
+      line-height: 1.55;
+
+    }
+
+
+    /* =========================
+       STATUS
+    ========================= */
 
     #status {
-      margin-top: 15px;
-      color: #777;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-top: 18px;
+
       font-size: 12px;
-      line-height: 1.5;
+
+      color: #aaa;
+
     }
 
-    #badge {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 6px 9px;
 
-      border-radius: 7px;
+    #dot {
 
-      background: rgba(80,180,255,.12);
+      width: 8px;
+      height: 8px;
 
-      color: #72cfff;
-      font-size: 11px;
+      border-radius: 50%;
+
+      background: #65d6a0;
+
+      box-shadow:
+        0 0 10px
+        rgba(101,214,160,.7);
+
     }
 
-    #bottom {
+
+    /* =========================
+       SIMPLE CONTROLS
+    ========================= */
+
+    #controls {
+
       position: fixed;
-      left: 20px;
-      bottom: 20px;
+
+      left: 24px;
+
+      bottom: 24px;
+
       z-index: 20;
 
-      padding: 9px 13px;
+      display: flex;
 
-      border-radius: 8px;
+      gap: 8px;
 
-      background: rgba(5,5,6,.75);
+      flex-wrap: wrap;
 
-      color: #777;
-      font-size: 12px;
     }
+
+
+    .button {
+
+      padding:
+        11px
+        15px;
+
+      border-radius: 10px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.14);
+
+      background:
+        rgba(8,8,10,.85);
+
+      color: #bbb;
+
+      font-size: 12px;
+
+      backdrop-filter:
+        blur(10px);
+
+    }
+
+
+    /* =========================
+       HELP
+    ========================= */
+
+    #help {
+
+      position: fixed;
+
+      right: 24px;
+
+      bottom: 24px;
+
+      z-index: 20;
+
+      padding:
+        11px
+        15px;
+
+      border-radius: 10px;
+
+      background:
+        rgba(8,8,10,.82);
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+
+      color: #999;
+
+      font-size: 12px;
+
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      #card {
+
+        top: 16px;
+
+        left: 16px;
+
+        width:
+          calc(100% - 32px);
+
+        padding: 18px;
+
+      }
+
+
+      #title {
+
+        font-size: 24px;
+
+      }
+
+
+      #description {
+
+        margin-top: 12px;
+
+        font-size: 12px;
+
+      }
+
+
+      #controls {
+
+        left: 16px;
+
+        bottom: 16px;
+
+      }
+
+
+      #help {
+
+        right: 16px;
+
+        bottom: 16px;
+
+      }
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <!--
-    REAL MALE CNS NEUROGLANCER
-    Janelia / HHMI FlyEM
-  -->
 
-  <iframe
-    id="brain"
-    src="https://neuroglancer-demo.appspot.com/#!gs://flyem-male-cns/v1.0/male-cns-v1.0.json"
-    allow="fullscreen"
-  ></iframe>
+  <!-- =========================
+       REAL MALE CNS
+  ========================== -->
+
+  <div id="brainWindow">
+
+    <iframe
+      id="brain"
+      src="https://neuroglancer-demo.appspot.com/#!gs://flyem-male-cns/v1.0/male-cns-v1.0.json"
+      allow="fullscreen"
+    ></iframe>
+
+  </div>
 
 
-  <div id="panel">
+  <div id="shade"></div>
+
+
+  <!-- =========================
+       SIMPLE INFORMATION
+  ========================== -->
+
+  <div id="card">
 
     <div id="title">
       FLY NEURON
     </div>
 
+
     <div id="subtitle">
-      Digital Male Drosophila Brain
+      Dijital Meyve Sineği Beyni
     </div>
+
+
+    <div id="description">
+
+      Gerçek bir meyve sineğinin
+      sinir sistemi bağlantılarını
+      keşfet.
+
+      <br><br>
+
+      Beyindeki noktalar ve bağlantılar,
+      sinir hücrelerinin birbirleriyle
+      nasıl iletişim kurduğunu gösterir.
+
+    </div>
+
 
     <div id="status">
-      Real MaleCNS v1.0 connectome
-      <br>
-      166,700 neurons
-      <br>
-      11,710 neuron types
-    </div>
 
-    <div id="badge">
-      REAL CONNECTOME
+      <span id="dot"></span>
+
+      Gerçek MaleCNS verisi
+
     </div>
 
   </div>
 
 
-  <div id="bottom">
-    Janelia MaleCNS v1.0 · Real neural data
+  <!-- =========================
+       SIMPLE INFO BUTTONS
+  ========================== -->
+
+  <div id="controls">
+
+    <div class="button">
+      🧠 Beyin
+    </div>
+
+    <div class="button">
+      ⚡ Aktivite
+    </div>
+
+    <div class="button">
+      🔬 Nöron
+    </div>
+
   </div>
+
+
+  <!-- =========================
+       HELP
+  ========================== -->
+
+  <div id="help">
+
+    Sürükle: incele
+    ·
+    İki parmak: yakınlaştır
+
+  </div>
+
 
 </body>
+
 </html>
