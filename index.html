@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Fly Neuron</title>
 
   <style>
@@ -10,44 +14,44 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #020203;
+      background: #050505;
       font-family: Arial, Helvetica, sans-serif;
       color: white;
     }
 
-    canvas {
-      display: block;
+    #brain {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
-      touch-action: none;
+      border: 0;
+      background: #000;
     }
 
-    #ui {
+    #panel {
       position: fixed;
       top: 20px;
       left: 20px;
-      z-index: 10;
+      z-index: 20;
 
-      padding: 18px 20px;
+      width: 280px;
+      padding: 20px;
 
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 16px;
 
-      background: rgba(8,8,10,.8);
-      backdrop-filter: blur(12px);
-
-      min-width: 250px;
+      background: rgba(8,8,10,.82);
+      backdrop-filter: blur(14px);
     }
 
     #title {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 700;
       letter-spacing: 4px;
     }
@@ -59,22 +63,36 @@
     }
 
     #status {
-      margin-top: 14px;
+      margin-top: 15px;
       color: #777;
       font-size: 12px;
+      line-height: 1.5;
     }
 
-    #info {
+    #badge {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 9px;
+
+      border-radius: 7px;
+
+      background: rgba(80,180,255,.12);
+
+      color: #72cfff;
+      font-size: 11px;
+    }
+
+    #bottom {
       position: fixed;
       left: 20px;
       bottom: 20px;
-      z-index: 10;
+      z-index: 20;
 
       padding: 9px 13px;
 
       border-radius: 8px;
 
-      background: rgba(5,5,6,.72);
+      background: rgba(5,5,6,.75);
 
       color: #777;
       font-size: 12px;
@@ -84,880 +102,46 @@
 
 <body>
 
-  <div id="ui">
-    <div id="title">FLY NEURON</div>
+  <!--
+    REAL MALE CNS NEUROGLANCER
+    Janelia / HHMI FlyEM
+  -->
+
+  <iframe
+    id="brain"
+    src="https://neuroglancer-demo.appspot.com/#!gs://flyem-male-cns/v1.0/male-cns-v1.0.json"
+    allow="fullscreen"
+  ></iframe>
+
+
+  <div id="panel">
+
+    <div id="title">
+      FLY NEURON
+    </div>
 
     <div id="subtitle">
-      Real MaleCNS neural morphology
+      Digital Male Drosophila Brain
     </div>
 
     <div id="status">
-      Loading neurons...
+      Real MaleCNS v1.0 connectome
+      <br>
+      166,700 neurons
+      <br>
+      11,710 neuron types
     </div>
+
+    <div id="badge">
+      REAL CONNECTOME
+    </div>
+
   </div>
 
-  <div id="info">
-    Janelia MaleCNS v1.0 · Drag to rotate · Pinch to zoom
+
+  <div id="bottom">
+    Janelia MaleCNS v1.0 · Real neural data
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-
-  <script>
-
-    /* =========================================
-       THREE.JS
-    ========================================= */
-
-    const scene = new THREE.Scene();
-
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      5000
-    );
-
-    camera.position.set(0, 0, 700);
-
-    const renderer =
-      new THREE.WebGLRenderer({
-        antialias: true,
-        powerPreference: "high-performance"
-      });
-
-    renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio || 1, 2)
-    );
-
-    renderer.setSize(
-      window.innerWidth,
-      window.innerHeight
-    );
-
-    renderer.setClearColor(
-      0x020203,
-      1
-    );
-
-    document.body.appendChild(
-      renderer.domElement
-    );
-
-
-    /* =========================================
-       BRAIN
-    ========================================= */
-
-    const brain =
-      new THREE.Group();
-
-    scene.add(brain);
-
-
-    /* =========================================
-       NEURON IDS
-    ========================================= */
-
-    const neuronIDs = [
-      12781,
-      556329
-    ];
-
-
-    /* =========================================
-       MATERIALS
-    ========================================= */
-
-    const lineMaterials = [
-
-      new THREE.LineBasicMaterial({
-        color: 0x55ccff,
-        transparent: true,
-        opacity: 0.95
-      }),
-
-      new THREE.LineBasicMaterial({
-        color: 0xff55cc,
-        transparent: true,
-        opacity: 0.95
-      })
-
-    ];
-
-
-    const pointMaterials = [
-
-      new THREE.PointsMaterial({
-        color: 0x8de8ff,
-        size: 5,
-        sizeAttenuation: false,
-        transparent: true,
-        opacity: 1
-      }),
-
-      new THREE.PointsMaterial({
-        color: 0xff8ddd,
-        size: 5,
-        sizeAttenuation: false,
-        transparent: true,
-        opacity: 1
-      })
-
-    ];
-
-
-    /* =========================================
-       PARSE SWC
-    ========================================= */
-
-    function parseSWC(text) {
-
-      const nodes = [];
-
-      const lines =
-        text.split(/\r?\n/);
-
-      for (const line of lines) {
-
-        const trimmed =
-          line.trim();
-
-        if (!trimmed) {
-          continue;
-        }
-
-        if (
-          trimmed.startsWith("#")
-        ) {
-          continue;
-        }
-
-        const parts =
-          trimmed.split(/\s+/);
-
-        if (parts.length < 7) {
-          continue;
-        }
-
-        const id =
-          Number(parts[0]);
-
-        const x =
-          Number(parts[2]);
-
-        const y =
-          Number(parts[3]);
-
-        const z =
-          Number(parts[4]);
-
-        const radius =
-          Number(parts[5]);
-
-        const parent =
-          Number(parts[6]);
-
-        if (
-          Number.isFinite(id) &&
-          Number.isFinite(x) &&
-          Number.isFinite(y) &&
-          Number.isFinite(z) &&
-          Number.isFinite(parent)
-        ) {
-
-          nodes.push({
-            id,
-            x,
-            y,
-            z,
-            radius,
-            parent
-          });
-
-        }
-
-      }
-
-      return nodes;
-    }
-
-
-    /* =========================================
-       NORMALIZE COORDINATES
-    ========================================= */
-
-    function normalizeNodes(nodes) {
-
-      if (!nodes.length) {
-        return nodes;
-      }
-
-      let minX = Infinity;
-      let minY = Infinity;
-      let minZ = Infinity;
-
-      let maxX = -Infinity;
-      let maxY = -Infinity;
-      let maxZ = -Infinity;
-
-
-      for (const n of nodes) {
-
-        minX =
-          Math.min(minX, n.x);
-
-        minY =
-          Math.min(minY, n.y);
-
-        minZ =
-          Math.min(minZ, n.z);
-
-        maxX =
-          Math.max(maxX, n.x);
-
-        maxY =
-          Math.max(maxY, n.y);
-
-        maxZ =
-          Math.max(maxZ, n.z);
-
-      }
-
-
-      const centerX =
-        (minX + maxX) / 2;
-
-      const centerY =
-        (minY + maxY) / 2;
-
-      const centerZ =
-        (minZ + maxZ) / 2;
-
-
-      const sizeX =
-        maxX - minX;
-
-      const sizeY =
-        maxY - minY;
-
-      const sizeZ =
-        maxZ - minZ;
-
-
-      const largest =
-        Math.max(
-          sizeX,
-          sizeY,
-          sizeZ
-        );
-
-
-      if (
-        !Number.isFinite(largest) ||
-        largest <= 0
-      ) {
-        return nodes;
-      }
-
-
-      const scale =
-        480 / largest;
-
-
-      return nodes.map(n => ({
-
-        ...n,
-
-        x:
-          (n.x - centerX) *
-          scale,
-
-        y:
-          (n.y - centerY) *
-          scale,
-
-        z:
-          (n.z - centerZ) *
-          scale
-
-      }));
-
-    }
-
-
-    /* =========================================
-       CREATE NEURON
-    ========================================= */
-
-    function createNeuron(
-      nodes,
-      lineMaterial,
-      pointMaterial
-    ) {
-
-      const nodeMap =
-        new Map();
-
-
-      for (const node of nodes) {
-
-        nodeMap.set(
-          node.id,
-          node
-        );
-
-      }
-
-
-      /* -------------------------
-         BRANCHES
-      ------------------------- */
-
-      const linePositions = [];
-
-
-      for (const node of nodes) {
-
-        if (node.parent < 0) {
-          continue;
-        }
-
-        const parent =
-          nodeMap.get(
-            node.parent
-          );
-
-
-        if (!parent) {
-          continue;
-        }
-
-
-        linePositions.push(
-          node.x,
-          node.y,
-          node.z,
-
-          parent.x,
-          parent.y,
-          parent.z
-        );
-
-      }
-
-
-      const lineGeometry =
-        new THREE.BufferGeometry();
-
-
-      lineGeometry.setAttribute(
-        "position",
-
-        new THREE.Float32BufferAttribute(
-          linePositions,
-          3
-        )
-      );
-
-
-      lineGeometry.computeBoundingSphere();
-
-
-      const lines =
-        new THREE.LineSegments(
-          lineGeometry,
-          lineMaterial
-        );
-
-
-      /* -------------------------
-         NODE POINTS
-      ------------------------- */
-
-      const pointPositions = [];
-
-
-      for (const node of nodes) {
-
-        pointPositions.push(
-          node.x,
-          node.y,
-          node.z
-        );
-
-      }
-
-
-      const pointGeometry =
-        new THREE.BufferGeometry();
-
-
-      pointGeometry.setAttribute(
-        "position",
-
-        new THREE.Float32BufferAttribute(
-          pointPositions,
-          3
-        )
-      );
-
-
-      pointGeometry.computeBoundingSphere();
-
-
-      const points =
-        new THREE.Points(
-          pointGeometry,
-          pointMaterial
-        );
-
-
-      /* -------------------------
-         GROUP
-      ------------------------- */
-
-      const group =
-        new THREE.Group();
-
-
-      group.add(lines);
-      group.add(points);
-
-
-      group.userData.nodeCount =
-        nodes.length;
-
-
-      return group;
-    }
-
-
-    /* =========================================
-       LOAD NEURON
-    ========================================= */
-
-    async function loadNeuron(
-      id,
-      index
-    ) {
-
-      try {
-
-        const response =
-          await fetch(
-            "/api/neuron?id=" + id
-          );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "HTTP " +
-            response.status
-          );
-
-        }
-
-
-        const text =
-          await response.text();
-
-
-        const rawNodes =
-          parseSWC(text);
-
-
-        if (!rawNodes.length) {
-
-          throw new Error(
-            "No SWC nodes"
-          );
-
-        }
-
-
-        /*
-         * IMPORTANT:
-         * Normalize BEFORE sending
-         * coordinates to Three.js.
-         */
-
-        const nodes =
-          normalizeNodes(
-            rawNodes
-          );
-
-
-        const neuron =
-          createNeuron(
-            nodes,
-            lineMaterials[index],
-            pointMaterials[index]
-          );
-
-
-        brain.add(neuron);
-
-
-        console.log(
-          "Loaded neuron:",
-          id,
-          nodes.length,
-          "nodes"
-        );
-
-
-        return nodes.length;
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Neuron error:",
-          id,
-          error
-        );
-
-        return 0;
-
-      }
-
-    }
-
-
-    /* =========================================
-       LOAD BRAIN
-    ========================================= */
-
-    async function loadBrain() {
-
-      const status =
-        document.getElementById(
-          "status"
-        );
-
-
-      status.textContent =
-        "Loading real MaleCNS neurons...";
-
-
-      let loaded = 0;
-      let totalNodes = 0;
-
-
-      for (
-        let i = 0;
-        i < neuronIDs.length;
-        i++
-      ) {
-
-        const count =
-          await loadNeuron(
-            neuronIDs[i],
-            i
-          );
-
-
-        if (count > 0) {
-
-          loaded++;
-
-          totalNodes += count;
-
-        }
-
-      }
-
-
-      if (!loaded) {
-
-        status.textContent =
-          "Neuron data could not be loaded.";
-
-        return;
-
-      }
-
-
-      /*
-       * Everything is already
-       * normalized around 0,0,0.
-       */
-
-      brain.position.set(
-        0,
-        0,
-        0
-      );
-
-
-      camera.position.set(
-        0,
-        0,
-        700
-      );
-
-
-      camera.lookAt(
-        0,
-        0,
-        0
-      );
-
-
-      status.textContent =
-        loaded +
-        " real neurons loaded · " +
-        totalNodes.toLocaleString() +
-        " nodes";
-
-
-      animate();
-
-    }
-
-
-    /* =========================================
-       ROTATION
-    ========================================= */
-
-    let dragging = false;
-
-    let lastX = 0;
-    let lastY = 0;
-
-
-    renderer.domElement.addEventListener(
-      "pointerdown",
-      event => {
-
-        dragging = true;
-
-        lastX =
-          event.clientX;
-
-        lastY =
-          event.clientY;
-
-      }
-    );
-
-
-    window.addEventListener(
-      "pointerup",
-      () => {
-
-        dragging = false;
-
-      }
-    );
-
-
-    window.addEventListener(
-      "pointermove",
-      event => {
-
-        if (!dragging) {
-          return;
-        }
-
-
-        const dx =
-          event.clientX -
-          lastX;
-
-        const dy =
-          event.clientY -
-          lastY;
-
-
-        brain.rotation.y +=
-          dx * 0.008;
-
-        brain.rotation.x +=
-          dy * 0.008;
-
-
-        lastX =
-          event.clientX;
-
-        lastY =
-          event.clientY;
-
-      }
-    );
-
-
-    /* =========================================
-       WHEEL ZOOM
-    ========================================= */
-
-    renderer.domElement.addEventListener(
-      "wheel",
-      event => {
-
-        camera.position.z +=
-          event.deltaY * 0.5;
-
-
-        camera.position.z =
-          Math.max(
-            200,
-            Math.min(
-              1800,
-              camera.position.z
-            )
-          );
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    /* =========================================
-       PINCH ZOOM
-    ========================================= */
-
-    let pinchDistance = null;
-
-
-    renderer.domElement.addEventListener(
-      "touchmove",
-      event => {
-
-        if (
-          event.touches.length !== 2
-        ) {
-          return;
-        }
-
-
-        const a =
-          event.touches[0];
-
-        const b =
-          event.touches[1];
-
-
-        const dx =
-          a.clientX -
-          b.clientX;
-
-        const dy =
-          a.clientY -
-          b.clientY;
-
-
-        const distance =
-          Math.sqrt(
-            dx * dx +
-            dy * dy
-          );
-
-
-        if (
-          pinchDistance !== null
-        ) {
-
-          const change =
-            pinchDistance -
-            distance;
-
-
-          camera.position.z +=
-            change * 1.5;
-
-
-          camera.position.z =
-            Math.max(
-              200,
-              Math.min(
-                1800,
-                camera.position.z
-              )
-            );
-
-        }
-
-
-        pinchDistance =
-          distance;
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    renderer.domElement.addEventListener(
-      "touchend",
-      () => {
-
-        pinchDistance = null;
-
-      }
-    );
-
-
-    /* =========================================
-       RESIZE
-    ========================================= */
-
-    window.addEventListener(
-      "resize",
-      () => {
-
-        camera.aspect =
-          window.innerWidth /
-          window.innerHeight;
-
-
-        camera.updateProjectionMatrix();
-
-
-        renderer.setSize(
-          window.innerWidth,
-          window.innerHeight
-        );
-
-      }
-    );
-
-
-    /* =========================================
-       ANIMATION
-    ========================================= */
-
-    function animate() {
-
-      requestAnimationFrame(
-        animate
-      );
-
-
-      brain.rotation.z +=
-        0.0004;
-
-
-      renderer.render(
-        scene,
-        camera
-      );
-
-    }
-
-
-    /* =========================================
-       START
-    ========================================= */
-
-    loadBrain();
-
-  </script>
 
 </body>
 </html>
