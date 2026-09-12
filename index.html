@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -11,6 +13,7 @@
 <title>FLY NEURON · Male CNS</title>
 
 <style>
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -20,10 +23,13 @@ html,
 body {
   margin: 0;
   padding: 0;
+
   width: 100%;
   min-height: 100%;
+
   background: #05070b;
   color: #fff;
+
   font-family:
     Inter,
     -apple-system,
@@ -40,9 +46,15 @@ body.viewer-fullscreen {
   overflow: hidden;
 }
 
+
+/* =========================================================
+   PAGE
+========================================================= */
+
 .page {
   width: 100%;
   min-height: 100vh;
+
   background:
     radial-gradient(
       circle at 50% 0%,
@@ -51,6 +63,11 @@ body.viewer-fullscreen {
     ),
     #05070b;
 }
+
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header {
   width: 100%;
@@ -68,12 +85,14 @@ body.viewer-fullscreen {
   background:
     rgba(5,7,11,.82);
 
-  backdrop-filter: blur(14px);
+  backdrop-filter:
+    blur(14px);
 }
 
 .logo {
   font-size: 14px;
   font-weight: 800;
+
   letter-spacing: .16em;
 }
 
@@ -83,12 +102,22 @@ body.viewer-fullscreen {
 
 .header-right {
   font-size: 11px;
-  color: rgba(255,255,255,.45);
+
+  color:
+    rgba(255,255,255,.45);
+
   letter-spacing: .12em;
 }
 
+
+/* =========================================================
+   HERO
+========================================================= */
+
 .hero {
-  width: min(1120px, calc(100% - 32px));
+  width:
+    min(1120px, calc(100% - 32px));
+
   margin: 0 auto;
 
   padding:
@@ -99,8 +128,11 @@ body.viewer-fullscreen {
 .hero-eyebrow {
   font-size: 11px;
   font-weight: 700;
+
   letter-spacing: .16em;
+
   color: #6dff9b;
+
   margin-bottom: 18px;
 }
 
@@ -121,16 +153,24 @@ body.viewer-fullscreen {
   margin-top: 25px;
 
   font-size: 15px;
+
   line-height: 1.7;
 
   color:
     rgba(255,255,255,.53);
 }
 
+
+/* =========================================================
+   BRAIN WINDOW
+========================================================= */
+
 .brain-window {
+
   position: relative;
 
-  width: min(1120px, calc(100% - 32px));
+  width:
+    min(1120px, calc(100% - 32px));
 
   height: 680px;
 
@@ -155,7 +195,13 @@ body.viewer-fullscreen {
     0 30px 100px rgba(0,0,0,.5);
 }
 
-#brainCanvas {
+
+/* =========================================================
+   FULL MALE CNS VIEWER
+========================================================= */
+
+.neuroglancer-frame {
+
   position: absolute;
 
   inset: 0;
@@ -163,12 +209,44 @@ body.viewer-fullscreen {
   width: 100%;
   height: 100%;
 
-  display: block;
+  border: 0;
 
-  touch-action: none;
+  background: #030509;
+
+  z-index: 1;
 }
 
+
+/*
+ * Dark overlay helps the external viewer
+ * visually merge with our interface.
+ */
+
+.viewer-vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 48%,
+      rgba(3,5,9,.35) 100%
+    );
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
 .brain-label {
+
   position: absolute;
 
   top: 25px;
@@ -192,7 +270,13 @@ body.viewer-fullscreen {
   color: #fff;
 }
 
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .status {
+
   position: absolute;
 
   top: 25px;
@@ -218,6 +302,7 @@ body.viewer-fullscreen {
 }
 
 .status-dot {
+
   width: 7px;
   height: 7px;
 
@@ -229,7 +314,65 @@ body.viewer-fullscreen {
     0 0 12px rgba(109,255,155,.8);
 }
 
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.viewer-loading {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 15;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+
+  transition:
+    opacity .4s ease;
+}
+
+.viewer-loading.hidden {
+  opacity: 0;
+}
+
+.loading-box {
+
+  padding:
+    14px 18px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius: 12px;
+
+  background:
+    rgba(4,6,10,.78);
+
+  backdrop-filter:
+    blur(14px);
+
+  font-size: 10px;
+
+  letter-spacing: .12em;
+
+  color:
+    rgba(255,255,255,.55);
+}
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
 .brain-window.fullscreen {
+
   position: fixed;
 
   inset: 0;
@@ -246,7 +389,13 @@ body.viewer-fullscreen {
   border: 0;
 }
 
+
+/* =========================================================
+   TOOLS
+========================================================= */
+
 .fullscreen-tools {
+
   position: absolute;
 
   top: 82px;
@@ -278,6 +427,7 @@ body.viewer-fullscreen {
 }
 
 .fullscreen-tools button {
+
   width: 36px;
   height: 32px;
 
@@ -288,7 +438,8 @@ body.viewer-fullscreen {
   background:
     rgba(255,255,255,.05);
 
-  color: rgba(255,255,255,.8);
+  color:
+    rgba(255,255,255,.8);
 
   font-size: 13px;
 
@@ -296,11 +447,150 @@ body.viewer-fullscreen {
 }
 
 .fullscreen-tools button:hover {
+
   background:
     rgba(255,255,255,.1);
 }
 
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.legend {
+
+  position: absolute;
+
+  left: 28px;
+  bottom: 145px;
+
+  z-index: 20;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  pointer-events: none;
+}
+
+.legend-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 10px;
+
+  color:
+    rgba(255,255,255,.45);
+}
+
+.legend-dot {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+}
+
+.legend-dot.blue {
+  background: #398cff;
+}
+
+.legend-dot.yellow {
+  background: #ffd65a;
+}
+
+.legend-dot.green {
+  background: #6dff9b;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 28px;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 25;
+
+  width:
+    min(700px, calc(100% - 40px));
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  padding:
+    14px 18px;
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  border-radius: 14px;
+
+  background:
+    rgba(5,7,11,.72);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+.stat {
+
+  text-align: center;
+
+  border-right:
+    1px solid rgba(255,255,255,.06);
+}
+
+.stat:last-child {
+  border-right: 0;
+}
+
+.stat-value {
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  color: #fff;
+}
+
+.stat-label {
+
+  margin-top: 3px;
+
+  font-size: 8px;
+
+  letter-spacing: .1em;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,255,255,.35);
+}
+
+
+/* =========================================================
+   FULLSCREEN CLOSE
+========================================================= */
+
 .fullscreen-close {
+
   position: absolute;
 
   right: 26px;
@@ -325,120 +615,13 @@ body.viewer-fullscreen {
   cursor: pointer;
 }
 
-.legend {
-  position: absolute;
 
-  left: 28px;
-  bottom: 145px;
-
-  z-index: 20;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 7px;
-
-  pointer-events: none;
-}
-
-.legend-row {
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  font-size: 10px;
-
-  color:
-    rgba(255,255,255,.45);
-}
-
-.legend-dot {
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-}
-
-.legend-dot.blue {
-  background: #398cff;
-}
-
-.legend-dot.yellow {
-  background: #ffd65a;
-}
-
-.legend-dot.green {
-  background: #6dff9b;
-}
-
-.stats {
-  position: absolute;
-
-  left: 50%;
-  bottom: 28px;
-
-  transform:
-    translateX(-50%);
-
-  z-index: 25;
-
-  width: min(700px, calc(100% - 40px));
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  padding: 14px 18px;
-
-  border:
-    1px solid rgba(255,255,255,.07);
-
-  border-radius: 14px;
-
-  background:
-    rgba(5,7,11,.72);
-
-  backdrop-filter:
-    blur(12px);
-}
-
-.stat {
-  text-align: center;
-
-  border-right:
-    1px solid rgba(255,255,255,.06);
-}
-
-.stat:last-child {
-  border-right: 0;
-}
-
-.stat-value {
-  font-size: 14px;
-
-  font-weight: 800;
-
-  color: #fff;
-}
-
-.stat-label {
-  margin-top: 3px;
-
-  font-size: 8px;
-
-  letter-spacing: .1em;
-
-  text-transform: uppercase;
-
-  color:
-    rgba(255,255,255,.35);
-}
+/* =========================================================
+   FULLSCREEN BUTTON
+========================================================= */
 
 .fullscreen-button {
+
   position: absolute;
 
   right: 26px;
@@ -463,80 +646,15 @@ body.viewer-fullscreen {
   cursor: pointer;
 }
 
-.neuron-panel {
-  position: absolute;
 
-  top: 80px;
-  left: 28px;
-
-  z-index: 40;
-
-  width: 230px;
-
-  padding: 14px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius: 14px;
-
-  background:
-    rgba(4,6,10,.82);
-
-  backdrop-filter:
-    blur(16px);
-
-  opacity: 0;
-
-  transform:
-    translateY(-8px);
-
-  pointer-events: none;
-
-  transition:
-    opacity .2s ease,
-    transform .2s ease;
-}
-
-.neuron-panel.visible {
-  opacity: 1;
-
-  transform:
-    translateY(0);
-
-  pointer-events: auto;
-}
-
-.neuron-panel-title {
-  font-size: 9px;
-
-  letter-spacing: .12em;
-
-  color:
-    rgba(255,255,255,.4);
-
-  margin-bottom: 6px;
-}
-
-.neuron-panel-id {
-  font-size: 16px;
-
-  font-weight: 800;
-}
-
-.neuron-panel-info {
-  margin-top: 8px;
-
-  font-size: 10px;
-
-  line-height: 1.6;
-
-  color:
-    rgba(255,255,255,.45);
-}
+/* =========================================================
+   INFO
+========================================================= */
 
 .info-section {
-  width: min(1120px, calc(100% - 32px));
+
+  width:
+    min(1120px, calc(100% - 32px));
 
   margin: 0 auto;
 
@@ -546,6 +664,7 @@ body.viewer-fullscreen {
 }
 
 .info-grid {
+
   display: grid;
 
   grid-template-columns:
@@ -555,6 +674,7 @@ body.viewer-fullscreen {
 }
 
 .info-card {
+
   padding: 24px;
 
   border:
@@ -567,12 +687,15 @@ body.viewer-fullscreen {
 }
 
 .info-card h3 {
-  margin: 0 0 10px;
+
+  margin:
+    0 0 10px;
 
   font-size: 13px;
 }
 
 .info-card p {
+
   margin: 0;
 
   font-size: 12px;
@@ -583,11 +706,19 @@ body.viewer-fullscreen {
     rgba(255,255,255,.4);
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 700px) {
 
   .header {
+
     height: 62px;
-    padding: 0 18px;
+
+    padding:
+      0 18px;
   }
 
   .header-right {
@@ -595,6 +726,7 @@ body.viewer-fullscreen {
   }
 
   .hero {
+
     width:
       calc(100% - 28px);
 
@@ -604,6 +736,7 @@ body.viewer-fullscreen {
   }
 
   .brain-window {
+
     width:
       calc(100% - 20px);
 
@@ -613,25 +746,30 @@ body.viewer-fullscreen {
   }
 
   .brain-label {
+
     top: 20px;
     left: 18px;
   }
 
   .status {
+
     top: 20px;
     right: 18px;
   }
 
   .fullscreen-tools {
+
     top: 72px;
   }
 
   .legend {
+
     left: 18px;
     bottom: 110px;
   }
 
   .stats {
+
     bottom: 12px;
 
     width:
@@ -650,37 +788,40 @@ body.viewer-fullscreen {
   }
 
   .fullscreen-button {
+
     right: 16px;
     bottom: 12px;
   }
 
   .fullscreen-close {
+
     right: 16px;
     bottom: 108px;
   }
 
-  .neuron-panel {
-    left: 18px;
-    top: 70px;
-
-    width: 205px;
-  }
-
   .info-section {
+
     width:
       calc(100% - 28px);
   }
 
   .info-grid {
-    grid-template-columns: 1fr;
+
+    grid-template-columns:
+      1fr;
   }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="page">
+
 
   <header class="header">
 
@@ -719,11 +860,51 @@ body.viewer-fullscreen {
     class="brain-window"
   >
 
-    <canvas id="brainCanvas"></canvas>
 
+    <!-- =====================================================
+         FULL MALE CNS
+    ====================================================== -->
+
+    <iframe
+      id="neuroglancerFrame"
+      class="neuroglancer-frame"
+      title="MaleCNS v1.0 Neuroglancer"
+      allow="fullscreen"
+      loading="eager"
+    ></iframe>
+
+
+    <div
+      id="viewerVignette"
+      class="viewer-vignette"
+    ></div>
+
+
+    <!-- =====================================================
+         LOADING
+    ====================================================== -->
+
+    <div
+      id="viewerLoading"
+      class="viewer-loading"
+    >
+
+      <div class="loading-box">
+        LOADING MALE CNS · V1.0
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         UI
+    ====================================================== -->
 
     <div class="brain-label">
-      MALE CNS · <strong>LIVE ACTIVITY</strong>
+
+      MALE CNS ·
+      <strong>LIVE ACTIVITY</strong>
+
     </div>
 
 
@@ -732,33 +913,6 @@ body.viewer-fullscreen {
       <div class="status-dot"></div>
 
       LIVE
-
-    </div>
-
-
-    <div
-      id="neuronPanel"
-      class="neuron-panel"
-    >
-
-      <div class="neuron-panel-title">
-        SELECTED NEURON
-      </div>
-
-      <div
-        id="neuronPanelId"
-        class="neuron-panel-id"
-      >
-        —
-      </div>
-
-      <div
-        id="neuronPanelInfo"
-        class="neuron-panel-info"
-      >
-        Click a neuron to inspect its
-        source skeleton.
-      </div>
 
     </div>
 
@@ -790,6 +944,7 @@ body.viewer-fullscreen {
 
       </div>
 
+
       <div class="legend-row">
 
         <div class="legend-dot yellow"></div>
@@ -797,6 +952,7 @@ body.viewer-fullscreen {
         Selected neuron
 
       </div>
+
 
       <div class="legend-row">
 
@@ -810,6 +966,7 @@ body.viewer-fullscreen {
 
 
     <div class="stats">
+
 
       <div class="stat">
 
@@ -833,11 +990,11 @@ body.viewer-fullscreen {
           id="segmentCount"
           class="stat-value"
         >
-          0
+          FULL
         </div>
 
         <div class="stat-label">
-          segments
+          atlas
         </div>
 
       </div>
@@ -874,6 +1031,7 @@ body.viewer-fullscreen {
 
       </div>
 
+
     </div>
 
 
@@ -893,12 +1051,14 @@ body.viewer-fullscreen {
       ✕
     </button>
 
+
   </div>
 
 
   <section class="info-section">
 
     <div class="info-grid">
+
 
       <div class="info-card">
 
@@ -907,8 +1067,8 @@ body.viewer-fullscreen {
         </h3>
 
         <p>
-          Neuron geometry is loaded directly from
-          the MaleCNS precomputed skeleton dataset.
+          MaleCNS v1.0 skeleton data is served
+          in Neuroglancer precomputed format.
         </p>
 
       </div>
@@ -921,8 +1081,9 @@ body.viewer-fullscreen {
         </h3>
 
         <p>
-          The target atlas covers the adult male
-          fly brain and ventral nerve cord.
+          The visualization covers the male
+          fly central brain, optic lobes and
+          ventral nerve cord.
         </p>
 
       </div>
@@ -931,1326 +1092,124 @@ body.viewer-fullscreen {
       <div class="info-card">
 
         <h3>
-          Interactive
+          GPU visualization
         </h3>
 
         <p>
-          Rotate, zoom and select neurons.
-          Detailed skeleton data loads progressively.
+          Large-scale morphology is rendered
+          through the WebGL-based Neuroglancer
+          viewer rather than loading every neuron
+          into JavaScript memory.
         </p>
 
       </div>
+
 
     </div>
 
   </section>
 
+
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 
 <script>
 
 /* =========================================================
-   CONFIG
+   ELEMENTS
 ========================================================= */
-
-const PRECOMPUTED_BASE =
-  "/api/neuron?id=";
-
-let seedNeuronIds = [];
-
-
-/* =========================================================
-   THREE.JS
-========================================================= */
-
-const canvas =
-  document.getElementById(
-    "brainCanvas"
-  );
 
 const brainWindow =
   document.getElementById(
     "brainWindow"
   );
 
-
-const renderer =
-  new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-    powerPreference:
-      "high-performance"
-  });
-
-
-renderer.setPixelRatio(
-  Math.min(
-    window.devicePixelRatio,
-    2
-  )
-);
-
-
-renderer.setClearColor(
-  0x030509,
-  1
-);
-
-
-const scene =
-  new THREE.Scene();
-
-
-const camera =
-  new THREE.PerspectiveCamera(
-    42,
-    1,
-    0.1,
-    50000
+const neuroglancerFrame =
+  document.getElementById(
+    "neuroglancerFrame"
   );
 
-
-const brainGroup =
-  new THREE.Group();
-
-
-scene.add(
-  brainGroup
-);
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let overviewPoints = null;
-
-let selectedNeuron = null;
-
-let selectedPoints = null;
-
-let loadedNeuronCount = 0;
-
-let loadedSegmentCount = 0;
-
-let simSeconds = 0;
-
-let rotationX = -0.12;
-
-let rotationY = 0.35;
-
-let zoom = 1;
-
-let dragging = false;
-
-let pointerX = 0;
-
-let pointerY = 0;
-
-
-/* =========================================================
-   COLORS
-========================================================= */
-
-const COLOR_OVERVIEW =
-  new THREE.Color(
-    0x398cff
+const viewerLoading =
+  document.getElementById(
+    "viewerLoading"
   );
-
-const COLOR_SELECTED =
-  new THREE.Color(
-    0xffd65a
-  );
-
-
-/* =========================================================
-   RESIZE
-========================================================= */
-
-function resize() {
-
-  const rect =
-    brainWindow.getBoundingClientRect();
-
-  const width =
-    Math.max(
-      1,
-      rect.width
-    );
-
-  const height =
-    Math.max(
-      1,
-      rect.height
-    );
-
-
-  renderer.setSize(
-    width,
-    height,
-    false
-  );
-
-
-  camera.aspect =
-    width / height;
-
-
-  camera.updateProjectionMatrix();
-}
-
-
-window.addEventListener(
-  "resize",
-  resize
-);
-
-
-/* =========================================================
-   PRECOMPUTED SKELETON PARSER
-========================================================= */
-
-function parsePrecomputedSkeleton(
-  arrayBuffer
-) {
-
-  const view =
-    new DataView(
-      arrayBuffer
-    );
-
-  let offset = 0;
-
-
-  const vertexCount =
-    view.getUint32(
-      offset,
-      true
-    );
-
-  offset += 4;
-
-
-  const edgeCount =
-    view.getUint32(
-      offset,
-      true
-    );
-
-  offset += 4;
-
-
-  const positions =
-    new Float32Array(
-      vertexCount * 3
-    );
-
-
-  for (
-    let i = 0;
-    i < positions.length;
-    i++
-  ) {
-
-    positions[i] =
-      view.getFloat32(
-        offset,
-        true
-      );
-
-    offset += 4;
-
-  }
-
-
-  const edges =
-    new Uint32Array(
-      edgeCount * 2
-    );
-
-
-  for (
-    let i = 0;
-    i < edges.length;
-    i++
-  ) {
-
-    edges[i] =
-      view.getUint32(
-        offset,
-        true
-      );
-
-    offset += 4;
-
-  }
-
-
-  return {
-    vertexCount,
-    edgeCount,
-    positions,
-    edges
-  };
-
-}
-
-
-/* =========================================================
-   NORMALIZATION
-========================================================= */
-
-function normalizeSkeletons(
-  skeletons
-) {
-
-  let minX = Infinity;
-  let minY = Infinity;
-  let minZ = Infinity;
-
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-  let maxZ = -Infinity;
-
-
-  for (
-    const skeleton of skeletons
-  ) {
-
-    const p =
-      skeleton.positions;
-
-
-    for (
-      let i = 0;
-      i < p.length;
-      i += 3
-    ) {
-
-      const x = p[i];
-
-      const y =
-        p[i + 1];
-
-      const z =
-        p[i + 2];
-
-
-      minX =
-        Math.min(
-          minX,
-          x
-        );
-
-      minY =
-        Math.min(
-          minY,
-          y
-        );
-
-      minZ =
-        Math.min(
-          minZ,
-          z
-        );
-
-
-      maxX =
-        Math.max(
-          maxX,
-          x
-        );
-
-      maxY =
-        Math.max(
-          maxY,
-          y
-        );
-
-      maxZ =
-        Math.max(
-          maxZ,
-          z
-        );
-
-    }
-
-  }
-
-
-  const centerX =
-    (minX + maxX) / 2;
-
-  const centerY =
-    (minY + maxY) / 2;
-
-  const centerZ =
-    (minZ + maxZ) / 2;
-
-
-  const sizeX =
-    maxX - minX;
-
-  const sizeY =
-    maxY - minY;
-
-  const sizeZ =
-    maxZ - minZ;
-
-
-  const largest =
-    Math.max(
-      sizeX,
-      sizeY,
-      sizeZ
-    );
-
-
-  const scale =
-    largest > 0
-      ? 520 / largest
-      : 1;
-
-
-  return {
-    centerX,
-    centerY,
-    centerZ,
-    scale
-  };
-
-}
-
-
-/* =========================================================
-   OVERVIEW
-========================================================= */
-
-function buildOverview(
-  skeletons
-) {
-
-  const normalized =
-    normalizeSkeletons(
-      skeletons
-    );
-
-
-  const totalVertices =
-    skeletons.reduce(
-      (
-        sum,
-        skeleton
-      ) =>
-        sum +
-        skeleton.vertexCount,
-      0
-    );
-
-
-  const positions =
-    new Float32Array(
-      totalVertices * 3
-    );
-
-
-  const colors =
-    new Float32Array(
-      totalVertices * 3
-    );
-
-
-  let outputIndex = 0;
-
-
-  for (
-    const skeleton of skeletons
-  ) {
-
-    const p =
-      skeleton.positions;
-
-
-    for (
-      let i = 0;
-      i < p.length;
-      i += 3
-    ) {
-
-      positions[
-        outputIndex
-      ] =
-        (
-          p[i] -
-          normalized.centerX
-        ) *
-        normalized.scale;
-
-
-      positions[
-        outputIndex + 1
-      ] =
-        (
-          p[i + 1] -
-          normalized.centerY
-        ) *
-        normalized.scale;
-
-
-      positions[
-        outputIndex + 2
-      ] =
-        (
-          p[i + 2] -
-          normalized.centerZ
-        ) *
-        normalized.scale;
-
-
-      colors[
-        outputIndex
-      ] =
-        COLOR_OVERVIEW.r;
-
-
-      colors[
-        outputIndex + 1
-      ] =
-        COLOR_OVERVIEW.g;
-
-
-      colors[
-        outputIndex + 2
-      ] =
-        COLOR_OVERVIEW.b;
-
-
-      outputIndex += 3;
-
-    }
-
-  }
-
-
-  const geometry =
-    new THREE.BufferGeometry();
-
-
-  geometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(
-      positions,
-      3
-    )
-  );
-
-
-  geometry.setAttribute(
-    "color",
-    new THREE.BufferAttribute(
-      colors,
-      3
-    )
-  );
-
-
-  const material =
-    new THREE.PointsMaterial({
-
-      size: 1.25,
-
-      vertexColors: true,
-
-      transparent: true,
-
-      opacity: .75,
-
-      depthWrite: false,
-
-      blending:
-        THREE.AdditiveBlending
-
-    });
-
-
-  const points =
-    new THREE.Points(
-      geometry,
-      material
-    );
-
-
-  points.frustumCulled =
-    false;
-
-
-  if (overviewPoints) {
-
-    brainGroup.remove(
-      overviewPoints
-    );
-
-    overviewPoints
-      .geometry
-      .dispose();
-
-    overviewPoints
-      .material
-      .dispose();
-
-  }
-
-
-  overviewPoints =
-    points;
-
-
-  brainGroup.add(
-    overviewPoints
-  );
-
-
-  loadedNeuronCount =
-    skeletons.length;
-
-
-  loadedSegmentCount =
-    totalVertices;
-
-
-  updateStats();
-
-}
-
-
-/* =========================================================
-   ATLAS CATALOG
-========================================================= */
-
-async function loadAtlasCatalog() {
-
-  try {
-
-    const response =
-      await fetch(
-        "/api/atlas?mode=overview"
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "Atlas request failed"
-      );
-
-    }
-
-
-    const atlas =
-      await response.json();
-
-
-    seedNeuronIds =
-      atlas.neurons.map(
-        neuron =>
-          neuron.id
-      );
-
-
-    /*
-     * The official dataset contains
-     * approximately 166,700 neurons.
-     *
-     * Keep the full catalog count
-     * visible while only loading the
-     * requested LOD geometry.
-     */
-
-    document
-      .getElementById(
-        "neuronCount"
-      )
-      .textContent =
-      Number(
-        atlas.totalNeurons ||
-        166700
-      ).toLocaleString();
-
-
-    return atlas;
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    seedNeuronIds = [
-      12781,
-      556329
-    ];
-
-
-    document
-      .getElementById(
-        "neuronCount"
-      )
-      .textContent =
-      "166,700";
-
-  }
-
-}
-
-
-/* =========================================================
-   LOAD PRECOMPUTED NEURON
-========================================================= */
-
-async function loadPrecomputedNeuron(
-  id
-) {
-
-  const response =
-    await fetch(
-      PRECOMPUTED_BASE +
-      encodeURIComponent(
-        id
-      )
-    );
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      "Failed to load neuron " +
-      id
-    );
-
-  }
-
-
-  const buffer =
-    await response.arrayBuffer();
-
-
-  return parsePrecomputedSkeleton(
-    buffer
-  );
-
-}
-
-
-/* =========================================================
-   INITIAL LOD
-========================================================= */
-
-async function loadInitialData() {
-
-  const skeletons = [];
-
-
-  /*
-   * Only a small real subset is loaded
-   * at first.
-   *
-   * The complete catalog is already known
-   * from /api/atlas.
-   */
-
-  const initialIds =
-    seedNeuronIds.slice(
-      0,
-      2
-    );
-
-
-  for (
-    const id of initialIds
-  ) {
-
-    try {
-
-      const skeleton =
-        await loadPrecomputedNeuron(
-          id
-        );
-
-
-      skeleton.id =
-        id;
-
-
-      skeletons.push(
-        skeleton
-      );
-
-    } catch (error) {
-
-      console.error(
-        "Neuron load failed:",
-        id,
-        error
-      );
-
-    }
-
-  }
-
-
-  if (
-    skeletons.length
-  ) {
-
-    buildOverview(
-      skeletons
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SELECT NEURON
-========================================================= */
-
-async function selectNeuron(
-  id
-) {
-
-  try {
-
-    const skeleton =
-      await loadPrecomputedNeuron(
-        id
-      );
-
-
-    selectedNeuron =
-      skeleton;
-
-
-    selectedNeuron.id =
-      id;
-
-
-    renderSelectedNeuron();
-
-
-    document
-      .getElementById(
-        "neuronPanelId"
-      )
-      .textContent =
-      "#" + id;
-
-
-    document
-      .getElementById(
-        "neuronPanelInfo"
-      )
-      .textContent =
-      skeleton.vertexCount
-        .toLocaleString() +
-      " vertices · " +
-      skeleton.edgeCount
-        .toLocaleString() +
-      " edges";
-
-
-    document
-      .getElementById(
-        "neuronPanel"
-      )
-      .classList
-      .add("visible");
-
-
-    document
-      .getElementById(
-        "selectedCount"
-      )
-      .textContent =
-      "1";
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SELECTED NEURON RENDER
-========================================================= */
-
-function renderSelectedNeuron() {
-
-  if (
-    !selectedNeuron
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    selectedPoints
-  ) {
-
-    brainGroup.remove(
-      selectedPoints
-    );
-
-
-    selectedPoints
-      .geometry
-      .dispose();
-
-
-    selectedPoints
-      .material
-      .dispose();
-
-  }
-
-
-  const p =
-    selectedNeuron.positions;
-
-
-  const geometry =
-    new THREE.BufferGeometry();
-
-
-  const positions =
-    new Float32Array(
-      p.length
-    );
-
-
-  let minX = Infinity;
-  let minY = Infinity;
-  let minZ = Infinity;
-
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-  let maxZ = -Infinity;
-
-
-  for (
-    let i = 0;
-    i < p.length;
-    i += 3
-  ) {
-
-    const x =
-      p[i];
-
-    const y =
-      p[i + 1];
-
-    const z =
-      p[i + 2];
-
-
-    minX =
-      Math.min(
-        minX,
-        x
-      );
-
-    minY =
-      Math.min(
-        minY,
-        y
-      );
-
-    minZ =
-      Math.min(
-        minZ,
-        z
-      );
-
-
-    maxX =
-      Math.max(
-        maxX,
-        x
-      );
-
-    maxY =
-      Math.max(
-        maxY,
-        y
-      );
-
-    maxZ =
-      Math.max(
-        maxZ,
-        z
-      );
-
-  }
-
-
-  const cx =
-    (minX + maxX) / 2;
-
-  const cy =
-    (minY + maxY) / 2;
-
-  const cz =
-    (minZ + maxZ) / 2;
-
-
-  const size =
-    Math.max(
-      maxX - minX,
-      maxY - minY,
-      maxZ - minZ
-    );
-
-
-  const scale =
-    size > 0
-      ? 520 / size
-      : 1;
-
-
-  for (
-    let i = 0;
-    i < p.length;
-    i += 3
-  ) {
-
-    positions[i] =
-      (
-        p[i] -
-        cx
-      ) *
-      scale;
-
-
-    positions[i + 1] =
-      (
-        p[i + 1] -
-        cy
-      ) *
-      scale;
-
-
-    positions[i + 2] =
-      (
-        p[i + 2] -
-        cz
-      ) *
-      scale;
-
-  }
-
-
-  geometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(
-      positions,
-      3
-    )
-  );
-
-
-  const material =
-    new THREE.PointsMaterial({
-
-      size: 2.1,
-
-      color:
-        COLOR_SELECTED,
-
-      transparent: true,
-
-      opacity: .95,
-
-      depthWrite: false,
-
-      blending:
-        THREE.AdditiveBlending
-
-    });
-
-
-  selectedPoints =
-    new THREE.Points(
-      geometry,
-      material
-    );
-
-
-  selectedPoints.frustumCulled =
-    false;
-
-
-  brainGroup.add(
-    selectedPoints
-  );
-
-}
-
-
-/* =========================================================
-   CAMERA
-========================================================= */
-
-function applyCamera() {
-
-  camera.position.set(
-    0,
-    0,
-    900 / zoom
-  );
-
-
-  camera.lookAt(
-    0,
-    0,
-    0
-  );
-
-}
-
-
-/* =========================================================
-   POINTER ROTATION
-========================================================= */
-
-canvas.addEventListener(
-  "pointerdown",
-  event => {
-
-    dragging = true;
-
-    pointerX =
-      event.clientX;
-
-    pointerY =
-      event.clientY;
-
-
-    canvas.setPointerCapture(
-      event.pointerId
-    );
-
-  }
-);
-
-
-canvas.addEventListener(
-  "pointermove",
-  event => {
-
-    if (!dragging) {
-
-      return;
-
-    }
-
-
-    const dx =
-      event.clientX -
-      pointerX;
-
-    const dy =
-      event.clientY -
-      pointerY;
-
-
-    rotationY +=
-      dx * .006;
-
-
-    rotationX +=
-      dy * .006;
-
-
-    rotationX =
-      Math.max(
-        -1.5,
-        Math.min(
-          1.5,
-          rotationX
-        )
-      );
-
-
-    pointerX =
-      event.clientX;
-
-    pointerY =
-      event.clientY;
-
-  }
-);
-
-
-canvas.addEventListener(
-  "pointerup",
-  () => {
-
-    dragging = false;
-
-  }
-);
-
-
-canvas.addEventListener(
-  "pointercancel",
-  () => {
-
-    dragging = false;
-
-  }
-);
-
-
-/* =========================================================
-   WHEEL ZOOM
-========================================================= */
-
-canvas.addEventListener(
-  "wheel",
-  event => {
-
-    event.preventDefault();
-
-
-    zoom *=
-      event.deltaY > 0
-        ? .92
-        : 1.08;
-
-
-    zoom =
-      Math.max(
-        .35,
-        Math.min(
-          4,
-          zoom
-        )
-      );
-
-  },
-  {
-    passive: false
-  }
-);
-
-
-/* =========================================================
-   DOUBLE CLICK
-========================================================= */
-
-canvas.addEventListener(
-  "dblclick",
-  event => {
-
-    event.preventDefault();
-
-  }
-);
-
-
-/* =========================================================
-   ZOOM BUTTONS
-========================================================= */
-
-document
-  .getElementById(
-    "zoomIn"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      zoom *= 1.18;
-
-      zoom =
-        Math.min(
-          4,
-          zoom
-        );
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "zoomOut"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      zoom *= .85;
-
-      zoom =
-        Math.max(
-          .35,
-          zoom
-        );
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "resetView"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      rotationX =
-        -.12;
-
-      rotationY =
-        .35;
-
-      zoom =
-        1;
-
-    }
-  );
-
-
-/* =========================================================
-   FULLSCREEN
-========================================================= */
 
 const fullscreenButton =
   document.getElementById(
     "fullscreenButton"
   );
 
-
 const fullscreenClose =
   document.getElementById(
     "fullscreenClose"
   );
 
+const zoomIn =
+  document.getElementById(
+    "zoomIn"
+  );
+
+const zoomOut =
+  document.getElementById(
+    "zoomOut"
+  );
+
+const resetView =
+  document.getElementById(
+    "resetView"
+  );
+
+
+/* =========================================================
+   OFFICIAL MALE CNS VIEWER
+========================================================= */
+
+/*
+ * The official MaleCNS ecosystem uses
+ * Neuroglancer for visualization.
+ *
+ * The external state is hosted alongside
+ * the MaleCNS v1.0 dataset.
+ */
+
+const MALE_CNS_VIEWER =
+  "https://neuroglancer-demo.appspot.com/#!gs://flyem-male-cns/v1.0/male-cns-v1.0.json";
+
+
+/*
+ * Load official viewer.
+ */
+
+neuroglancerFrame.src =
+  MALE_CNS_VIEWER;
+
+
+/* =========================================================
+   LOADING STATE
+========================================================= */
+
+neuroglancerFrame.addEventListener(
+  "load",
+  () => {
+
+    setTimeout(
+      () => {
+
+        viewerLoading
+          .classList
+          .add("hidden");
+
+      },
+      1200
+    );
+
+  }
+);
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
 
 function enterFullscreen() {
 
@@ -2270,9 +1229,6 @@ function enterFullscreen() {
 
   fullscreenClose.style.display =
     "block";
-
-
-  resize();
 
 }
 
@@ -2296,9 +1252,6 @@ function exitFullscreen() {
   fullscreenClose.style.display =
     "none";
 
-
-  resize();
-
 }
 
 
@@ -2315,77 +1268,65 @@ fullscreenClose.addEventListener(
 
 
 /* =========================================================
-   TOUCH DOUBLE TAP PROTECTION
+   VIEWER CONTROLS
 ========================================================= */
 
-let lastTouchTime = 0;
+/*
+ * Neuroglancer is cross-origin, so the browser
+ * security model prevents us from manipulating
+ * its internal camera directly from this page.
+ *
+ * These buttons therefore keep the outer UI
+ * functional without pretending we can reach
+ * inside the external viewer.
+ *
+ * Native Neuroglancer controls remain available
+ * inside the viewer.
+ */
+
+zoomIn.addEventListener(
+  "click",
+  () => {
+
+    neuroglancerFrame
+      .focus();
+
+  }
+);
 
 
-canvas.addEventListener(
-  "touchend",
-  event => {
+zoomOut.addEventListener(
+  "click",
+  () => {
 
-    const now =
-      Date.now();
+    neuroglancerFrame
+      .focus();
 
-
-    if (
-      now - lastTouchTime <
-      320
-    ) {
-
-      event.preventDefault();
-
-    }
+  }
+);
 
 
-    lastTouchTime =
-      now;
+resetView.addEventListener(
+  "click",
+  () => {
 
-  },
-  {
-    passive: false
+    neuroglancerFrame
+      .focus();
+
   }
 );
 
 
 /* =========================================================
-   STATS
+   SIMULATION CLOCK
 ========================================================= */
 
-function updateStats() {
-
-  /*
-   * neuronCount is the full MaleCNS
-   * catalog count.
-   *
-   * segmentCount represents geometry
-   * currently resident in the GPU.
-   */
-
-  document
-    .getElementById(
-      "segmentCount"
-    )
-    .textContent =
-    loadedSegmentCount
-      .toLocaleString();
-
-}
+let simulationTime = 0;
 
 
-/* =========================================================
-   ANIMATION
-========================================================= */
+function updateSimulationClock() {
 
-function animate() {
-
-  requestAnimationFrame(
-    animate
-  );
-
-
-  simSeconds +=
+  simulationTime +=
     0.016;
 
 
@@ -2394,58 +1335,58 @@ function animate() {
       "simTime"
     )
     .textContent =
-    simSeconds.toFixed(
+    simulationTime.toFixed(
       2
-    ) +
-    "s";
+    ) + "s";
 
 
-  brainGroup.rotation.x =
-    rotationX;
-
-
-  brainGroup.rotation.y =
-    rotationY;
-
-
-  applyCamera();
-
-
-  renderer.render(
-    scene,
-    camera
+  requestAnimationFrame(
+    updateSimulationClock
   );
 
 }
 
 
+updateSimulationClock();
+
+
 /* =========================================================
-   START
+   TOUCH DOUBLE TAP PROTECTION
 ========================================================= */
 
-resize();
+let lastTouch =
+  0;
 
 
-loadAtlasCatalog()
-  .then(() => {
+document.addEventListener(
+  "touchend",
+  event => {
 
-    return loadInitialData();
+    const now =
+      Date.now();
 
-  })
-  .catch(
-    error => {
 
-      console.error(
-        error
-      );
+    if (
+      now - lastTouch <
+      320
+    ) {
+
+      event.preventDefault();
 
     }
-  );
 
 
-animate();
+    lastTouch =
+      now;
+
+  },
+  {
+    passive: false
+  }
+);
 
 </script>
 
 </body>
+
 </html>
