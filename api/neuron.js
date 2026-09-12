@@ -2,7 +2,6 @@ module.exports = async (req, res) => {
   try {
     const id = String(req.query.id || "");
 
-    // Sadece sayısal neuron ID kabul et
     if (!/^\d+$/.test(id)) {
       return res.status(400).send("Invalid neuron ID");
     }
@@ -26,7 +25,6 @@ module.exports = async (req, res) => {
       "text/plain; charset=utf-8"
     );
 
-    // Tarayıcının cache kullanmasına izin ver
     res.setHeader(
       "Cache-Control",
       "public, max-age=3600"
