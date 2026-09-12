@@ -289,6 +289,12 @@ h1{
   display:block;
 
   touch-action:none;
+
+  cursor:grab;
+}
+
+#brainCanvas:active{
+  cursor:grabbing;
 }
 
 
@@ -322,6 +328,8 @@ h1{
   letter-spacing:1.7px;
 
   color:#a5a5b0;
+
+  pointer-events:none;
 }
 
 .brain-label strong{
@@ -331,7 +339,7 @@ h1{
 
 
 /* =========================
-   LIVE
+   LIVE STATUS
 ========================= */
 
 .status{
@@ -354,6 +362,8 @@ h1{
   font-size:11px;
 
   letter-spacing:1.5px;
+
+  pointer-events:none;
 }
 
 .status-dot{
@@ -397,7 +407,7 @@ h1{
   right:20px;
   bottom:124px;
 
-  z-index:20;
+  z-index:30;
 
   width:44px;
   height:44px;
@@ -460,6 +470,8 @@ h1{
   flex-direction:column;
 
   gap:10px;
+
+  pointer-events:none;
 }
 
 .legend-row{
@@ -543,7 +555,7 @@ h1{
 
   backdrop-filter:blur(14px);
 
-  z-index:10;
+  z-index:20;
 }
 
 .stat{
@@ -605,18 +617,57 @@ h1{
   box-shadow:none;
 }
 
+
+/* FULLSCREEN LABEL */
+
+.brain-window.fullscreen
+.brain-label{
+
+  top:25px;
+  left:25px;
+}
+
+
+/* FULLSCREEN LIVE */
+
+.brain-window.fullscreen
+.status{
+
+  top:28px;
+  right:28px;
+}
+
+
+/* FULLSCREEN LEGEND */
+
+.brain-window.fullscreen
+.legend{
+
+  left:30px;
+
+  bottom:145px;
+}
+
+
+/* FULLSCREEN CLOSE */
+
 .brain-window.fullscreen
 .fullscreen-button{
 
   right:28px;
-  bottom:28px;
+
+  bottom:132px;
 }
+
+
+/* FULLSCREEN STATS */
 
 .brain-window.fullscreen
 .stats{
 
   left:28px;
   right:28px;
+
   bottom:28px;
 
   width:min(
@@ -634,40 +685,21 @@ h1{
   overflow:hidden;
 }
 
-.brain-window.fullscreen
-.legend{
-
-  left:30px;
-  bottom:145px;
-}
-
-.brain-window.fullscreen
-.brain-label{
-
-  top:25px;
-  left:25px;
-}
-
-.brain-window.fullscreen
-.status{
-
-  top:28px;
-  right:28px;
-}
-
 
 /* =========================
-   FULLSCREEN TOOLBAR
+   FULLSCREEN TOOLS
 ========================= */
 
 .fullscreen-tools{
 
   position:absolute;
 
-  top:24px;
+  top:82px;
+
   left:50%;
 
-  transform:translateX(-50%);
+  transform:
+    translateX(-50%);
 
   z-index:30;
 
@@ -699,6 +731,7 @@ h1{
 .tool-button{
 
   min-width:38px;
+
   height:36px;
 
   padding:0 10px;
@@ -840,25 +873,31 @@ footer{
   }
 
   .brain-window{
+
     height:560px;
+
     border-radius:22px;
   }
 
   .legend{
 
     left:16px;
+
     bottom:112px;
   }
 
   .stats{
+
     height:94px;
   }
 
   .stat{
+
     padding:16px 10px;
   }
 
   .stat-value{
+
     font-size:18px;
   }
 
@@ -870,17 +909,72 @@ footer{
   }
 
   .info-grid{
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+      1fr 1fr;
   }
 
+
+  /* MOBILE FULLSCREEN */
+
+  .brain-window.fullscreen
+  .brain-label{
+
+    top:20px;
+    left:16px;
+  }
+
+
+  .brain-window.fullscreen
+  .status{
+
+    top:24px;
+    right:16px;
+  }
+
+
+  .brain-window.fullscreen
+  .fullscreen-tools{
+
+    top:74px;
+  }
+
+
+  .brain-window.fullscreen
+  .legend{
+
+    left:16px;
+
+    bottom:110px;
+  }
+
+
+  .brain-window.fullscreen
   .fullscreen-button{
 
-    right:14px;
+    right:16px;
 
-    bottom:108px;
+    bottom:112px;
 
-    width:40px;
-    height:40px;
+    width:42px;
+    height:42px;
+  }
+
+
+  .brain-window.fullscreen
+  .stats{
+
+    left:12px;
+    right:12px;
+
+    bottom:12px;
+
+    width:
+      calc(100% - 24px);
+
+    height:82px;
+
+    border-radius:16px;
   }
 
 }
@@ -898,46 +992,52 @@ footer{
   }
 
   .brain-window{
+
     height:520px;
   }
 
   .info-grid{
+
     grid-template-columns:1fr;
   }
 
   .legend-row{
+
     font-size:11px;
   }
+
+
+  .brain-window.fullscreen
+  .fullscreen-tools{
+
+    top:72px;
+  }
+
+
+  .brain-window.fullscreen
+  .fullscreen-button{
+
+    bottom:108px;
+  }
+
 
   .brain-window.fullscreen
   .stats{
 
-    left:12px;
-    right:12px;
-    bottom:12px;
-
-    width:
-      calc(100% - 24px);
-
-    height:82px;
-  }
-
-  .brain-window.fullscreen
-  .legend{
-
-    left:16px;
-    bottom:110px;
+    height:80px;
   }
 
 }
 
 
 /* =========================
-   HIDE PAGE WHEN FULLSCREEN
+   FULLSCREEN BODY
 ========================= */
 
 body.viewer-fullscreen{
+
   overflow:hidden;
+
 }
 
 </style>
@@ -946,6 +1046,7 @@ body.viewer-fullscreen{
 
 
 <body>
+
 
 <div class="container">
 
@@ -990,7 +1091,9 @@ body.viewer-fullscreen{
 <section class="hero">
 
   <div class="kicker">
+
     MALE CNS · NEURAL SIMULATION
+
   </div>
 
 
@@ -1088,7 +1191,7 @@ body.viewer-fullscreen{
 
 
 <!-- =========================
-     BRAIN
+     BRAIN SECTION
 ========================= -->
 
 <section
@@ -1125,7 +1228,9 @@ body.viewer-fullscreen{
   </div>
 
 
-  <!-- BRAIN WINDOW -->
+  <!-- =====================
+       BRAIN WINDOW
+  ====================== -->
 
   <div
     class="brain-window"
@@ -1164,7 +1269,9 @@ body.viewer-fullscreen{
     </div>
 
 
-    <!-- FULLSCREEN TOOLS -->
+    <!-- =================
+         FULLSCREEN TOOLS
+    ================== -->
 
     <div class="fullscreen-tools">
 
@@ -1173,7 +1280,9 @@ body.viewer-fullscreen{
         class="tool-button"
         id="zoomOut"
       >
+
         −
+
       </button>
 
 
@@ -1181,7 +1290,9 @@ body.viewer-fullscreen{
         class="tool-button"
         id="resetView"
       >
+
         RESET
+
       </button>
 
 
@@ -1189,14 +1300,18 @@ body.viewer-fullscreen{
         class="tool-button"
         id="zoomIn"
       >
+
         +
+
       </button>
 
 
     </div>
 
 
-    <!-- LEGEND -->
+    <!-- =================
+         LEGEND
+    ================== -->
 
     <div class="legend">
 
@@ -1248,7 +1363,9 @@ body.viewer-fullscreen{
     </div>
 
 
-    <!-- FULLSCREEN -->
+    <!-- =================
+         FULLSCREEN BUTTON
+    ================== -->
 
     <button
       class="fullscreen-button"
@@ -1261,7 +1378,9 @@ body.viewer-fullscreen{
     </button>
 
 
-    <!-- STATS -->
+    <!-- =================
+         STATS
+    ================== -->
 
     <div class="stats">
 
@@ -1272,11 +1391,15 @@ body.viewer-fullscreen{
           class="stat-value"
           id="fired"
         >
+
           —
+
         </div>
 
         <div class="stat-name">
+
           neurons fired
+
         </div>
 
       </div>
@@ -1288,11 +1411,15 @@ body.viewer-fullscreen{
           class="stat-value"
           id="spikes"
         >
+
           —
+
         </div>
 
         <div class="stat-name">
+
           spikes
+
         </div>
 
       </div>
@@ -1304,11 +1431,15 @@ body.viewer-fullscreen{
           class="stat-value"
           id="motor"
         >
+
           —
+
         </div>
 
         <div class="stat-name">
+
           motor spikes
+
         </div>
 
       </div>
@@ -1320,11 +1451,15 @@ body.viewer-fullscreen{
           class="stat-value"
           id="simTime"
         >
+
           0.00 s
+
         </div>
 
         <div class="stat-name">
+
           sim time
+
         </div>
 
       </div>
@@ -1528,7 +1663,7 @@ scene.add(
 
 
 /* =====================================================
-   REAL MALE CNS IDS
+   REAL MALE CNS NEURONS
 ===================================================== */
 
 const neuronIds = [
@@ -1646,12 +1781,11 @@ function parseSWC(
 
 
 /* =====================================================
-   LOAD NEURON
+   LOAD REAL NEURON
 ===================================================== */
 
 async function loadNeuron(
-  id,
-  colorIndex
+  id
 ){
 
   try{
@@ -1730,14 +1864,8 @@ async function buildBrain(){
     await Promise.all(
 
       neuronIds.map(
-        (
-          id,
-          index
-        ) =>
-          loadNeuron(
-            id,
-            index
-          )
+        id =>
+          loadNeuron(id)
       )
 
     );
@@ -2070,16 +2198,8 @@ function createBrainPoints(
 
 
 /* =====================================================
-   MOUSE / TOUCH ROTATION
+   POINTER / TOUCH ROTATION
 ===================================================== */
-
-let targetX = 0;
-
-let targetY = 0;
-
-let currentX = 0;
-
-let currentY = 0;
 
 let pointerDown = false;
 
@@ -2100,6 +2220,7 @@ canvas.addEventListener(
     lastPointerY =
       event.clientY;
 
+
     canvas.setPointerCapture(
       event.pointerId
     );
@@ -2113,35 +2234,38 @@ canvas.addEventListener(
   event => {
 
     if(
-      pointerDown
+      !pointerDown
     ){
 
-      const dx =
-        event.clientX -
-        lastPointerX;
-
-
-      const dy =
-        event.clientY -
-        lastPointerY;
-
-
-      brainGroup.rotation.y +=
-        dx * .006;
-
-
-      brainGroup.rotation.x +=
-        dy * .004;
-
-
-      lastPointerX =
-        event.clientX;
-
-
-      lastPointerY =
-        event.clientY;
+      return;
 
     }
+
+
+    const dx =
+      event.clientX -
+      lastPointerX;
+
+
+    const dy =
+      event.clientY -
+      lastPointerY;
+
+
+    brainGroup.rotation.y +=
+      dx * .006;
+
+
+    brainGroup.rotation.x +=
+      dy * .004;
+
+
+    lastPointerX =
+      event.clientX;
+
+
+    lastPointerY =
+      event.clientY;
 
   }
 );
@@ -2153,9 +2277,14 @@ canvas.addEventListener(
 
     pointerDown = false;
 
-    canvas.releasePointerCapture(
-      event.pointerId
-    );
+
+    try{
+
+      canvas.releasePointerCapture(
+        event.pointerId
+      );
+
+    }catch(e){}
 
   }
 );
@@ -2181,6 +2310,7 @@ canvas.addEventListener(
 
     event.preventDefault();
 
+
     camera.position.z +=
       event.deltaY * .5;
 
@@ -2193,6 +2323,58 @@ canvas.addEventListener(
           camera.position.z
         )
       );
+
+  },
+  {
+    passive:false
+  }
+);
+
+
+/* =====================================================
+   DOUBLE CLICK ZOOM KAPAT
+===================================================== */
+
+canvas.addEventListener(
+  "dblclick",
+  event => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+  }
+);
+
+
+/* =====================================================
+   DOUBLE TAP ZOOM KAPAT
+===================================================== */
+
+let lastTapTime = 0;
+
+
+canvas.addEventListener(
+  "touchend",
+  event => {
+
+    const now =
+      Date.now();
+
+
+    if(
+      now - lastTapTime < 350
+    ){
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+    }
+
+
+    lastTapTime =
+      now;
 
   },
   {
@@ -2269,6 +2451,7 @@ function enterFullscreen(){
     "fullscreen"
   );
 
+
   document.body.classList.add(
     "viewer-fullscreen"
   );
@@ -2292,6 +2475,7 @@ function exitFullscreen(){
     "fullscreen"
   );
 
+
   document.body.classList.remove(
     "viewer-fullscreen"
   );
@@ -2311,7 +2495,12 @@ function exitFullscreen(){
 
 fullscreenButton.addEventListener(
   "click",
-  () => {
+  event => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
 
     if(
       brainWindow.classList.contains(
@@ -2339,7 +2528,12 @@ document.getElementById(
   "zoomIn"
 ).addEventListener(
   "click",
-  () => {
+  event => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
 
     camera.position.z =
       Math.max(
@@ -2355,7 +2549,12 @@ document.getElementById(
   "zoomOut"
 ).addEventListener(
   "click",
-  () => {
+  event => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
 
     camera.position.z =
       Math.min(
@@ -2368,14 +2567,19 @@ document.getElementById(
 
 
 /* =====================================================
-   RESET VIEW
+   RESET
 ===================================================== */
 
 document.getElementById(
   "resetView"
 ).addEventListener(
   "click",
-  () => {
+  event => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
 
     brainGroup.rotation.set(
       0,
@@ -2410,10 +2614,13 @@ document.addEventListener(
   event => {
 
     if(
+
       event.key === "Escape" &&
+
       brainWindow.classList.contains(
         "fullscreen"
       )
+
     ){
 
       exitFullscreen();
@@ -2438,7 +2645,8 @@ function animate(){
   );
 
 
-  simTime += .016;
+  simTime +=
+    0.016;
 
 
   document.getElementById(
