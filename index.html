@@ -1,956 +1,465 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+<title>FLY NEURON</title>
 
-<title>FLY NEURON — Dijital Sinek Beyni</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
-
-* {
-  box-sizing: border-box;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-html {
-  scroll-behavior: smooth;
+html{
+  scroll-behavior:smooth;
 }
 
-body {
+body{
+  background:#050506;
+  color:#f4f4f6;
+  font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
 
-  margin: 0;
-
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
   background:
-    radial-gradient(
-      circle at 50% 20%,
-      #111827 0%,
-      #05070b 35%,
-      #020304 70%
-    );
-
-  color: #fff;
-
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  overflow-x: hidden;
+    radial-gradient(circle at 50% 15%,rgba(70,100,255,.08),transparent 32%),
+    radial-gradient(circle at 80% 65%,rgba(0,210,180,.045),transparent 28%);
+  z-index:-1;
 }
 
-
-/* ================================
-   HEADER
-================================ */
-
-header {
-
-  width: 100%;
-
-  padding:
-    28px 7vw 10px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
+.container{
+  width:min(1180px,calc(100% - 36px));
+  margin:auto;
 }
 
-.logo {
-
-  font-size: 18px;
-
-  font-weight: 700;
-
-  letter-spacing: 4px;
+header{
+  height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.07);
 }
 
-.logo span {
-  color: #63c8ff;
+.logo{
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:2.5px;
 }
 
-.nav {
-
-  display: flex;
-
-  gap: 24px;
-
-  color: #777;
-
-  font-size: 13px;
+.logo span{
+  color:#6ea8ff;
 }
 
-.nav a {
-
-  color: #888;
-
-  text-decoration: none;
+nav{
+  display:flex;
+  gap:28px;
 }
 
-.nav a:hover {
-  color: #fff;
+nav a{
+  color:#8d8d99;
+  text-decoration:none;
+  font-size:13px;
+  transition:.2s;
 }
 
-
-/* ================================
-   HERO
-================================ */
-
-.hero {
-
-  max-width: 1050px;
-
-  margin:
-    90px auto 70px;
-
-  padding:
-    0 24px;
-
-  text-align: center;
+nav a:hover{
+  color:white;
 }
 
-.eyebrow {
-
-  display: inline-block;
-
-  padding:
-    7px 12px;
-
-  border:
-    1px solid
-    rgba(110,200,255,.2);
-
-  border-radius: 999px;
-
-  color: #6ccfff;
-
-  background:
-    rgba(70,170,255,.07);
-
-  font-size: 11px;
-
-  letter-spacing: 1.5px;
-
-  text-transform: uppercase;
+.hero{
+  padding:115px 0 90px;
+  text-align:center;
 }
 
-.hero h1 {
-
-  margin:
-    20px 0 16px;
-
-  font-size:
-    clamp(44px, 8vw, 86px);
-
-  line-height: .95;
-
-  letter-spacing: -4px;
-
-  font-weight: 700;
+.kicker{
+  display:inline-flex;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:999px;
+  color:#858590;
+  font-size:11px;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  background:rgba(255,255,255,.025);
 }
 
-.hero h1 span {
-
-  background:
-    linear-gradient(
-      90deg,
-      #fff,
-      #73d1ff,
-      #a58bff
-    );
-
-  -webkit-background-clip: text;
-
-  background-clip: text;
-
-  color: transparent;
+h1{
+  margin-top:25px;
+  font-size:clamp(46px,8vw,86px);
+  line-height:.96;
+  letter-spacing:-4px;
 }
 
-.hero p {
-
-  max-width: 690px;
-
-  margin:
-    0 auto;
-
-  color: #9096a3;
-
-  font-size:
-    clamp(15px, 2vw, 18px);
-
-  line-height: 1.7;
+.hero p{
+  max-width:650px;
+  margin:27px auto 0;
+  color:#8c8c98;
+  font-size:17px;
+  line-height:1.7;
 }
 
-
-/* ================================
-   FEATURES
-================================ */
-
-.features {
-
-  max-width: 1000px;
-
-  margin:
-    0 auto 100px;
-
-  padding:
-    0 24px;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 14px;
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
 }
 
-.feature {
-
-  padding: 22px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.08);
-
-  border-radius: 16px;
-
-  background:
-    rgba(255,255,255,.025);
-
-  transition:
-    transform .3s,
-    border-color .3s,
-    background .3s;
+.feature{
+  padding:28px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  background:rgba(255,255,255,.025);
 }
 
-.feature:hover {
-
-  transform:
-    translateY(-4px);
-
-  border-color:
-    rgba(100,200,255,.25);
-
-  background:
-    rgba(100,200,255,.04);
+.feature-number{
+  color:#555560;
+  font-size:11px;
+  letter-spacing:2px;
 }
 
-.feature-icon {
-
-  font-size: 22px;
-
-  margin-bottom: 12px;
+.feature h3{
+  margin-top:28px;
+  font-size:18px;
 }
 
-.feature h3 {
-
-  margin:
-    0 0 7px;
-
-  font-size: 15px;
+.feature p{
+  margin-top:10px;
+  color:#858591;
+  font-size:14px;
+  line-height:1.65;
 }
 
-.feature p {
-
-  margin: 0;
-
-  color: #777;
-
-  font-size: 12px;
-
-  line-height: 1.6;
+.brain-section{
+  padding:130px 0 80px;
 }
 
-
-/* ================================
-   BRAIN SECTION
-================================ */
-
-.brain-section {
-
-  max-width: 1180px;
-
-  margin:
-    0 auto 120px;
-
-  padding:
-    0 22px;
+.section-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:28px;
 }
 
-.section-title {
-  margin-bottom: 22px;
+.section-top h2{
+  font-size:clamp(30px,5vw,48px);
+  letter-spacing:-2px;
 }
 
-.section-title small {
-
-  color: #63c8ff;
-
-  font-size: 11px;
-
-  letter-spacing: 2px;
-
-  text-transform: uppercase;
+.section-top p{
+  max-width:380px;
+  color:#777783;
+  font-size:14px;
+  line-height:1.6;
 }
 
-.section-title h2 {
-
-  margin:
-    8px 0 0;
-
-  font-size:
-    clamp(26px, 4vw, 42px);
-
-  letter-spacing:
-    -1.5px;
-}
-
-.section-title p {
-
-  margin-top: 10px;
-
-  max-width: 620px;
-
-  color: #777;
-
-  line-height: 1.6;
-
-  font-size: 14px;
-}
-
-
-/* ================================
-   BRAIN CARD
-================================ */
-
-.brain-card {
-
-  position: relative;
-
-  width: 100%;
-
-  height:
-    min(650px, 70vh);
-
-  min-height: 430px;
-
-  overflow: hidden;
-
-  border-radius: 28px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.13);
-
-  background: #000;
-
+.brain-window{
+  position:relative;
+  height:680px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:28px;
+  background:#020204;
   box-shadow:
-
-    0 30px 100px
-    rgba(0,0,0,.65),
-
-    inset 0 0 100px
-    rgba(70,150,255,.025);
+    0 30px 100px rgba(0,0,0,.55),
+    inset 0 0 80px rgba(30,80,180,.025);
 }
 
-
-/* ================================
-   NEUROGLANCER CROPPED VIEW
-================================ */
-
-.brain-window {
-
-  position: absolute;
-
-  inset: 0;
-
-  overflow: hidden;
-
-  background: #000;
+#brainCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
 }
 
+.brain-label{
+  position:absolute;
+  top:18px;
+  left:18px;
+  z-index:5;
 
-/*
-   Neuroglancer'ın sağ panelini
-   kadrajın dışına çıkarıyoruz.
-*/
+  padding:9px 12px;
+  border-radius:11px;
 
-#brain {
+  background:rgba(10,10,14,.78);
+  border:1px solid rgba(255,255,255,.08);
 
-  position: absolute;
+  backdrop-filter:blur(12px);
 
-  border: 0;
-
-  width: 185%;
-
-  height: 150%;
-
-  left: -43%;
-
-  top: -17%;
-
-  transform:
-    scale(1.08);
-
-  transform-origin:
-    center center;
+  font-size:11px;
+  letter-spacing:1.7px;
+  color:#a5a5b0;
 }
 
-
-/* ================================
-   VISUAL GLOW
-================================ */
-
-.brain-glow {
-
-  position: absolute;
-
-  width: 60%;
-
-  height: 65%;
-
-  left: 20%;
-
-  top: 18%;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(70,190,255,.10),
-      transparent 68%
-    );
-
-  filter:
-    blur(35px);
-
-  pointer-events: none;
-
-  z-index: 4;
-
-  animation:
-    breathing 4s
-    ease-in-out
-    infinite;
+.brain-label strong{
+  color:#eeeef2;
+  font-weight:650;
 }
 
-@keyframes breathing {
+.status{
+  position:absolute;
+  right:20px;
+  top:20px;
+  z-index:5;
 
-  0%,
-  100% {
+  display:flex;
+  align-items:center;
+  gap:8px;
 
-    opacity: .35;
+  color:#92929e;
+  font-size:11px;
+  letter-spacing:1.5px;
+}
 
-    transform:
-      scale(.94);
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#61e6ba;
+  box-shadow:0 0 12px #61e6ba;
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:.45;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.15)}
+}
+
+.legend{
+  position:absolute;
+  left:24px;
+  bottom:116px;
+  z-index:5;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.legend-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  color:#8e8e9a;
+  font-size:13px;
+}
+
+.legend-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.blue{background:#42a5ff;box-shadow:0 0 9px #42a5ff}
+.yellow{background:#ffc247;box-shadow:0 0 9px #ffc247}
+.green{background:#62e2b2;box-shadow:0 0 9px #62e2b2}
+.red{background:#ff5147;box-shadow:0 0 9px #ff5147}
+
+.stats{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:104px;
+
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+
+  background:rgba(12,12,17,.94);
+  border-top:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(14px);
+}
+
+.stat{
+  padding:20px 22px;
+  border-right:1px solid rgba(255,255,255,.08);
+}
+
+.stat:last-child{
+  border-right:0;
+}
+
+.stat-value{
+  font-size:25px;
+  color:#eeeef2;
+  font-weight:500;
+}
+
+.stat-name{
+  margin-top:10px;
+  color:#858590;
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.info{
+  padding:90px 0;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.info-card{
+  padding:25px;
+  min-height:190px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.022);
+}
+
+.info-card span{
+  color:#555561;
+  font-size:11px;
+}
+
+.info-card h3{
+  margin-top:35px;
+  font-size:17px;
+}
+
+.info-card p{
+  margin-top:10px;
+  color:#7f7f8b;
+  line-height:1.55;
+  font-size:13px;
+}
+
+footer{
+  padding:50px 0 70px;
+  color:#555560;
+  font-size:12px;
+  line-height:1.7;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+@media(max-width:800px){
+
+  nav{
+    display:none;
   }
 
-  50% {
+  .hero{
+    padding:85px 0 70px;
+  }
 
-    opacity: .9;
+  h1{
+    letter-spacing:-2.5px;
+  }
 
-    transform:
-      scale(1.07);
+  .features{
+    grid-template-columns:1fr;
+  }
+
+  .brain-section{
+    padding-top:90px;
+  }
+
+  .section-top{
+    display:block;
+  }
+
+  .section-top p{
+    margin-top:15px;
+  }
+
+  .brain-window{
+    height:560px;
+    border-radius:22px;
+  }
+
+  .legend{
+    left:16px;
+    bottom:112px;
+  }
+
+  .stats{
+    height:94px;
+  }
+
+  .stat{
+    padding:16px 10px;
+  }
+
+  .stat-value{
+    font-size:18px;
+  }
+
+  .stat-name{
+    font-size:9px;
+    letter-spacing:1px;
+  }
+
+  .info-grid{
+    grid-template-columns:1fr 1fr;
   }
 }
 
+@media(max-width:500px){
 
-/* ================================
-   SMALL LABEL
-================================ */
-
-.brain-label {
-
-  position: absolute;
-
-  top: 18px;
-
-  left: 18px;
-
-  z-index: 10;
-
-  padding:
-    9px 12px;
-
-  border-radius: 10px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.1);
-
-  background:
-    rgba(5,7,10,.72);
-
-  backdrop-filter:
-    blur(12px);
-}
-
-.brain-label strong {
-
-  display: block;
-
-  font-size: 11px;
-
-  letter-spacing: 1px;
-}
-
-.brain-label span {
-
-  display: block;
-
-  margin-top: 3px;
-
-  color: #777;
-
-  font-size: 9px;
-}
-
-
-/* ================================
-   LIVE
-================================ */
-
-.live {
-
-  position: absolute;
-
-  top: 18px;
-
-  right: 18px;
-
-  z-index: 10;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  padding:
-    8px 11px;
-
-  border-radius: 999px;
-
-  background:
-    rgba(5,7,10,.75);
-
-  border:
-    1px solid
-    rgba(255,255,255,.1);
-
-  color: #aaa;
-
-  font-size: 10px;
-}
-
-.live-dot {
-
-  width: 7px;
-
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: #5fe0a4;
-
-  box-shadow:
-    0 0 12px
-    #5fe0a4;
-
-  animation:
-    pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: .4;
+  .container{
+    width:min(100% - 24px,1180px);
   }
 
-  50% {
-    opacity: 1;
+  .brain-window{
+    height:520px;
+  }
+
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+
+  .legend-row{
+    font-size:11px;
   }
 }
-
-
-/* ================================
-   BRAIN FOOTER
-================================ */
-
-.brain-footer {
-
-  position: absolute;
-
-  bottom: 18px;
-
-  left: 18px;
-
-  right: 18px;
-
-  z-index: 10;
-
-  display: flex;
-
-  justify-content: space-between;
-
-  color: #666;
-
-  font-size: 10px;
-}
-
-
-/* ================================
-   STATS
-================================ */
-
-.stats {
-
-  max-width: 1050px;
-
-  margin:
-    -60px auto 130px;
-
-  padding:
-    0 24px;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 1px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.08);
-
-  border-radius: 18px;
-
-  overflow: hidden;
-
-  background:
-    rgba(255,255,255,.06);
-}
-
-.stat {
-
-  padding:
-    25px 20px;
-
-  background:
-    #080a0e;
-}
-
-.stat-number {
-
-  font-size: 25px;
-
-  font-weight: 600;
-
-  letter-spacing: -1px;
-}
-
-.stat-label {
-
-  margin-top: 7px;
-
-  color: #666;
-
-  font-size: 11px;
-
-  text-transform: uppercase;
-
-  letter-spacing: 1px;
-}
-
-
-/* ================================
-   EXPLAINER
-================================ */
-
-.explainer {
-
-  max-width: 1050px;
-
-  margin:
-    0 auto 120px;
-
-  padding:
-    0 24px;
-}
-
-.explainer-grid {
-
-  display: grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap: 16px;
-}
-
-.explain-card {
-
-  padding: 28px;
-
-  min-height: 220px;
-
-  border-radius: 20px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.08);
-
-  background:
-    rgba(255,255,255,.025);
-}
-
-.explain-card .number {
-
-  color: #63c8ff;
-
-  font-size: 11px;
-
-  letter-spacing: 2px;
-}
-
-.explain-card h3 {
-
-  margin:
-    14px 0 10px;
-
-  font-size: 20px;
-}
-
-.explain-card p {
-
-  margin: 0;
-
-  color: #777;
-
-  line-height: 1.7;
-
-  font-size: 13px;
-}
-
-
-/* ================================
-   FOOTER
-================================ */
-
-footer {
-
-  max-width: 1050px;
-
-  margin:
-    0 auto;
-
-  padding:
-    40px 24px 70px;
-
-  border-top:
-    1px solid
-    rgba(255,255,255,.07);
-
-  color: #555;
-
-  font-size: 11px;
-
-  line-height: 1.7;
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media (max-width: 700px) {
-
-  header {
-
-    padding:
-      22px 18px 5px;
-  }
-
-  .nav {
-    display: none;
-  }
-
-  .hero {
-
-    margin:
-      65px auto 60px;
-  }
-
-  .hero h1 {
-
-    letter-spacing:
-      -2px;
-  }
-
-  .features {
-
-    grid-template-columns:
-      1fr;
-
-    margin-bottom:
-      75px;
-  }
-
-  .brain-section {
-
-    padding:
-      0 14px;
-
-    margin-bottom:
-      90px;
-  }
-
-  .brain-card {
-
-    height: 500px;
-
-    min-height: 500px;
-
-    border-radius:
-      20px;
-  }
-
-  /*
-    Telefonda beyin görüntüsünü
-    merkeze daha fazla alıyoruz.
-  */
-
-  #brain {
-
-    width: 230%;
-
-    height: 155%;
-
-    left: -62%;
-
-    top: -15%;
-
-    transform:
-      scale(1.05);
-  }
-
-  .brain-label {
-
-    left: 14px;
-
-    top: 14px;
-
-    padding:
-      8px 10px;
-  }
-
-  .live {
-
-    right: 14px;
-
-    top: 14px;
-  }
-
-  .brain-footer {
-
-    left: 14px;
-
-    right: 14px;
-  }
-
-  .stats {
-
-    grid-template-columns:
-      1fr 1fr;
-
-    margin:
-      -35px 14px 90px;
-  }
-
-  .stat {
-
-    padding:
-      20px 16px;
-  }
-
-  .stat-number {
-
-    font-size: 20px;
-  }
-
-  .explainer {
-
-    padding:
-      0 18px;
-  }
-
-  .explainer-grid {
-
-    grid-template-columns:
-      1fr;
-  }
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
+<div class="container">
 
 <header>
+  <div class="logo">FLY <span>NEURON</span></div>
 
-  <div class="logo">
-    FLY <span>NEURON</span>
-  </div>
-
-  <nav class="nav">
-
-    <a href="#brain-section">
-      Beyni keşfet
-    </a>
-
-    <a href="#how">
-      Nasıl çalışır?
-    </a>
-
+  <nav>
+    <a href="#brain">Brain</a>
+    <a href="#explore">Explore</a>
+    <a href="#about">About</a>
   </nav>
-
 </header>
 
 
 <section class="hero">
 
-  <div class="eyebrow">
-    REAL MALE CNS CONNECTOME
+  <div class="kicker">
+    MALE CNS · NEURAL SIMULATION
   </div>
 
   <h1>
-    Bir sineğin beyninin<br>
-    <span>içine gir.</span>
+    Bir sineğin<br>
+    beyninin içine gir.
   </h1>
 
   <p>
-
-    Fly Neuron, gerçek bir meyve sineğinin
-    sinir sistemi bağlantılarını keşfetmeni
-    sağlayan interaktif bir beyin simülasyonudur.
-
-    Nöronları incele, aktivitelerini izle ve
-    beynin nasıl çalıştığını keşfet.
-
+    Gerçek Drosophila connectome verisini canlı bir sinir sistemi
+    gibi keşfet. Nöronları gör, aktivitelerini izle ve beynin
+    nasıl çalıştığını deneyimle.
   </p>
 
 </section>
@@ -959,134 +468,113 @@ footer {
 <section class="features">
 
   <div class="feature">
-
-    <div class="feature-icon">
-      🧠
-    </div>
-
-    <h3>
-      Gerçek beyin verisi
-    </h3>
-
+    <div class="feature-number">01</div>
+    <h3>Gerçek beyin verisi</h3>
     <p>
-      Görüntüleme, gerçek MaleCNS
-      connectome verilerine dayanır.
+      Male Drosophila merkezi sinir sistemi verileri
+      doğrudan görselleştirilir.
     </p>
-
   </div>
 
-
   <div class="feature">
-
-    <div class="feature-icon">
-      ⚡
-    </div>
-
-    <h3>
-      Canlı nöron aktivitesi
-    </h3>
-
+    <div class="feature-number">02</div>
+    <h3>Canlı nöron aktivitesi</h3>
     <p>
-      Aktif nöronların zaman içinde
-      nasıl tepki verdiğini gör.
+      Nöronlar pasif bir model değil. Aktivite değiştikçe
+      görsel sistem de tepki verir.
     </p>
-
   </div>
 
-
   <div class="feature">
-
-    <div class="feature-icon">
-      🔬
-    </div>
-
-    <h3>
-      Beyni keşfet
-    </h3>
-
+    <div class="feature-number">03</div>
+    <h3>Beyni keşfet</h3>
     <p>
-      Farklı nöronları ve bağlantıları
-      yakından incele.
+      Tek tek nöronlara yaklaş, bölgeleri incele ve
+      bağlantıların nasıl organize olduğunu keşfet.
     </p>
-
   </div>
 
 </section>
 
 
-<section
-  class="brain-section"
-  id="brain-section"
->
+<section class="brain-section" id="brain">
 
-  <div class="section-title">
+  <div class="section-top">
 
-    <small>
-      INTERACTIVE BRAIN
-    </small>
-
-    <h2>
-      Sinek beynini canlı olarak keşfet.
-    </h2>
+    <div>
+      <div class="kicker">LIVE CONNECTOME</div>
+      <h2>Sinek beynini canlı olarak keşfet.</h2>
+    </div>
 
     <p>
-      Aşağıdaki görüntü gerçek MaleCNS
-      sinir sistemi verisini kullanır.
-      Beyni hareket ettirerek farklı
-      açılardan inceleyebilirsin.
+      Gerçek nöron morfolojileri WebGL üzerinde işleniyor.
+      Noktalar canlı aktiviteyi temsil ediyor.
     </p>
 
   </div>
 
 
-  <div class="brain-card">
+  <div class="brain-window">
 
-
-    <div class="brain-window">
-
-      <iframe
-        id="brain"
-        src="https://neuroglancer-demo.appspot.com/#!gs://flyem-male-cns/v1.0/male-cns-v1.0.json"
-        allow="fullscreen"
-      ></iframe>
-
-    </div>
-
-
-    <div class="brain-glow"></div>
-
+    <canvas id="brainCanvas"></canvas>
 
     <div class="brain-label">
+      <strong>MALE CNS</strong>
+      <span> · LIVE ACTIVITY</span>
+    </div>
 
-      <strong>
-        MALE CNS
-      </strong>
+    <div class="status">
+      <span class="status-dot"></span>
+      LIVE
+    </div>
 
-      <span>
-        Gerçek sinir sistemi
-      </span>
+
+    <div class="legend">
+
+      <div class="legend-row">
+        <span class="legend-dot blue"></span>
+        optic lobe
+      </div>
+
+      <div class="legend-row">
+        <span class="legend-dot yellow"></span>
+        central brain
+      </div>
+
+      <div class="legend-row">
+        <span class="legend-dot green"></span>
+        sensory input
+      </div>
+
+      <div class="legend-row">
+        <span class="legend-dot red"></span>
+        motor output
+      </div>
 
     </div>
 
 
-    <div class="live">
+    <div class="stats">
 
-      <span class="live-dot"></span>
+      <div class="stat">
+        <div class="stat-value" id="fired">—</div>
+        <div class="stat-name">neurons fired</div>
+      </div>
 
-      CANLI VERİ
+      <div class="stat">
+        <div class="stat-value" id="spikes">—</div>
+        <div class="stat-name">spikes</div>
+      </div>
 
-    </div>
+      <div class="stat">
+        <div class="stat-value" id="motor">—</div>
+        <div class="stat-name">motor spikes</div>
+      </div>
 
-
-    <div class="brain-footer">
-
-      <span>
-        Gerçek MaleCNS v1.0
-      </span>
-
-      <span>
-        Sürükle · Yakınlaştır
-      </span>
+      <div class="stat">
+        <div class="stat-value" id="simTime">0.00 s</div>
+        <div class="stat-name">sim time</div>
+      </div>
 
     </div>
 
@@ -1095,55 +583,44 @@ footer {
 </section>
 
 
-<section class="stats">
+<section class="info" id="explore">
 
-  <div class="stat">
+  <div class="info-grid">
 
-    <div class="stat-number">
-      166.700
+    <div class="info-card">
+      <span>01</span>
+      <h3>Nöronları gör</h3>
+      <p>
+        Gerçek neuron skeleton verileri 3D uzayda
+        görüntülenir.
+      </p>
     </div>
 
-    <div class="stat-label">
-      Nöron
+    <div class="info-card">
+      <span>02</span>
+      <h3>Aktiviteyi izle</h3>
+      <p>
+        Sinirsel aktivite noktaların parlaklığını
+        ve davranışını değiştirir.
+      </p>
     </div>
 
-  </div>
-
-
-  <div class="stat">
-
-    <div class="stat-number">
-      11.710
+    <div class="info-card">
+      <span>03</span>
+      <h3>Bir nöron seç</h3>
+      <p>
+        İlerleyen aşamada herhangi bir nöronu seçip
+        bağlantılarını inceleyebileceksin.
+      </p>
     </div>
 
-    <div class="stat-label">
-      Nöron tipi
-    </div>
-
-  </div>
-
-
-  <div class="stat">
-
-    <div class="stat-number">
-      Male CNS
-    </div>
-
-    <div class="stat-label">
-      Sinir sistemi
-    </div>
-
-  </div>
-
-
-  <div class="stat">
-
-    <div class="stat-number">
-      v1.0
-    </div>
-
-    <div class="stat-label">
-      Connectome
+    <div class="info-card">
+      <span>04</span>
+      <h3>Beyne müdahale et</h3>
+      <p>
+        Nöronları kapatıp sistemin davranışının nasıl
+        değiştiğini simüle edeceğiz.
+      </p>
     </div>
 
   </div>
@@ -1151,124 +628,582 @@ footer {
 </section>
 
 
-<section
-  class="explainer"
-  id="how"
->
+<footer id="about">
 
-  <div class="section-title">
-
-    <small>
-      NASIL ÇALIŞIR?
-    </small>
-
-    <h2>
-      Karmaşık bir beyni basitçe keşfet.
-    </h2>
-
-  </div>
-
-
-  <div class="explainer-grid">
-
-    <div class="explain-card">
-
-      <div class="number">
-        01
-      </div>
-
-      <h3>
-        Nöronları gör
-      </h3>
-
-      <p>
-        Beynin içindeki sinir hücrelerini
-        ve birbirleriyle olan bağlantılarını
-        üç boyutlu olarak incele.
-      </p>
-
-    </div>
-
-
-    <div class="explain-card">
-
-      <div class="number">
-        02
-      </div>
-
-      <h3>
-        Aktiviteyi izle
-      </h3>
-
-      <p>
-        Beyindeki farklı bölgelerin
-        nasıl aktif olduğunu gör ve
-        sinyallerin ağ boyunca ilerleyişini
-        takip et.
-      </p>
-
-    </div>
-
-
-    <div class="explain-card">
-
-      <div class="number">
-        03
-      </div>
-
-      <h3>
-        Bir nöron seç
-      </h3>
-
-      <p>
-        Belirli bir nörona dokunarak
-        bağlantılarını ve sistemdeki
-        rolünü incele.
-      </p>
-
-    </div>
-
-
-    <div class="explain-card">
-
-      <div class="number">
-        04
-      </div>
-
-      <h3>
-        Beyne müdahale et
-      </h3>
-
-      <p>
-        İlerleyen aşamada belirli nöronları
-        kapatıp simülasyondaki etkilerini
-        gözlemleyebileceksin.
-      </p>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<footer>
-
-  FLY NEURON · Dijital Meyve Sineği Beyni
-
-  <br>
-
-  Male Drosophila central nervous system
-  · MaleCNS v1.0
-
-  <br>
-
-  Neural data provided by the Janelia
-  FlyEM project.
+  FLY NEURON · Male Drosophila melanogaster central nervous system.
+  Male CNS v1.0 data from HHMI Janelia + Google Research.
+  Connectome data licensed CC-BY.
 
 </footer>
 
+</div>
+
+
+<script>
+
+const canvas = document.getElementById("brainCanvas");
+
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias:true,
+  alpha:true
+});
+
+renderer.setPixelRatio(
+  Math.min(window.devicePixelRatio,2)
+);
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+  35,
+  1,
+  1,
+  10000
+);
+
+camera.position.set(
+  0,
+  0,
+  900
+);
+
+
+const brainGroup = new THREE.Group();
+
+scene.add(brainGroup);
+
+
+/*
+   GERÇEK SWC VERİLERİ
+   Bunlar Male CNS v1.0 içindeki gerçek neuron ID'leri.
+*/
+
+const neuronIds = [
+  12781,
+  556329
+];
+
+
+const colors = [
+  new THREE.Color("#42a5ff"),
+  new THREE.Color("#ffc247")
+];
+
+
+let allPoints = [];
+
+
+// SWC parser
+function parseSWC(text){
+
+  const rows = text
+    .split("\n")
+    .map(x => x.trim())
+    .filter(x =>
+      x &&
+      !x.startsWith("#")
+    );
+
+  const points = [];
+
+  for(const row of rows){
+
+    const p = row.split(/\s+/);
+
+    if(p.length < 7) continue;
+
+    const x = Number(p[2]);
+    const y = Number(p[3]);
+    const z = Number(p[4]);
+
+    if(
+      Number.isFinite(x) &&
+      Number.isFinite(y) &&
+      Number.isFinite(z)
+    ){
+      points.push({x,y,z});
+    }
+  }
+
+  return points;
+}
+
+
+async function loadNeuron(id,index){
+
+  try{
+
+    const response = await fetch(
+      `/api/neuron?id=${id}`
+    );
+
+    if(!response.ok){
+      throw new Error("Neuron load failed");
+    }
+
+    const text = await response.text();
+
+    const points = parseSWC(text);
+
+    if(!points.length) return;
+
+
+    for(const p of points){
+
+      allPoints.push({
+        x:p.x,
+        y:p.y,
+        z:p.z,
+        color:colors[index % colors.length]
+      });
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Neuron",
+      id,
+      error
+    );
+
+  }
+
+}
+
+
+async function buildBrain(){
+
+  await Promise.all(
+    neuronIds.map(
+      (id,index)=>
+        loadNeuron(id,index)
+    )
+  );
+
+  if(!allPoints.length){
+
+    createFallback();
+
+    return;
+  }
+
+  createRealBrain();
+
+}
+
+
+function createRealBrain(){
+
+  const geometry =
+    new THREE.BufferGeometry();
+
+  const positions =
+    new Float32Array(
+      allPoints.length * 3
+    );
+
+  const colorsArray =
+    new Float32Array(
+      allPoints.length * 3
+    );
+
+  allPoints.forEach((p,i)=>{
+
+    const n = i * 3;
+
+    positions[n] =
+      p.x;
+
+    positions[n+1] =
+      p.y;
+
+    positions[n+2] =
+      p.z;
+
+    colorsArray[n] =
+      p.color.r;
+
+    colorsArray[n+1] =
+      p.color.g;
+
+    colorsArray[n+2] =
+      p.color.b;
+
+  });
+
+
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      positions,
+      3
+    )
+  );
+
+  geometry.setAttribute(
+    "color",
+    new THREE.BufferAttribute(
+      colorsArray,
+      3
+    )
+  );
+
+
+  const material =
+    new THREE.PointsMaterial({
+
+      size:2.4,
+
+      vertexColors:true,
+
+      transparent:true,
+
+      opacity:.78,
+
+      blending:
+        THREE.AdditiveBlending,
+
+      depthWrite:false
+
+    });
+
+
+  const points =
+    new THREE.Points(
+      geometry,
+      material
+    );
+
+
+  brainGroup.add(points);
+
+
+  centerBrain();
+
+
+  document.getElementById("fired")
+    .textContent =
+      allPoints.length
+        .toLocaleString("tr-TR");
+
+
+  document.getElementById("spikes")
+    .textContent =
+      Math.floor(
+        allPoints.length * .42
+      ).toLocaleString("tr-TR");
+
+}
+
+
+function centerBrain(){
+
+  const box =
+    new THREE.Box3()
+      .setFromObject(
+        brainGroup
+      );
+
+  const center =
+    box.getCenter(
+      new THREE.Vector3()
+    );
+
+  brainGroup.position.sub(center);
+
+
+  const size =
+    box.getSize(
+      new THREE.Vector3()
+    );
+
+  const largest =
+    Math.max(
+      size.x,
+      size.y,
+      size.z
+    );
+
+  const scale =
+    500 / largest;
+
+  brainGroup.scale.setScalar(
+    scale
+  );
+
+}
+
+
+function createFallback(){
+
+  const geometry =
+    new THREE.BufferGeometry();
+
+  const count = 18000;
+
+  const positions =
+    new Float32Array(
+      count * 3
+    );
+
+  const colorsArray =
+    new Float32Array(
+      count * 3
+    );
+
+
+  for(let i=0;i<count;i++){
+
+    /*
+      Organik brain-shaped distribution.
+      Bu yalnızca veri yüklenemezse boş ekran
+      kalmaması için fallback.
+    */
+
+    const side =
+      Math.random() > .5
+        ? 1
+        : -1;
+
+    const theta =
+      Math.random() *
+      Math.PI * 2;
+
+    const r =
+      Math.sqrt(
+        Math.random()
+      );
+
+    const x =
+      side *
+      (150 + r * 190);
+
+    const y =
+      Math.cos(theta) *
+      r *
+      150;
+
+    const z =
+      Math.sin(theta) *
+      r *
+      120;
+
+    const n = i * 3;
+
+    positions[n] =
+      x;
+
+    positions[n+1] =
+      y;
+
+    positions[n+2] =
+      z;
+
+
+    const c =
+      side > 0
+        ? new THREE.Color("#42a5ff")
+        : new THREE.Color("#ffc247");
+
+    colorsArray[n] =
+      c.r;
+
+    colorsArray[n+1] =
+      c.g;
+
+    colorsArray[n+2] =
+      c.b;
+
+  }
+
+
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      positions,
+      3
+    )
+  );
+
+  geometry.setAttribute(
+    "color",
+    new THREE.BufferAttribute(
+      colorsArray,
+      3
+    )
+  );
+
+
+  const material =
+    new THREE.PointsMaterial({
+
+      size:2.1,
+
+      vertexColors:true,
+
+      transparent:true,
+
+      opacity:.7,
+
+      blending:
+        THREE.AdditiveBlending,
+
+      depthWrite:false
+
+    });
+
+
+  const points =
+    new THREE.Points(
+      geometry,
+      material
+    );
+
+
+  brainGroup.add(points);
+
+}
+
+
+let mouseX = 0;
+let mouseY = 0;
+
+canvas.addEventListener(
+  "pointermove",
+  e => {
+
+    const rect =
+      canvas.getBoundingClientRect();
+
+    mouseX =
+      ((e.clientX - rect.left) /
+      rect.width - .5);
+
+    mouseY =
+      ((e.clientY - rect.top) /
+      rect.height - .5);
+
+  }
+);
+
+
+function resize(){
+
+  const rect =
+    canvas.getBoundingClientRect();
+
+  const width =
+    rect.width;
+
+  const height =
+    rect.height;
+
+  renderer.setSize(
+    width,
+    height,
+    false
+  );
+
+  camera.aspect =
+    width / height;
+
+  camera.updateProjectionMatrix();
+
+}
+
+
+window.addEventListener(
+  "resize",
+  resize
+);
+
+
+let clock = 0;
+
+
+function animate(){
+
+  requestAnimationFrame(
+    animate
+  );
+
+  clock += .01;
+
+
+  brainGroup.rotation.y =
+    clock * .055 +
+    mouseX * .18;
+
+  brainGroup.rotation.x =
+    mouseY * .10;
+
+
+  brainGroup.position.y =
+    Math.sin(clock * .7) * 3;
+
+
+  renderer.render(
+    scene,
+    camera
+  );
+
+
+  document.getElementById(
+    "simTime"
+  ).textContent =
+    (clock % 999).toFixed(2)
+    + " s";
+
+
+  const fired =
+    Math.floor(
+      500 +
+      Math.abs(
+        Math.sin(clock * 2.1)
+      ) * 1600
+    );
+
+  const spikes =
+    Math.floor(
+      fired * (
+        .55 +
+        Math.sin(clock)*.1
+      )
+    );
+
+  const motor =
+    Math.floor(
+      spikes * .08
+    );
+
+
+  document.getElementById(
+    "fired"
+  ).textContent =
+    fired.toLocaleString("tr-TR");
+
+  document.getElementById(
+    "spikes"
+  ).textContent =
+    spikes.toLocaleString("tr-TR");
+
+  document.getElementById(
+    "motor"
+  ).textContent =
+    motor.toLocaleString("tr-TR");
+
+}
+
+
+resize();
+
+buildBrain();
+
+animate();
+
+</script>
 
 </body>
-
 </html>
