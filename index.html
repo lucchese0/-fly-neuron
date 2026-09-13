@@ -1,5721 +1,4314 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>FLY NEURON</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-<style>
-
-/* =========================================================
-   BASE
-========================================================= */
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:#050506;
-  color:#f4f4f6;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Inter",
-    "Segoe UI",
-    sans-serif;
-  overflow-x:hidden;
-}
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-
-  background:
-    radial-gradient(
-      circle at 50% 10%,
-      rgba(70,100,255,.10),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 80% 65%,
-      rgba(0,210,180,.05),
-      transparent 28%
-    );
-
-  z-index:-1;
-}
-
-.container{
-  width:min(
-    1180px,
-    calc(100% - 36px)
-  );
-
-  margin:auto;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-header{
-  height:78px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  border-bottom:
-    1px solid rgba(255,255,255,.07);
-}
-
-.logo{
-  font-size:18px;
-  font-weight:800;
-  letter-spacing:2.5px;
-}
-
-.logo span{
-  color:#6ea8ff;
-}
-
-nav{
-  display:flex;
-  gap:28px;
-}
-
-nav a{
-  color:#8d8d99;
-  text-decoration:none;
-  font-size:13px;
-  transition:.2s;
-}
-
-nav a:hover{
-  color:white;
-}
-
-
-/* =========================================================
-   GENERIC
-========================================================= */
-
-.kicker{
-  display:inline-flex;
-
-  padding:8px 12px;
-
-  border:
-    1px solid rgba(255,255,255,.09);
-
-  border-radius:999px;
-
-  color:#858590;
-
-  font-size:11px;
-
-  letter-spacing:1.8px;
-
-  text-transform:uppercase;
-
-  background:
-    rgba(255,255,255,.025);
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-  padding:115px 0 90px;
-  text-align:center;
-}
-
-.hero h1{
-  margin-top:25px;
-
-  font-size:
-    clamp(46px,8vw,86px);
-
-  line-height:.96;
-
-  letter-spacing:-4px;
-}
-
-.hero p{
-  max-width:650px;
-
-  margin:27px auto 0;
-
-  color:#8c8c98;
-
-  font-size:17px;
-
-  line-height:1.7;
-}
-
-
-/* =========================================================
-   ROULETTE
-========================================================= */
-
-.roulette-section{
-  padding:35px 0 100px;
-}
-
-.roulette-intro{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.roulette-intro h2{
-  margin-top:15px;
-
-  font-size:
-    clamp(32px,5vw,50px);
-
-  letter-spacing:-2.5px;
-}
-
-.roulette-intro p{
-  max-width:600px;
-
-  margin:16px auto 0;
-
-  color:#777783;
-
-  font-size:14px;
-
-  line-height:1.65;
-}
-
-
-/* MAIN ROULETTE */
-
-.roulette-box{
-
-  position:relative;
-
-  border:
-    1px solid rgba(255,255,255,.10);
-
-  border-radius:28px;
-
-  overflow:hidden;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.035),
-      rgba(255,255,255,.012)
-    );
-
-  box-shadow:
-    0 35px 100px rgba(0,0,0,.48);
-
-  padding:34px;
-
-}
-
-
-/* COUNTDOWN */
-
-.round-bar{
-
-  width:100%;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:16px;
-
-  margin-bottom:25px;
-
-}
-
-.round-status{
-
-  min-width:180px;
-
-  text-align:center;
-
-  padding:11px 17px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:999px;
-
-  background:
-    rgba(255,255,255,.025);
-
-  color:#9999a5;
-
-  font-size:11px;
-
-  letter-spacing:1.4px;
-
-  text-transform:uppercase;
-
-}
-
-.countdown{
-
-  min-width:90px;
-
-  text-align:center;
-
-  font-size:30px;
-
-  font-weight:800;
-
-  letter-spacing:-1px;
-
-  color:#6ea8ff;
-
-  text-shadow:
-    0 0 25px rgba(110,168,255,.3);
-
-}
-
-.countdown.warning{
-
-  color:#ffc247;
-
-  text-shadow:
-    0 0 25px rgba(255,194,71,.35);
-
-}
-
-.countdown.danger{
-
-  color:#ff6259;
-
-  text-shadow:
-    0 0 25px rgba(255,81,71,.4);
-
-}
-
-
-/* GRID */
-
-.roulette-layout{
-
-  display:grid;
-
-  grid-template-columns:
-    minmax(0,1fr)
-    minmax(320px,390px);
-
-  gap:35px;
-
-  align-items:center;
-
-}
-
-
-/* =========================================================
-   WHEEL
-========================================================= */
-
-.wheel-area{
-
-  display:flex;
-
-  flex-direction:column;
-
-  align-items:center;
-
-  justify-content:center;
-
-  min-height:610px;
-
-}
-
-.wheel-wrap{
-
-  position:relative;
-
-  width:min(
-    540px,
-    100%
-  );
-
-  aspect-ratio:1;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  filter:
-    drop-shadow(
-      0 25px 55px rgba(0,0,0,.6)
-    );
-
-}
-
-
-/* outer glow */
-
-.wheel-wrap:before{
-
-  content:"";
-
-  position:absolute;
-
-  width:91%;
-
-  height:91%;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(110,168,255,.08),
-      transparent 67%
-    );
-
-  box-shadow:
-    0 0 80px rgba(110,168,255,.08);
-
-}
-
-
-/* pointer */
-
-.wheel-pointer{
-
-  position:absolute;
-
-  z-index:20;
-
-  top:-2px;
-
-  left:50%;
-
-  transform:
-    translateX(-50%);
-
-  width:0;
-  height:0;
-
-  border-left:
-    15px solid transparent;
-
-  border-right:
-    15px solid transparent;
-
-  border-top:
-    32px solid #6ea8ff;
-
-  filter:
-    drop-shadow(
-      0 0 12px rgba(110,168,255,.6)
-    );
-
-}
-
-
-/* wheel canvas */
-
-#wheelCanvas{
-
-  width:100%;
-  height:100%;
-
-  display:block;
-
-  transition:
-    transform
-    5.2s
-    cubic-bezier(.10,.72,.10,1);
-
-  will-change:transform;
-
-}
-
-
-/* center */
-
-.wheel-center{
-
-  position:absolute;
-
-  z-index:15;
-
-  width:92px;
-  height:92px;
-
-  border-radius:50%;
-
-  display:flex;
-
-  flex-direction:column;
-
-  align-items:center;
-
-  justify-content:center;
-
-  background:
-    radial-gradient(
-      circle,
-      #11141b,
-      #07080b
-    );
-
-  border:
-    2px solid
-    rgba(110,168,255,.55);
-
-  box-shadow:
-    0 0 35px rgba(110,168,255,.18),
-    inset 0 0 25px rgba(255,255,255,.04);
-
-  font-size:25px;
-
-  font-weight:800;
-
-}
-
-.wheel-center small{
-
-  margin-top:2px;
-
-  font-size:8px;
-
-  letter-spacing:1.5px;
-
-  color:#777783;
-
-  text-transform:uppercase;
-
-}
-
-
-/* result */
-
-.wheel-result{
-
-  min-height:66px;
-
-  text-align:center;
-
-  margin-top:7px;
-
-}
-
-.wheel-result-number{
-
-  font-size:27px;
-
-  font-weight:800;
-
-  letter-spacing:-1px;
-
-}
-
-.wheel-result-meta{
-
-  margin-top:4px;
-
-  color:#777783;
-
-  font-size:11px;
-
-  letter-spacing:1.2px;
-
-  text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   BET PANEL
-========================================================= */
-
-.bet-panel{
-
-  width:100%;
-
-  max-width:390px;
-
-  margin:auto;
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:13px;
-
-}
-
-
-/* players */
-
-.players{
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:10px;
-
-}
-
-.player{
-
-  padding:15px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:16px;
-
-  background:
-    rgba(255,255,255,.025);
-
-}
-
-.player.fly-player{
-
-  border-color:
-    rgba(110,168,255,.15);
-
-}
-
-.player-label{
-
-  color:#777783;
-
-  font-size:10px;
-
-  letter-spacing:1.3px;
-
-  text-transform:uppercase;
-
-}
-
-.player-money{
-
-  margin-top:5px;
-
-  font-size:21px;
-
-  font-weight:750;
-
-}
-
-.fly-player .player-money{
-
-  color:#6ea8ff;
-
-}
-
-
-/* bet card */
-
-.bet-card{
-
-  padding:18px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:18px;
-
-  background:
-    rgba(0,0,0,.20);
-
-}
-
-.bet-heading{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin-bottom:12px;
-
-}
-
-.bet-heading strong{
-
-  font-size:13px;
-
-}
-
-.bet-heading span{
-
-  color:#666672;
-
-  font-size:9px;
-
-  letter-spacing:1px;
-
-  text-transform:uppercase;
-
-}
-
-
-/* options */
-
-.bet-options{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:7px;
-
-}
-
-.bet-option{
-
-  height:43px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:10px;
-
-  background:#111319;
-
-  color:#9d9da8;
-
-  cursor:pointer;
-
-  font-size:11px;
-
-  font-weight:700;
-
-  transition:.18s;
-
-}
-
-.bet-option:hover{
-
-  border-color:
-    rgba(110,168,255,.35);
-
-  color:white;
-
-}
-
-.bet-option.active{
-
-  background:
-    rgba(110,168,255,.12);
-
-  border-color:
-    rgba(110,168,255,.60);
-
-  color:#e5efff;
-
-  box-shadow:
-    0 0 20px rgba(110,168,255,.06);
-
-}
-
-
-/* input row */
-
-.input-row{
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 110px;
-
-  gap:7px;
-
-  margin-top:8px;
-
-}
-
-.bet-input,
-.number-select{
-
-  width:100%;
-
-  height:43px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:10px;
-
-  outline:none;
-
-  background:#0b0d12;
-
-  color:#eeeeef;
-
-  padding:0 12px;
-
-  font-family:inherit;
-
-}
-
-.bet-input:focus,
-.number-select:focus{
-
-  border-color:
-    rgba(110,168,255,.55);
-
-}
-
-
-/* buttons */
-
-.bet-buttons{
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:7px;
-
-  margin-top:9px;
-
-}
-
-.bet-button{
-
-  height:45px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:11px;
-
-  background:#171a22;
-
-  color:#e7e7ec;
-
-  cursor:pointer;
-
-  font-family:inherit;
-
-  font-weight:700;
-
-  transition:.18s;
-
-}
-
-.bet-button:hover{
-
-  background:#20242e;
-
-}
-
-.bet-button.primary{
-
-  background:#6ea8ff;
-
-  border-color:#6ea8ff;
-
-  color:#07090d;
-
-  box-shadow:
-    0 8px 28px rgba(110,168,255,.16);
-
-}
-
-.bet-button:disabled{
-
-  opacity:.38;
-
-  cursor:not-allowed;
-
-}
-
-
-/* fly */
-
-.fly-decision{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:12px;
-
-  padding:13px 15px;
-
-  border:
-    1px solid rgba(110,168,255,.12);
-
-  border-radius:15px;
-
-  background:
-    rgba(110,168,255,.035);
-
-}
-
-.fly-icon{
-
-  font-size:27px;
-
-  animation:
-    flyFloat
-    1.5s
-    ease-in-out
-    infinite;
-
-}
-
-@keyframes flyFloat{
-
-  0%,100%{
-    transform:
-      translateY(0)
-      rotate(-3deg);
-  }
-
-  50%{
-    transform:
-      translateY(-4px)
-      rotate(3deg);
-  }
-
-}
-
-.fly-decision strong{
-
-  display:block;
-
-  font-size:12px;
-
-}
-
-.fly-decision small{
-
-  display:block;
-
-  margin-top:4px;
-
-  color:#777783;
-
-  font-size:10px;
-
-  line-height:1.35;
-
-}
-
-
-/* history */
-
-.history-title{
-
-  color:#777783;
-
-  font-size:10px;
-
-  letter-spacing:1.4px;
-
-  text-transform:uppercase;
-
-  margin-top:2px;
-
-}
-
-.history{
-
-  display:flex;
-
-  gap:7px;
-
-  overflow-x:auto;
-
-  min-height:35px;
-
-  padding-bottom:2px;
-
-}
-
-.history::-webkit-scrollbar{
-
-  height:3px;
-
-}
-
-.history::-webkit-scrollbar-thumb{
-
-  background:#333743;
-
-  border-radius:5px;
-
-}
-
-.history-ball{
-
-  flex:
-    0 0 35px;
-
-  width:35px;
-  height:35px;
-
-  display:grid;
-
-  place-items:center;
-
-  border-radius:50%;
-
-  font-size:10px;
-
-  font-weight:800;
-
-  border:
-    1px solid rgba(255,255,255,.12);
-
-}
-
-.history-ball.red{
-  background:#6f252d;
-}
-
-.history-ball.black{
-  background:#111319;
-}
-
-.history-ball.green{
-  background:#176346;
-}
-
-
-/* notice */
-
-.notice{
-
-  min-height:18px;
-
-  text-align:center;
-
-  color:#777783;
-
-  font-size:10px;
-
-  line-height:1.4;
-
-}
-
-.notice.win{
-  color:#62e2b2;
-}
-
-.notice.loss{
-  color:#ff7169;
-}
-
-
-/* payout */
-
-.payout{
-
-  color:#62626e;
-
-  font-size:9px;
-
-  line-height:1.5;
-
-  text-align:center;
-
-}
-
-.payout b{
-  color:#888894;
-}
-
-
-/* =========================================================
-   FEATURES
-========================================================= */
-
-.features{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:14px;
-
-  margin-bottom:0;
-
-}
-
-.feature{
-
-  padding:28px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  border-radius:22px;
-
-  background:
-    rgba(255,255,255,.025);
-
-}
-
-.feature-number{
-
-  color:#555560;
-
-  font-size:11px;
-
-  letter-spacing:2px;
-
-}
-
-.feature h3{
-
-  margin-top:28px;
-
-  font-size:18px;
-
-}
-
-.feature p{
-
-  margin-top:10px;
-
-  color:#858591;
-
-  font-size:14px;
-
-  line-height:1.65;
-
-}
-
-
-/* =========================================================
-   BRAIN
-========================================================= */
-
-.brain-section{
-
-  padding:130px 0 80px;
-
-}
-
-.section-top{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:end;
-
-  margin-bottom:28px;
-
-}
-
-.section-top h2{
-
-  margin-top:15px;
-
-  font-size:
-    clamp(30px,5vw,48px);
-
-  letter-spacing:-2px;
-
-}
-
-.section-top p{
-
-  max-width:380px;
-
-  color:#777783;
-
-  font-size:14px;
-
-  line-height:1.6;
-
-}
-
-.brain-window{
-
-  position:relative;
-
-  height:680px;
-
-  overflow:hidden;
-
-  border:
-    1px solid rgba(255,255,255,.11);
-
-  border-radius:28px;
-
-  background:
-    radial-gradient(
-      circle at center,
-      rgba(30,65,130,.08),
-      #020204 58%
-    );
-
-  box-shadow:
-    0 30px 100px rgba(0,0,0,.55),
-    inset 0 0 100px rgba(30,80,180,.06);
-
-}
-
-#brainCanvas{
-
-  position:absolute;
-
-  inset:0;
-
-  width:100%;
-  height:100%;
-
-  display:block;
-
-  touch-action:none;
-
-  cursor:grab;
-
-}
-
-#brainCanvas:active{
-  cursor:grabbing;
-}
-
-
-/* brain label */
-
-.brain-label{
-
-  position:absolute;
-
-  top:18px;
-  left:18px;
-
-  z-index:10;
-
-  padding:9px 12px;
-
-  border-radius:11px;
-
-  background:
-    rgba(10,10,14,.78);
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
-  backdrop-filter:blur(12px);
-
-  font-size:11px;
-
-  letter-spacing:1.7px;
-
-  color:#a5a5b0;
-
-  pointer-events:none;
-
-}
-
-.brain-label strong{
-  color:#eeeef2;
-}
-
-
-/* status */
-
-.status{
-
-  position:absolute;
-
-  right:20px;
-  top:20px;
-
-  z-index:10;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:8px;
-
-  color:#92929e;
-
-  font-size:11px;
-
-  letter-spacing:1.5px;
-
-}
-
-.status-dot{
-
-  width:7px;
-  height:7px;
-
-  border-radius:50%;
-
-  background:#61e6ba;
-
-  box-shadow:
-    0 0 12px #61e6ba;
-
-  animation:pulse 1.5s infinite;
-
-}
-
-
-/* brain fallback indicator */
-
-.brain-fallback{
-
-  position:absolute;
-
-  left:50%;
-
-  top:50%;
-
-  transform:
-    translate(-50%,-50%);
-
-  color:#505563;
-
-  font-size:11px;
-
-  letter-spacing:1px;
-
-  pointer-events:none;
-
-  opacity:0;
-
-}
-
-
-/* legend */
-
-.legend{
-
-  position:absolute;
-
-  left:24px;
-
-  bottom:116px;
-
-  z-index:10;
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:10px;
-
-  pointer-events:none;
-
-}
-
-.legend-row{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
-  color:#8e8e9a;
-
-  font-size:13px;
-
-}
-
-.legend-dot{
-
-  width:10px;
-  height:10px;
-
-  border-radius:50%;
-
-}
-
-.blue{
-  background:#42a5ff;
-  box-shadow:0 0 9px #42a5ff;
-}
-
-.yellow{
-  background:#ffc247;
-  box-shadow:0 0 9px #ffc247;
-}
-
-.green{
-  background:#62e2b2;
-  box-shadow:0 0 9px #62e2b2;
-}
-
-.red{
-  background:#ff5147;
-  box-shadow:0 0 9px #ff5147;
-}
-
-
-/* fullscreen */
-
-.fullscreen-button{
-
-  position:absolute;
-
-  right:20px;
-  bottom:124px;
-
-  z-index:30;
-
-  width:44px;
-  height:44px;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  border:
-    1px solid rgba(255,255,255,.12);
-
-  border-radius:13px;
-
-  background:
-    rgba(12,12,17,.82);
-
-  color:#d8d8df;
-
-  font-size:20px;
-
-  cursor:pointer;
-
-  backdrop-filter:blur(14px);
-
-}
-
-.stats{
-
-  position:absolute;
-
-  left:0;
-  right:0;
-  bottom:0;
-
-  height:104px;
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(4,1fr);
-
-  background:
-    rgba(12,12,17,.94);
-
-  border-top:
-    1px solid rgba(255,255,255,.09);
-
-  backdrop-filter:blur(14px);
-
-  z-index:20;
-
-}
-
-.stat{
-
-  padding:20px 22px;
-
-  border-right:
-    1px solid rgba(255,255,255,.08);
-
-}
-
-.stat:last-child{
-  border-right:0;
-}
-
-.stat-value{
-
-  font-size:25px;
-
-  color:#eeeef2;
-
-  font-weight:500;
-
-}
-
-.stat-name{
-
-  margin-top:10px;
-
-  color:#858590;
-
-  font-size:11px;
-
-  letter-spacing:1.5px;
-
-  text-transform:uppercase;
-
-}
-
-
-/* fullscreen */
-
-.brain-window.fullscreen{
-
-  position:fixed;
-
-  inset:0;
-
-  width:100vw;
-  height:100vh;
-
-  z-index:99999;
-
-  border:0;
-
-  border-radius:0;
-
-  background:#000;
-
-}
-
-.brain-window.fullscreen .brain-label{
-  top:25px;
-  left:25px;
-}
-
-.brain-window.fullscreen .status{
-  top:28px;
-  right:28px;
-}
-
-.brain-window.fullscreen .legend{
-  left:30px;
-  bottom:145px;
-}
-
-.brain-window.fullscreen .fullscreen-button{
-  right:28px;
-  bottom:132px;
-}
-
-.brain-window.fullscreen .stats{
-
-  left:28px;
-  right:28px;
-
-  bottom:28px;
-
-  width:min(
-    700px,
-    calc(100% - 56px)
-  );
-
-  height:90px;
-
-  border:
-    1px solid rgba(255,255,255,.1);
-
-  border-radius:18px;
-
-  overflow:hidden;
-
-}
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-.info{
-
-  padding:90px 0;
-
-}
-
-.info-grid{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(4,1fr);
-
-  gap:14px;
-
-}
-
-.info-card{
-
-  padding:25px;
-
-  min-height:190px;
-
-  border-radius:20px;
-
-  border:
-    1px solid rgba(255,255,255,.07);
-
-  background:
-    rgba(255,255,255,.022);
-
-}
-
-.info-card span{
-
-  color:#555561;
-
-  font-size:11px;
-
-}
-
-.info-card h3{
-
-  margin-top:35px;
-
-  font-size:17px;
-
-}
-
-.info-card p{
-
-  margin-top:10px;
-
-  color:#7f7f8b;
-
-  line-height:1.55;
-
-  font-size:13px;
-
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer{
-
-  padding:50px 0 70px;
-
-  color:#555560;
-
-  font-size:12px;
-
-  line-height:1.7;
-
-  border-top:
-    1px solid rgba(255,255,255,.06);
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:900px){
-
-  .roulette-layout{
-
-    grid-template-columns:1fr;
-
-  }
-
-  .wheel-area{
-
-    min-height:auto;
-
-  }
-
-  .bet-panel{
-
-    max-width:520px;
-
-  }
-
-  .roulette-box{
-
-    padding:22px;
-
-  }
-
-  .info-grid{
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-}
-
-
-@media(max-width:800px){
-
-  nav{
-    display:none;
-  }
-
-  .hero{
-
-    padding:
-      85px 0
-      70px;
-
-  }
-
-  .hero h1{
-
-    letter-spacing:-2.5px;
-
-  }
-
-  .features{
-
-    grid-template-columns:1fr;
-
-  }
-
-  .brain-section{
-
-    padding-top:90px;
-
-  }
-
-  .section-top{
-
-    display:block;
-
-  }
-
-  .section-top p{
-
-    margin-top:15px;
-
-  }
-
-  .brain-window{
-
-    height:560px;
-
-    border-radius:22px;
-
-  }
-
-  .legend{
-
-    left:16px;
-
-    bottom:112px;
-
-  }
-
-  .stats{
-
-    height:94px;
-
-  }
-
-  .stat{
-
-    padding:
-      16px 10px;
-
-  }
-
-  .stat-value{
-
-    font-size:18px;
-
-  }
-
-  .stat-name{
-
-    font-size:9px;
-
-    letter-spacing:1px;
-
-  }
-
-  .roulette-section{
-
-    padding-top:20px;
-
-  }
-
-}
-
-
-@media(max-width:500px){
-
-  .container{
-
-    width:
-      min(
-        100% - 24px,
-        1180px
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+
+  <title>FLY NEURON</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: #000;
+    }
+
+    body {
+      background: #000;
+      color: #f3f5fa;
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* =========================
+       HEADER
+       ========================= */
+
+    header {
+      width: 100%;
+      padding: 28px 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 50;
+    }
+
+    .logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #fff;
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav a {
+      color: #777b86;
+      text-decoration: none;
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    /* =========================
+       HERO
+       ========================= */
+
+    .hero {
+      min-height: 62vh;
+      padding: 100px 8vw 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(
+        circle,
+        rgba(50, 100, 255, .08),
+        transparent 70%
       );
+      pointer-events: none;
+    }
 
-  }
+    .eyebrow {
+      color: #737783;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 25px;
+    }
 
-  .roulette-box{
+    .hero h1 {
+      max-width: 950px;
+      font-size: clamp(48px, 8vw, 105px);
+      line-height: .95;
+      letter-spacing: -5px;
+      font-weight: 600;
+    }
 
-    padding:15px;
+    .hero h1 span {
+      color: #6ea8ff;
+    }
 
-    border-radius:20px;
+    .hero p {
+      max-width: 650px;
+      margin-top: 32px;
+      color: #858995;
+      line-height: 1.8;
+      font-size: 16px;
+    }
 
-  }
+    /* =========================
+       GENERAL
+       ========================= */
 
-  .roulette-intro h2{
+    section {
+      width: min(1400px, 92vw);
+      margin: 0 auto;
+    }
 
-    font-size:30px;
+    .section-title {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: #747985;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
 
-  }
+    /* =========================
+       ROULETTE
+       ========================= */
 
-  .round-bar{
+    #roulette {
+      padding: 80px 0 110px;
+    }
 
-    gap:8px;
+    .roulette-box {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.09);
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(70, 110, 255, .06),
+          transparent 40%
+        ),
+        rgba(7, 8, 12, .92);
+      border-radius: 30px;
+      padding: 45px;
+      overflow: hidden;
+    }
 
-  }
+    .roulette-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 35px;
+    }
 
-  .round-status{
+    .roulette-title {
+      font-size: clamp(28px, 4vw, 50px);
+      letter-spacing: -2px;
+    }
 
-    min-width:145px;
+    .roulette-subtitle {
+      margin-top: 8px;
+      color: #777b87;
+      font-size: 14px;
+    }
 
-    font-size:9px;
+    .round-status {
+      min-width: 170px;
+      padding: 14px 20px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      text-align: center;
+      background: rgba(255,255,255,.025);
+    }
 
-  }
+    .round-status small {
+      display: block;
+      color: #6e7380;
+      letter-spacing: 2px;
+      font-size: 9px;
+      margin-bottom: 5px;
+    }
 
-  .countdown{
+    #countdown {
+      font-size: 27px;
+      font-weight: 600;
+    }
 
-    min-width:62px;
+    .roulette-layout {
+      display: grid;
+      grid-template-columns: minmax(350px, 1fr) minmax(350px, 460px);
+      gap: 55px;
+      align-items: center;
+    }
 
-    font-size:25px;
+    /* =========================
+       WHEEL
+       ========================= */
 
-  }
+    .wheel-area {
+      min-height: 520px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
 
-  .wheel-wrap{
+    .wheel-frame {
+      width: min(500px, 80vw);
+      aspect-ratio: 1;
+      position: relative;
+      filter: drop-shadow(0 0 45px rgba(0,0,0,.7));
+    }
 
-    width:100%;
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
-  }
+    .wheel-pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 30px solid #fff;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.3));
+      z-index: 5;
+    }
 
-  .wheel-center{
+    .wheel-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.2);
+      background: #08090d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      box-shadow: 0 0 25px rgba(0,0,0,.8);
+    }
 
-    width:70px;
-    height:70px;
+    .wheel-center span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #6ea8ff;
+      box-shadow: 0 0 18px #6ea8ff;
+    }
 
-    font-size:20px;
+    #wheelResult {
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      transform: translateX(-50%);
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: rgba(8,9,13,.9);
+      border: 1px solid rgba(255,255,255,.1);
+      font-size: 12px;
+      color: #9da2ae;
+      white-space: nowrap;
+    }
 
-  }
+    /* =========================
+       BET PANEL
+       ========================= */
 
-  .input-row{
+    .bet-panel {
+      width: 100%;
+      max-width: 460px;
+      margin: auto;
+    }
 
-    grid-template-columns:
-      1fr 95px;
+    .balance-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
 
-  }
+    .balance-card {
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 17px;
+      background: rgba(255,255,255,.025);
+    }
 
-  .bet-options{
+    .balance-card small {
+      display: block;
+      color: #6d727d;
+      font-size: 9px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
 
-    grid-template-columns:
-      1fr 1fr;
+    .balance-card strong {
+      font-size: 20px;
+    }
 
-  }
+    .balance-card.fly strong {
+      color: #ffc94f;
+    }
 
-  .bet-option:last-child{
+    .bet-card {
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 25px;
+      background: rgba(255,255,255,.02);
+    }
 
-    grid-column:
-      span 2;
+    .bet-card-title {
+      color: #7d828e;
+      font-size: 10px;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
 
-  }
+    .bet-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
 
-  .bet-buttons{
+    .bet-option {
+      min-height: 52px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.025);
+      color: #aeb2bc;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: .2s;
+    }
 
-    grid-template-columns:1fr;
+    .bet-option:hover {
+      border-color: rgba(255,255,255,.2);
+    }
 
-  }
+    .bet-option.active {
+      border-color: #6ea8ff;
+      color: #fff;
+      background: rgba(110,168,255,.09);
+      box-shadow: 0 0 25px rgba(110,168,255,.07);
+    }
 
-  .info-grid{
+    .bet-option.red.active {
+      border-color: #ff4e4e;
+      background: rgba(255,78,78,.08);
+    }
 
-    grid-template-columns:1fr;
+    .bet-option.black.active {
+      border-color: #8b8e98;
+      background: rgba(255,255,255,.06);
+    }
 
-  }
+    #numberSelect,
+    #betAmount {
+      width: 100%;
+      height: 50px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: #0b0c11;
+      color: #fff;
+      padding: 0 15px;
+      outline: none;
+      margin-top: 10px;
+    }
 
-  .brain-window.fullscreen .fullscreen-tools{
+    #numberSelect:focus,
+    #betAmount:focus {
+      border-color: rgba(110,168,255,.45);
+    }
 
-    top:72px;
+    .bet-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
 
-  }
+    .primary-btn,
+    .secondary-btn {
+      height: 52px;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: .2s;
+    }
 
-  .brain-window.fullscreen .fullscreen-button{
+    .primary-btn {
+      border: 1px solid #6ea8ff;
+      background: #6ea8ff;
+      color: #050608;
+      font-weight: 700;
+    }
 
-    bottom:108px;
+    .primary-btn:hover {
+      filter: brightness(1.08);
+    }
 
-  }
+    .primary-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
 
-  .brain-window.fullscreen .stats{
+    .secondary-btn {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.025);
+      color: #a8adb7;
+    }
 
-    height:80px;
+    .secondary-btn:hover {
+      background: rgba(255,255,255,.06);
+    }
 
-  }
+    #flyDecision {
+      margin-top: 18px;
+      min-height: 48px;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 13px;
+      padding: 14px;
+      color: #747985;
+      font-size: 12px;
+      line-height: 1.5;
+      background: rgba(255,255,255,.015);
+    }
 
-}
+    #flyDecision strong {
+      color: #ffc94f;
+    }
 
-body.viewer-fullscreen{
+    #rouletteNotice {
+      min-height: 24px;
+      margin-top: 15px;
+      color: #777c87;
+      font-size: 12px;
+      text-align: center;
+    }
 
-  overflow:hidden;
+    .history {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
 
-}
+    .history-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
 
-</style>
+    .history-dot.red {
+      background: #8c2929;
+    }
+
+    .history-dot.black {
+      background: #17181c;
+    }
+
+    .history-dot.green {
+      background: #13704d;
+    }
+
+    /* =========================
+       FEATURES
+       ========================= */
+
+    #features {
+      padding: 80px 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .feature-card {
+      min-height: 210px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 20px;
+      background: rgba(255,255,255,.018);
+    }
+
+    .feature-number {
+      color: #6ea8ff;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    .feature-card h3 {
+      margin-top: 55px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .feature-card p {
+      margin-top: 10px;
+      color: #777c87;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       BRAIN SECTION
+       ========================= */
+
+    #brain {
+      padding: 100px 0 130px;
+    }
+
+    .brain-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 25px;
+    }
+
+    .brain-title {
+      font-size: clamp(30px, 5vw, 58px);
+      letter-spacing: -3px;
+    }
+
+    .brain-description {
+      max-width: 470px;
+      color: #777c87;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .brain-viewer {
+      width: 100%;
+      height: min(760px, 78vh);
+      min-height: 570px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(
+          circle at 50% 50%,
+          rgba(18, 45, 100, .12),
+          transparent 52%
+        ),
+        #000;
+    }
+
+    #brainCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+
+      touch-action: none !important;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .brain-label {
+      position: absolute;
+      left: 28px;
+      top: 25px;
+      padding: 14px 18px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 17px;
+      background: rgba(8,9,13,.72);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #8b8f9a;
+    }
+
+    .brain-label strong {
+      color: #fff;
+    }
+
+    .live-indicator {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #8a8f9a;
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    .live-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #5ce1b2;
+      box-shadow: 0 0 18px #5ce1b2;
+    }
+
+    /* =========================
+       BRAIN LEGEND
+       ========================= */
+
+    .brain-legend {
+      position: absolute;
+      left: 30px;
+      bottom: 175px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 10;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #8d919c;
+      font-size: 14px;
+    }
+
+    .legend-dot {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      box-shadow: 0 0 15px currentColor;
+    }
+
+    .legend-blue {
+      background: #4ca3ff;
+      color: #4ca3ff;
+    }
+
+    .legend-yellow {
+      background: #ffc43d;
+      color: #ffc43d;
+    }
+
+    .legend-green {
+      background: #5ce1b2;
+      color: #5ce1b2;
+    }
+
+    .legend-red {
+      background: #ff5555;
+      color: #ff5555;
+    }
+
+    /* =========================
+       BRAIN CONTROLS
+       ========================= */
+
+    .brain-viewer-controls {
+      position: absolute;
+      left: 28px;
+      bottom: 30px;
+      z-index: 20;
+
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .brain-control-btn {
+      width: 46px;
+      height: 46px;
+
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 13px;
+
+      background: rgba(10,11,16,.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      color: #e9edf5;
+      font-size: 23px;
+      font-weight: 400;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .15s ease;
+    }
+
+    .brain-control-btn:hover {
+      background: rgba(30,32,42,.95);
+      border-color: rgba(110,168,255,.35);
+    }
+
+    .brain-control-btn:active {
+      transform: scale(.94);
+    }
+
+    .brain-control-btn.reset {
+      font-size: 19px;
+    }
+
+    /* =========================
+       FULLSCREEN
+       ========================= */
+
+    #fullscreenButton {
+      position: absolute;
+      right: 25px;
+      bottom: 210px;
+
+      width: 84px;
+      height: 84px;
+
+      border-radius: 25px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,11,16,.9);
+      color: #dce0e8;
+      font-size: 31px;
+      cursor: pointer;
+      z-index: 30;
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      transition: .2s;
+    }
+
+    #fullscreenButton:hover {
+      background: rgba(30,32,42,.95);
+    }
+
+    /* =========================
+       STATS
+       ========================= */
+
+    .brain-stats {
+      position: absolute;
+      left: 30px;
+      right: 30px;
+      bottom: 30px;
+
+      height: 100px;
+
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 25px;
+
+      overflow: hidden;
+
+      background: rgba(8,9,13,.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      z-index: 15;
+    }
+
+    .stat {
+      padding: 22px;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+
+    .stat:last-child {
+      border-right: 0;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .stat-label {
+      margin-top: 7px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #777c87;
+    }
+
+    /* =========================
+       INFO
+       ========================= */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .info-card {
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.018);
+    }
+
+    .info-card h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .info-card p {
+      color: #777c87;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* =========================
+       FOOTER
+       ========================= */
+
+    footer {
+      width: min(1400px, 92vw);
+      margin: 0 auto;
+      padding: 50px 0;
+      border-top: 1px solid rgba(255,255,255,.07);
+
+      display: flex;
+      justify-content: space-between;
+      color: #5e626c;
+      font-size: 12px;
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 900px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 70px;
+        min-height: 55vh;
+      }
+
+      .roulette-box {
+        padding: 25px;
+      }
+
+      .roulette-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .roulette-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .bet-panel {
+        max-width: 100%;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brain-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .brain-viewer {
+        height: 760px;
+        min-height: 650px;
+      }
+
+      .brain-legend {
+        bottom: 175px;
+      }
+
+      .brain-stats {
+        height: auto;
+        grid-template-columns: repeat(2, 1fr);
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+      }
+
+      .stat {
+        min-height: 82px;
+      }
+
+      .stat:nth-child(2) {
+        border-right: 0;
+      }
+
+      .stat:nth-child(1),
+      .stat:nth-child(2) {
+        border-bottom: 1px solid rgba(255,255,255,.08);
+      }
+
+      .brain-viewer-controls {
+        left: 18px;
+        bottom: 185px;
+      }
+
+      #fullscreenButton {
+        right: 15px;
+        bottom: 220px;
+        width: 70px;
+        height: 70px;
+        border-radius: 22px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 22px 22px;
+      }
+
+      .hero {
+        padding: 80px 24px 60px;
+      }
+
+      .hero h1 {
+        letter-spacing: -3px;
+      }
+
+      section {
+        width: calc(100% - 30px);
+      }
+
+      #roulette {
+        padding-top: 45px;
+      }
+
+      .roulette-box {
+        border-radius: 22px;
+        padding: 20px;
+      }
+
+      .wheel-area {
+        min-height: 390px;
+      }
+
+      .wheel-frame {
+        width: min(370px, 90vw);
+      }
+
+      .brain-viewer {
+        height: 720px;
+        min-height: 620px;
+        border-radius: 22px;
+      }
+
+      .brain-label {
+        left: 18px;
+        top: 18px;
+      }
+
+      .live-indicator {
+        right: 18px;
+        top: 22px;
+      }
+
+      .brain-legend {
+        left: 18px;
+        bottom: 185px;
+        gap: 11px;
+      }
+
+      .legend-item {
+        font-size: 12px;
+      }
+
+      .legend-dot {
+        width: 15px;
+        height: 15px;
+      }
+
+      .brain-stats {
+        border-radius: 19px;
+      }
+
+      .stat {
+        padding: 15px;
+      }
+
+      .stat-value {
+        font-size: 22px;
+      }
+
+      .stat-label {
+        font-size: 8px;
+      }
+
+      .brain-viewer-controls {
+        left: 18px;
+        bottom: 200px;
+      }
+
+      #fullscreenButton {
+        bottom: 240px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
-<div class="container">
+  <!-- =========================
+       HEADER
+       ========================= -->
 
+  <header>
+    <div class="logo">FLY NEURON</div>
 
-<header>
+    <nav>
+      <a href="#roulette">ROULETTE</a>
+      <a href="#features">EXPLORE</a>
+      <a href="#brain">BRAIN</a>
+    </nav>
+  </header>
 
-  <div class="logo">
-    FLY
-    <span>NEURON</span>
-  </div>
 
-  <nav>
+  <!-- =========================
+       HERO
+       ========================= -->
 
-    <a href="#roulette">
-      Roulette
-    </a>
+  <main>
 
-    <a href="#brain">
-      Brain
-    </a>
+    <section class="hero">
+      <div class="eyebrow">DROSOPHILA · NEURAL SYSTEM</div>
 
-    <a href="#explore">
-      Explore
-    </a>
+      <h1>
+        Bir sineğin<br />
+        beyninin <span>içine gir.</span>
+      </h1>
 
-    <a href="#about">
-      About
-    </a>
+      <p>
+        Drosophila sinir sistemini interaktif olarak keşfet.
+        Nöronları, bağlantıları ve aktiviteyi tek bir canlı
+        görselleştirme içerisinde incele.
+      </p>
+    </section>
 
-  </nav>
 
-</header>
+    <!-- =========================
+         ROULETTE
+         ========================= -->
 
+    <section id="roulette">
 
-<!-- ========================================================
-     HERO
-========================================================= -->
+      <div class="section-title">01 · NEURAL GAME</div>
 
-<section class="hero">
+      <div class="roulette-box">
 
-  <div class="kicker">
-    MALE CNS · NEURAL SIMULATION
-  </div>
-
-  <h1>
-    Bir sineğin
-    <br>
-    beyninin içine gir.
-  </h1>
-
-  <p>
-    Gerçek Drosophila connectome verisini canlı bir
-    sinir sistemi gibi keşfet. Nöronları gör,
-    aktivitelerini izle ve beynin nasıl çalıştığını
-    deneyimle.
-  </p>
-
-</section>
-
-
-<!-- ========================================================
-     ROULETTE
-========================================================= -->
-
-<section
-  class="roulette-section"
-  id="roulette"
->
-
-  <div class="roulette-intro">
-
-    <div class="kicker">
-      BEHAVIORAL EXPERIMENT · FLY ROULETTE
-    </div>
-
-    <h2>
-      Sinek şansını test ediyor.
-    </h2>
-
-    <p>
-      Her turda bahis için sınırlı bir süre var.
-      Sen kararını verirken sineğin nöral sistemi
-      kendi bahis kararını veriyor.
-    </p>
-
-  </div>
-
-
-  <div class="roulette-box">
-
-
-    <!-- TIMER -->
-
-    <div class="round-bar">
-
-      <div
-        class="round-status"
-        id="roundStatus"
-      >
-        BAHİSLER AÇIK
-      </div>
-
-      <div
-        class="countdown"
-        id="countdown"
-      >
-        15
-      </div>
-
-    </div>
-
-
-    <div class="roulette-layout">
-
-
-      <!-- ==================================================
-           WHEEL
-      =================================================== -->
-
-      <div class="wheel-area">
-
-        <div class="wheel-wrap">
-
-          <canvas
-            id="wheelCanvas"
-            width="900"
-            height="900"
-          ></canvas>
-
-          <div class="wheel-pointer"></div>
-
-          <div
-            class="wheel-center"
-            id="wheelCenter"
-          >
-
-            ?
-
-            <small>
-              RESULT
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="wheel-result"
-          id="wheelResult"
-        >
-
-          <div
-            class="wheel-result-number"
-          >
-            Bahisler açık
-          </div>
-
-          <div
-            class="wheel-result-meta"
-          >
-            Saniye bitmeden bahis yap
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- ==================================================
-           BET PANEL
-      =================================================== -->
-
-      <div class="bet-panel">
-
-
-        <!-- PLAYERS -->
-
-        <div class="players">
-
-
-          <div class="player">
-
-            <div class="player-label">
-              SEN
-            </div>
-
-            <div
-              class="player-money"
-              id="userBalance"
-            >
-              ₺1.000
-            </div>
-
-          </div>
-
-
-          <div
-            class="player fly-player"
-          >
-
-            <div class="player-label">
-              SİNEK
-            </div>
-
-            <div
-              class="player-money"
-              id="flyBalance"
-            >
-              ₺1.000
-            </div>
-
-          </div>
-
-
-        </div>
-
-
-        <!-- BET CARD -->
-
-        <div class="bet-card">
-
-
-          <div class="bet-heading">
-
-            <strong>
-              Bahsini seç
-            </strong>
-
-            <span>
-              sanal bakiye
-            </span>
-
-          </div>
-
-
-          <div
-            class="bet-options"
-            id="betOptions"
-          >
-
-            <button
-              class="bet-option active"
-              data-kind="color"
-              data-value="red"
-            >
-              🔴 Kırmızı
-            </button>
-
-            <button
-              class="bet-option"
-              data-kind="color"
-              data-value="black"
-            >
-              ⚫ Siyah
-            </button>
-
-            <button
-              class="bet-option"
-              data-kind="number"
-              data-value="0"
-            >
-              🟢 0
-            </button>
-
-          </div>
-
-
-          <div class="input-row">
-
-            <select
-              class="number-select"
-              id="numberSelect"
-            >
-
-              <option value="">
-                Tek sayı seç...
-              </option>
-
-            </select>
-
-
-            <input
-              class="bet-input"
-              id="betAmount"
-              type="number"
-              min="1"
-              step="1"
-              value="25"
-            >
-
-          </div>
-
-
-          <div class="bet-buttons">
-
-            <button
-              class="bet-button"
-              id="clearBet"
-            >
-              Bahsi temizle
-            </button>
-
-            <button
-              class="bet-button primary"
-              id="placeBet"
-            >
-              BAHİSİ KOY
-            </button>
-
-          </div>
-
-
-        </div>
-
-
-        <!-- FLY DECISION -->
-
-        <div class="fly-decision">
-
-          <div class="fly-icon">
-            🪰
-          </div>
+        <div class="roulette-head">
 
           <div>
+            <div class="roulette-title">
+              Fly Roulette
+            </div>
 
-            <strong>
-              Sinek nöral karar merkezi
-            </strong>
+            <div class="roulette-subtitle">
+              Sinek nöronları bahis yapıyor. İnsanlık yine kumarı bilime bağlamayı başardı.
+            </div>
+          </div>
 
-            <small
-              id="flyDecision"
-            >
-              Sinek henüz bahis yapmadı.
-              Süre bitmeden karar verecek.
-            </small>
-
+          <div class="round-status">
+            <small>BETTING WINDOW</small>
+            <span id="countdown">15</span>
           </div>
 
         </div>
 
 
-        <!-- HISTORY -->
+        <div class="roulette-layout">
 
-        <div class="history-title">
-          SON SONUÇLAR
+          <!-- WHEEL -->
+
+          <div class="wheel-area">
+
+            <div class="wheel-frame">
+
+              <canvas id="wheelCanvas"></canvas>
+
+              <div class="wheel-pointer"></div>
+
+              <div class="wheel-center">
+                <span></span>
+              </div>
+
+              <div id="wheelResult">
+                Bahisleri yerleştir
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- BET PANEL -->
+
+          <div class="bet-panel">
+
+            <div class="balance-row">
+
+              <div class="balance-card">
+                <small>YOUR BALANCE</small>
+                <strong id="userBalance">1000.00</strong>
+              </div>
+
+              <div class="balance-card fly">
+                <small>FLY BALANCE</small>
+                <strong id="flyBalance">1000.00</strong>
+              </div>
+
+            </div>
+
+
+            <div class="bet-card">
+
+              <div class="bet-card-title">
+                Select prediction
+              </div>
+
+              <div id="betOptions" class="bet-options">
+
+                <button
+                  class="bet-option red active"
+                  data-kind="color"
+                  data-value="red"
+                >
+                  🔴 Kırmızı
+                </button>
+
+                <button
+                  class="bet-option black"
+                  data-kind="color"
+                  data-value="black"
+                >
+                  ⚫ Siyah
+                </button>
+
+                <button
+                  class="bet-option"
+                  data-kind="number"
+                  data-value="number"
+                  style="grid-column:1 / -1;"
+                >
+                  Numara seç
+                </button>
+
+              </div>
+
+
+              <select id="numberSelect">
+                <option value="0">0 · Yeşil</option>
+              </select>
+
+
+              <input
+                id="betAmount"
+                type="number"
+                min="1"
+                step="1"
+                value="50"
+                placeholder="Bahis miktarı"
+              />
+
+
+              <div class="bet-buttons">
+
+                <button
+                  id="placeBet"
+                  class="primary-btn"
+                >
+                  BAHİS YAP
+                </button>
+
+                <button
+                  id="clearBet"
+                  class="secondary-btn"
+                >
+                  TEMİZLE
+                </button>
+
+              </div>
+
+
+              <div id="flyDecision">
+                <strong>FLY NEURON</strong><br />
+                Nöral karar bekleniyor...
+              </div>
+
+              <div id="rouletteNotice"></div>
+
+              <div id="history" class="history"></div>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <div
-          class="history"
-          id="history"
-        ></div>
+      </div>
+
+    </section>
 
 
-        <div
-          class="notice"
-          id="rouletteNotice"
+    <!-- =========================
+         FEATURES
+         ========================= -->
+
+    <section id="features">
+
+      <div class="section-title">02 · EXPLORE</div>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-number">01</div>
+
+          <h3>Nöron Haritası</h3>
+
+          <p>
+            Sinir sisteminin üç boyutlu yapısını
+            interaktif olarak görüntüle.
+          </p>
+        </div>
+
+
+        <div class="feature-card">
+          <div class="feature-number">02</div>
+
+          <h3>Canlı Aktivite</h3>
+
+          <p>
+            Nöral sinyalleri ve motor aktiviteyi
+            görsel olarak takip et.
+          </p>
+        </div>
+
+
+        <div class="feature-card">
+          <div class="feature-number">03</div>
+
+          <h3>Neural Data</h3>
+
+          <p>
+            Gerçek veri mevcut olduğunda SWC nöron
+            yapıları doğrudan görselleştirilir.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         BRAIN
+         ========================= -->
+
+    <section id="brain">
+
+      <div class="brain-header">
+
+        <div>
+          <div class="section-title">03 · MALE CNS</div>
+
+          <div class="brain-title">
+            Live Activity
+          </div>
+        </div>
+
+        <div class="brain-description">
+          Sinek beyninin üç boyutlu nöral ağı.
+          Parmağınla sürükleyerek döndür, iki parmağınla
+          açıp kapatarak yakınlaştır ve uzaklaştır.
+        </div>
+
+      </div>
+
+
+      <div class="brain-viewer">
+
+        <canvas id="brainCanvas"></canvas>
+
+
+        <div class="brain-label">
+          <strong>MALE CNS</strong> · LIVE ACTIVITY
+        </div>
+
+
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          LIVE
+        </div>
+
+
+        <!-- LEGEND -->
+
+        <div class="brain-legend">
+
+          <div class="legend-item">
+            <span class="legend-dot legend-blue"></span>
+            optic lobe
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-dot legend-yellow"></span>
+            central brain
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-dot legend-green"></span>
+            sensory input
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-dot legend-red"></span>
+            motor output
+          </div>
+
+        </div>
+
+
+        <!-- ZOOM CONTROLS -->
+
+        <div class="brain-viewer-controls">
+
+          <button
+            class="brain-control-btn"
+            id="zoomIn"
+            aria-label="Yakınlaştır"
+          >
+            +
+          </button>
+
+          <button
+            class="brain-control-btn"
+            id="zoomOut"
+            aria-label="Uzaklaştır"
+          >
+            −
+          </button>
+
+          <button
+            class="brain-control-btn reset"
+            id="zoomReset"
+            aria-label="Sıfırla"
+          >
+            ↻
+          </button>
+
+        </div>
+
+
+        <!-- FULLSCREEN -->
+
+        <button
+          id="fullscreenButton"
+          aria-label="Tam ekran"
         >
-          Bahisler 15 saniye açık.
-        </div>
+          ⛶
+        </button>
+
+
+        <!-- STATS -->
+
+        <div class="brain-stats">
+
+          <div class="stat">
+            <div
+              class="stat-value"
+              id="fired"
+            >
+              2
+            </div>
+
+            <div class="stat-label">
+              NEURONS FIRED
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div
+              class="stat-value"
+              id="spikes"
+            >
+              1.100
+            </div>
+
+            <div class="stat-label">
+              SPIKES
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div
+              class="stat-value"
+              id="motor"
+            >
+              88
+            </div>
+
+            <div class="stat-label">
+              MOTOR SPIKES
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div
+              class="stat-value"
+              id="simTime"
+            >
+              35.34 s
+            </div>
+
+            <div class="stat-label">
+              SIM TIME
+            </div>
+          </div>
 
-
-        <div class="payout">
-
-          <b>Ödeme:</b>
-
-          Kırmızı/siyah 1:1.
-          Tek sayı 35:1.
-
-          Tüm bakiyeler sanaldır.
-
-        </div>
-
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ========================================================
-     FEATURES
-========================================================= -->
-
-<section class="features">
-
-
-  <div class="feature">
-
-    <div class="feature-number">
-      01
-    </div>
-
-    <h3>
-      Gerçek beyin verisi
-    </h3>
-
-    <p>
-      Male Drosophila merkezi sinir sistemi
-      verileri doğrudan görselleştirilir.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <div class="feature-number">
-      02
-    </div>
-
-    <h3>
-      Canlı nöron aktivitesi
-    </h3>
-
-    <p>
-      Nöronlar pasif bir model değil.
-      Aktivite değiştikçe görsel sistem
-      de tepki verir.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <div class="feature-number">
-      03
-    </div>
-
-    <h3>
-      Beyni keşfet
-    </h3>
-
-    <p>
-      Tek tek nöronlara yaklaş,
-      bölgeleri incele ve bağlantıların
-      nasıl organize olduğunu keşfet.
-    </p>
-
-  </div>
-
-
-</section>
-
-
-<!-- ========================================================
-     BRAIN
-========================================================= -->
-
-<section
-  class="brain-section"
-  id="brain"
->
-
-  <div class="section-top">
-
-    <div>
-
-      <div class="kicker">
-        LIVE CONNECTOME
-      </div>
-
-      <h2>
-        Sinek beynini canlı olarak keşfet.
-      </h2>
-
-    </div>
-
-    <p>
-      Gerçek nöron morfolojileri WebGL
-      üzerinde işleniyor. Noktalar canlı
-      aktiviteyi temsil ediyor.
-    </p>
-
-  </div>
-
-
-  <div
-    class="brain-window"
-    id="brainWindow"
-  >
-
-    <canvas
-      id="brainCanvas"
-    ></canvas>
-
-
-    <div class="brain-label">
-
-      <strong>
-        MALE CNS
-      </strong>
-
-      <span>
-        · LIVE ACTIVITY
-      </span>
-
-    </div>
-
-
-    <div class="status">
-
-      <span class="status-dot"></span>
-
-      LIVE
-
-    </div>
-
-
-    <div class="legend">
-
-      <div class="legend-row">
-
-        <span
-          class="legend-dot blue"
-        ></span>
-
-        optic lobe
-
-      </div>
-
-
-      <div class="legend-row">
-
-        <span
-          class="legend-dot yellow"
-        ></span>
-
-        central brain
-
-      </div>
-
-
-      <div class="legend-row">
-
-        <span
-          class="legend-dot green"
-        ></span>
-
-        sensory input
-
-      </div>
-
-
-      <div class="legend-row">
-
-        <span
-          class="legend-dot red"
-        ></span>
-
-        motor output
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="fullscreen-button"
-      id="fullscreenButton"
-    >
-      ⛶
-    </button>
-
-
-    <div class="stats">
-
-
-      <div class="stat">
-
-        <div
-          class="stat-value"
-          id="fired"
-        >
-          —
-        </div>
-
-        <div class="stat-name">
-          neurons fired
         </div>
 
       </div>
 
 
-      <div class="stat">
+      <div class="info-grid">
 
-        <div
-          class="stat-value"
-          id="spikes"
-        >
-          —
+        <div class="info-card">
+          <h3>Central Brain</h3>
+
+          <p>
+            Merkezi beyin bölgesi, görsel ve duyusal
+            bilgilerin işlenmesinde görev alan nöral
+            yapılardan oluşur.
+          </p>
         </div>
 
-        <div class="stat-name">
-          spikes
-        </div>
 
-      </div>
+        <div class="info-card">
+          <h3>Neural Activity</h3>
 
-
-      <div class="stat">
-
-        <div
-          class="stat-value"
-          id="motor"
-        >
-          —
-        </div>
-
-        <div class="stat-name">
-          motor spikes
+          <p>
+            Görselleştirme, nöral ağın uzaysal yapısını
+            ve simüle edilen aktiviteyi aynı ortamda
+            takip etmeye olanak sağlar.
+          </p>
         </div>
 
       </div>
 
+    </section>
 
-      <div class="stat">
+  </main>
 
-        <div
-          class="stat-value"
-          id="simTime"
-        >
-          0.00 s
-        </div>
 
-        <div class="stat-name">
-          sim time
-        </div>
+  <!-- =========================
+       FOOTER
+       ========================= -->
 
-      </div>
+  <footer>
+    <span>FLY NEURON</span>
+    <span>DROSOPHILA · NEURAL VISUALIZATION</span>
+  </footer>
 
 
-    </div>
+  <script>
 
-  </div>
+    /* =====================================================
+       DOUBLE CLICK ZOOM DISABLED
+       ===================================================== */
 
-</section>
-
-
-<!-- ========================================================
-     INFO
-========================================================= -->
-
-<section
-  class="info"
-  id="explore"
->
-
-  <div class="info-grid">
-
-
-    <div class="info-card">
-
-      <span>
-        01
-      </span>
-
-      <h3>
-        Nöronları gör
-      </h3>
-
-      <p>
-        Gerçek neuron skeleton verileri
-        3D uzayda görüntülenir.
-      </p>
-
-    </div>
-
-
-    <div class="info-card">
-
-      <span>
-        02
-      </span>
-
-      <h3>
-        Aktiviteyi izle
-      </h3>
-
-      <p>
-        Sinirsel aktivite noktaların
-        parlaklığını ve davranışını
-        değiştirir.
-      </p>
-
-    </div>
-
-
-    <div class="info-card">
-
-      <span>
-        03
-      </span>
-
-      <h3>
-        Bir nöron seç
-      </h3>
-
-      <p>
-        Herhangi bir nöronu seçip
-        bağlantılarını inceleyebileceğin
-        bir sistem oluşturacağız.
-      </p>
-
-    </div>
-
-
-    <div class="info-card">
-
-      <span>
-        04
-      </span>
-
-      <h3>
-        Beyne müdahale et
-      </h3>
-
-      <p>
-        Nöronları kapatıp sistemin
-        davranışının nasıl değiştiğini
-        simüle edeceğiz.
-      </p>
-
-    </div>
-
-
-  </div>
-
-</section>
-
-
-<footer id="about">
-
-  FLY NEURON · Male Drosophila melanogaster
-  central nervous system.
-  Male CNS v1.0 data from HHMI Janelia +
-  Google Research. Connectome data licensed CC-BY.
-
-</footer>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   FLY ROULETTE
-========================================================= */
-
-const wheelCanvas =
-  document.getElementById(
-    "wheelCanvas"
-  );
-
-const wheelCtx =
-  wheelCanvas.getContext(
-    "2d"
-  );
-
-const wheelSize =
-  wheelCanvas.width;
-
-const wheelCenter =
-  wheelSize / 2;
-
-const wheelRadius =
-  wheelSize * .405;
-
-
-/* European roulette order */
-
-const wheelNumbers = [
-
-  0,
-  32,
-  15,
-  19,
-  4,
-  21,
-  2,
-  25,
-  17,
-  34,
-  6,
-  27,
-  13,
-  36,
-  11,
-  30,
-  8,
-  23,
-  10,
-  5,
-  24,
-  16,
-  33,
-  1,
-  20,
-  14,
-  31,
-  9,
-  22,
-  18,
-  29,
-  7,
-  28,
-  12,
-  35,
-  3,
-  26
-
-];
-
-
-const redNumbers =
-  new Set([
-
-    1,3,5,7,9,
-    12,14,16,18,
-    19,21,23,25,
-    27,30,32,34,36
-
-  ]);
-
-
-function rouletteColor(
-  number
-){
-
-  if(
-    number === 0
-  ){
-
-    return "green";
-
-  }
-
-  return redNumbers.has(
-    number
-  )
-    ? "red"
-    : "black";
-
-}
-
-
-/* DRAW WHEEL */
-
-function drawRoulette(){
-
-  const ctx =
-    wheelCtx;
-
-  const C =
-    wheelCenter;
-
-  const R =
-    wheelRadius;
-
-  const count =
-    wheelNumbers.length;
-
-  const slice =
-    Math.PI * 2 / count;
-
-
-  ctx.clearRect(
-    0,
-    0,
-    wheelSize,
-    wheelSize
-  );
-
-
-  /* outer rings */
-
-  ctx.beginPath();
-
-  ctx.arc(
-    C,
-    C,
-    R + 27,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fillStyle =
-    "#080a0e";
-
-  ctx.fill();
-
-  ctx.strokeStyle =
-    "rgba(255,255,255,.12)";
-
-  ctx.lineWidth =
-    3;
-
-  ctx.stroke();
-
-
-  ctx.beginPath();
-
-  ctx.arc(
-    C,
-    C,
-    R + 14,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.strokeStyle =
-    "rgba(110,168,255,.20)";
-
-  ctx.lineWidth =
-    4;
-
-  ctx.stroke();
-
-
-  /* numbers */
-
-  wheelNumbers.forEach(
-    (
-      number,
-      index
-    ) => {
-
-      const start =
-        -Math.PI / 2
-        +
-        index * slice;
-
-      const end =
-        start + slice;
-
-
-      ctx.beginPath();
-
-      ctx.moveTo(
-        C,
-        C
-      );
-
-      ctx.arc(
-        C,
-        C,
-        R,
-        start,
-        end
-      );
-
-      ctx.closePath();
-
-
-      const color =
-        rouletteColor(
-          number
-        );
-
-
-      if(
-        color === "red"
-      ){
-
-        ctx.fillStyle =
-          "#76272f";
-
-      }else if(
-        color === "black"
-      ){
-
-        ctx.fillStyle =
-          "#101319";
-
-      }else{
-
-        ctx.fillStyle =
-          "#176447";
-
-      }
-
-
-      ctx.fill();
-
-
-      ctx.strokeStyle =
-        "rgba(255,255,255,.12)";
-
-      ctx.lineWidth =
-        2;
-
-      ctx.stroke();
-
-
-      /* number */
-
-      const angle =
-        start +
-        slice / 2;
-
-
-      const textRadius =
-        R * .76;
-
-
-      const tx =
-        C +
-        Math.cos(angle)
-        *
-        textRadius;
-
-
-      const ty =
-        C +
-        Math.sin(angle)
-        *
-        textRadius;
-
-
-      ctx.save();
-
-      ctx.translate(
-        tx,
-        ty
-      );
-
-      ctx.rotate(
-        angle +
-        Math.PI / 2
-      );
-
-
-      ctx.fillStyle =
-        "#f4f4f6";
-
-      ctx.font =
-        "700 23px system-ui";
-
-      ctx.textAlign =
-        "center";
-
-      ctx.textBaseline =
-        "middle";
-
-
-      ctx.fillText(
-        number,
-        0,
-        0
-      );
-
-
-      ctx.restore();
-
-    }
-  );
-
-
-  /* center disc */
-
-  ctx.beginPath();
-
-  ctx.arc(
-    C,
-    C,
-    R * .205,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fillStyle =
-    "#07090d";
-
-  ctx.fill();
-
-
-  ctx.strokeStyle =
-    "rgba(110,168,255,.45)";
-
-  ctx.lineWidth =
-    4;
-
-  ctx.stroke();
-
-
-  /* inner ring */
-
-  ctx.beginPath();
-
-  ctx.arc(
-    C,
-    C,
-    R * .245,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.strokeStyle =
-    "rgba(255,255,255,.08)";
-
-  ctx.lineWidth =
-    2;
-
-  ctx.stroke();
-
-}
-
-
-drawRoulette();
-
-
-/* =========================================================
-   BET SYSTEM
-========================================================= */
-
-let userBalance =
-  1000;
-
-let flyBalance =
-  1000;
-
-
-let selectedKind =
-  "color";
-
-let selectedValue =
-  "red";
-
-
-let currentUserBet =
-  null;
-
-let currentFlyBet =
-  null;
-
-
-let spinning =
-  false;
-
-
-let round =
-  0;
-
-
-let countdown =
-  15;
-
-
-let timer =
-  null;
-
-
-let wheelRotation =
-  0;
-
-
-let userWins =
-  0;
-
-let userLosses =
-  0;
-
-let flyWins =
-  0;
-
-let flyLosses =
-  0;
-
-
-/* populate numbers */
-
-const numberSelect =
-  document.getElementById(
-    "numberSelect"
-  );
-
-
-for(
-  let i = 0;
-  i <= 36;
-  i++
-){
-
-  const option =
-    document.createElement(
-      "option"
-    );
-
-  option.value =
-    i;
-
-  option.textContent =
-    i;
-
-  numberSelect.appendChild(
-    option
-  );
-
-}
-
-
-/* select bet */
-
-function selectBet(
-  kind,
-  value
-){
-
-  selectedKind =
-    kind;
-
-  selectedValue =
-    String(value);
-
-
-  document
-    .querySelectorAll(
-      ".bet-option"
-    )
-    .forEach(
-      button => {
-
-        button.classList.toggle(
-
-          "active",
-
-          button.dataset.kind
-            ===
-            kind &&
-
-          button.dataset.value
-            ===
-            String(value)
-
-        );
-
-      }
-    );
-
-
-  if(
-    kind === "number"
-  ){
-
-    numberSelect.value =
-      value;
-
-  }
-
-}
-
-
-/* buttons */
-
-document
-  .querySelectorAll(
-    ".bet-option"
-  )
-  .forEach(
-    button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          if(
-            spinning
-          ){
-
-            return;
-
-          }
-
-
-          if(
-            countdown <= 0
-          ){
-
-            return;
-
-          }
-
-
-          selectBet(
-
-            button.dataset.kind,
-
-            button.dataset.value
-
-          );
-
-        }
-      );
-
-    }
-  );
-
-
-numberSelect.addEventListener(
-  "change",
-  event => {
-
-    if(
-      event.target.value === ""
-    ){
-
-      return;
-
-    }
-
-
-    selectBet(
-      "number",
-      event.target.value
-    );
-
-  }
-);
-
-
-/* money */
-
-function money(
-  value
-){
-
-  return (
-
-    "₺" +
-
-    Math.floor(
-      Math.max(
-        0,
-        value
-      )
-    ).toLocaleString(
-      "tr-TR"
-    )
-
-  );
-
-}
-
-
-function updateBalances(){
-
-  document.getElementById(
-    "userBalance"
-  ).textContent =
-    money(
-      userBalance
-    );
-
-
-  document.getElementById(
-    "flyBalance"
-  ).textContent =
-    money(
-      flyBalance
-    );
-
-}
-
-
-/* notice */
-
-function notice(
-  text,
-  type = ""
-){
-
-  const element =
-    document.getElementById(
-      "rouletteNotice"
-    );
-
-  element.textContent =
-    text;
-
-  element.className =
-    "notice " + type;
-
-}
-
-
-/* =========================================================
-   USER BET
-========================================================= */
-
-function placeUserBet(){
-
-  if(
-    spinning ||
-    countdown <= 0
-  ){
-
-    return;
-
-  }
-
-
-  if(
-    currentUserBet
-  ){
-
-    notice(
-      "Bu turdaki bahsin zaten koyuldu.",
-      "loss"
-    );
-
-    return;
-
-  }
-
-
-  const amount =
-    Math.floor(
-      Number(
-        document.getElementById(
-          "betAmount"
-        ).value
-      )
-    );
-
-
-  if(
-    !Number.isFinite(
-      amount
-    ) ||
-    amount < 1
-  ){
-
-    notice(
-      "Geçerli bir bahis miktarı gir.",
-      "loss"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    amount > userBalance
-  ){
-
-    notice(
-      "Bu bahis için yeterli bakiyen yok.",
-      "loss"
-    );
-
-    return;
-
-  }
-
-
-  userBalance -=
-    amount;
-
-
-  currentUserBet = {
-
-    kind:
-      selectedKind,
-
-    value:
-      String(
-        selectedValue
-      ),
-
-    amount:
-      amount
-
-  };
-
-
-  updateBalances();
-
-
-  const description =
-    currentUserBet.kind
-      ===
-      "number"
-
-      ? `${amount}₺ ile ${selectedValue} numarasına bahis yaptın.`
-
-      : `${amount}₺ ile ${selectedValue === "red" ? "kırmızı" : "siyah"} seçtin.`;
-
-
-  notice(
-    description
-  );
-
-}
-
-
-/* button */
-
-document
-  .getElementById(
-    "placeBet"
-  )
-  .addEventListener(
-    "click",
-    placeUserBet
-  );
-
-
-document
-  .getElementById(
-    "clearBet"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      if(
-        spinning ||
-        countdown <= 0
-      ){
-
-        return;
-
-      }
-
-
-      if(
-        currentUserBet
-      ){
-
-        userBalance +=
-          currentUserBet.amount;
-
-        currentUserBet =
-          null;
-
-        updateBalances();
-
-      }
-
-
-      notice(
-        "Bahis temizlendi."
-      );
-
-    }
-  );
-
-
-/* =========================================================
-   FLY AI BET
-========================================================= */
-
-function flyMakeBet(){
-
-  if(
-    currentFlyBet ||
-    flyBalance <= 0
-  ){
-
-    return;
-
-  }
-
-
-  /*
-     Sinek bahis zamanının sonlarına doğru
-     kararını verir.
-  */
-
-  const amount =
-    Math.min(
-
-      flyBalance,
-
-      Math.max(
-        5,
-        Math.floor(
-          flyBalance *
-          (
-            .035 +
-            Math.random() *
-            .055
-          )
-        )
-      )
-
-    );
-
-
-  const random =
-    Math.random();
-
-
-  let kind;
-  let value;
-
-
-  if(
-    random < .50
-  ){
-
-    kind =
-      "color";
-
-    value =
-      Math.random()
-        <
-        .5
-          ? "red"
-          : "black";
-
-  }else{
-
-    kind =
-      "number";
-
-    value =
-      String(
-        Math.floor(
-          Math.random() *
-          37
-        )
-      );
-
-  }
-
-
-  flyBalance -=
-    amount;
-
-
-  currentFlyBet = {
-
-    kind,
-    value,
-    amount
-
-  };
-
-
-  updateBalances();
-
-
-  const text =
-
-    kind === "number"
-
-      ?
-
-        `Nöral aktivite ${value} numarasını seçti. Bahis: ${amount}₺.`
-
-      :
-
-        `Sinek ${value === "red" ? "kırmızı" : "siyah"} seçti. Bahis: ${amount}₺.`;
-
-
-  document.getElementById(
-    "flyDecision"
-  ).textContent =
-    text;
-
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-function updateTimer(){
-
-  const timerElement =
-    document.getElementById(
-      "countdown"
-    );
-
-  timerElement.textContent =
-    countdown;
-
-
-  timerElement.classList.remove(
-    "warning",
-    "danger"
-  );
-
-
-  if(
-    countdown <= 5
-  ){
-
-    timerElement.classList.add(
-      "danger"
-    );
-
-  }else if(
-    countdown <= 9
-  ){
-
-    timerElement.classList.add(
-      "warning"
-    );
-
-  }
-
-
-  document.getElementById(
-    "roundStatus"
-  ).textContent =
-
-    countdown > 0
-
-      ? "BAHİSLER AÇIK"
-
-      : "BAHİSLER KİLİTLİ";
-
-}
-
-
-function startRound(){
-
-  if(
-    spinning
-  ){
-
-    return;
-
-  }
-
-
-  countdown =
-    15;
-
-
-  currentUserBet =
-    null;
-
-  currentFlyBet =
-    null;
-
-
-  document.getElementById(
-    "flyDecision"
-  ).textContent =
-    "Sinek nöral sistemini tarıyor. Süre bitmeden bahis yapacak.";
-
-
-  document.getElementById(
-    "wheelCenter"
-  ).innerHTML =
-    `?<small>RESULT</small>`;
-
-
-  document.getElementById(
-    "wheelResult"
-  ).innerHTML =
-
-    `
-
-      <div class="wheel-result-number">
-        Bahisler açık
-      </div>
-
-      <div class="wheel-result-meta">
-        ${countdown} saniye içinde karar ver
-      </div>
-
-    `;
-
-
-  notice(
-    "Bahisler 15 saniye açık."
-  );
-
-
-  updateTimer();
-
-
-  clearInterval(
-    timer
-  );
-
-
-  timer =
-    setInterval(
-      () => {
-
-        countdown--;
-
-        updateTimer();
-
-
-        /*
-          Sinek insanın son saniyede panik
-          yapması gibi değil, sistemli.
-        */
-
-        if(
-          countdown === 5
-        ){
-
-          flyMakeBet();
-
-        }
-
-
-        if(
-          countdown <= 0
-        ){
-
-          clearInterval(
-            timer
-          );
-
-
-          lockBets();
-
-        }
-
+    document.addEventListener(
+      "dblclick",
+      function (e) {
+        e.preventDefault();
       },
-      1000
-    );
-
-}
-
-
-/* =========================================================
-   LOCK
-========================================================= */
-
-function lockBets(){
-
-  if(
-    spinning
-  ){
-
-    return;
-
-  }
-
-
-  /*
-    Eğer sinek 5. saniyede karar veremediyse
-    burada zorunlu bahis yapar.
-  */
-
-  if(
-    !currentFlyBet
-  ){
-
-    flyMakeBet();
-
-  }
-
-
-  document.getElementById(
-    "roundStatus"
-  ).textContent =
-    "BAHİSLER KİLİTLİ";
-
-
-  document.getElementById(
-    "rouletteNotice"
-  ).textContent =
-    "Bahisler kilitlendi. Rulet dönüyor...";
-
-
-  spinRoulette();
-
-}
-
-
-/* =========================================================
-   WIN CHECK
-========================================================= */
-
-function betWon(
-  bet,
-  number
-){
-
-  if(
-    !bet
-  ){
-
-    return false;
-
-  }
-
-
-  if(
-    bet.kind === "number"
-  ){
-
-    return (
-      Number(
-        bet.value
-      )
-      ===
-      number
-    );
-
-  }
-
-
-  return (
-    bet.value
-    ===
-    rouletteColor(
-      number
-    )
-  );
-
-}
-
-
-/* =========================================================
-   HISTORY
-========================================================= */
-
-function addHistory(
-  number
-){
-
-  const history =
-    document.getElementById(
-      "history"
-    );
-
-
-  const ball =
-    document.createElement(
-      "div"
-    );
-
-
-  ball.className =
-    "history-ball "
-    +
-    rouletteColor(
-      number
-    );
-
-
-  ball.textContent =
-    number;
-
-
-  history.prepend(
-    ball
-  );
-
-
-  while(
-    history.children.length
-    >
-    12
-  ){
-
-    history.removeChild(
-      history.lastChild
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SPIN
-========================================================= */
-
-function spinRoulette(){
-
-  if(
-    spinning
-  ){
-
-    return;
-
-  }
-
-
-  spinning =
-    true;
-
-
-  const resultIndex =
-    Math.floor(
-      Math.random() *
-      wheelNumbers.length
-    );
-
-
-  const result =
-    wheelNumbers[
-      resultIndex
-    ];
-
-
-  const slice =
-    360 /
-    wheelNumbers.length;
-
-
-  /*
-    Pointer top.
-    Selected slot's center is aligned to pointer.
-  */
-
-  const targetAngle =
-    -(
-      resultIndex *
-      slice
-      +
-      slice / 2
-    );
-
-
-  const extraTurns =
-    6 +
-    Math.floor(
-      Math.random() *
-      3
-    );
-
-
-  const currentMod =
-    (
-      wheelRotation %
-      360
-      +
-      360
-    ) %
-    360;
-
-
-  let delta =
-    extraTurns * 360
-    +
-    targetAngle
-    -
-    currentMod;
-
-
-  if(
-    delta < 0
-  ){
-
-    delta +=
-      360;
-
-  }
-
-
-  wheelRotation +=
-    delta;
-
-
-  document.getElementById(
-    "wheelCanvas"
-  ).style.transform =
-    `rotate(${wheelRotation}deg)`;
-
-
-  document.getElementById(
-    "wheelResult"
-  ).innerHTML =
-
-    `
-
-      <div class="wheel-result-number">
-        Çark dönüyor...
-      </div>
-
-      <div class="wheel-result-meta">
-        Nöral karar işleniyor
-      </div>
-
-    `;
-
-
-  setTimeout(
-
-    () => {
-
-      finishRound(
-        result
-      );
-
-    },
-
-    5300
-
-  );
-
-}
-
-
-/* =========================================================
-   FINISH
-========================================================= */
-
-function finishRound(
-  result
-){
-
-  const userWon =
-    betWon(
-      currentUserBet,
-      result
-    );
-
-
-  const flyWon =
-    betWon(
-      currentFlyBet,
-      result
-    );
-
-
-  /* user */
-
-  if(
-    currentUserBet
-  ){
-
-    if(
-      userWon
-    ){
-
-      userWins++;
-
-
-      const multiplier =
-        currentUserBet.kind
-          ===
-          "number"
-            ? 36
-            : 2;
-
-
-      userBalance +=
-        currentUserBet.amount
-        *
-        multiplier;
-
-    }else{
-
-      userLosses++;
-
-    }
-
-  }
-
-
-  /* fly */
-
-  if(
-    currentFlyBet
-  ){
-
-    if(
-      flyWon
-    ){
-
-      flyWins++;
-
-
-      const multiplier =
-        currentFlyBet.kind
-          ===
-          "number"
-            ? 36
-            : 2;
-
-
-      flyBalance +=
-        currentFlyBet.amount
-        *
-        multiplier;
-
-    }else{
-
-      flyLosses++;
-
-    }
-
-  }
-
-
-  updateBalances();
-
-  addHistory(
-    result
-  );
-
-
-  const color =
-    rouletteColor(
-      result
-    );
-
-
-  const emoji =
-
-    color === "red"
-
-      ? "🔴"
-
-      :
-
-    color === "black"
-
-      ? "⚫"
-
-      :
-
-        "🟢";
-
-
-  document.getElementById(
-    "wheelCenter"
-  ).innerHTML =
-
-    `
-
-      ${result}
-
-      <small>
-        ${color}
-      </small>
-
-    `;
-
-
-  document.getElementById(
-    "wheelResult"
-  ).innerHTML =
-
-    `
-
-      <div class="wheel-result-number">
-
-        ${result}
-        ${emoji}
-
-      </div>
-
-      <div class="wheel-result-meta">
-
-        Sen:
-        ${userWon ? "KAZANDIN" : "KAYBETTİN"}
-
-        ·
-
-        Sinek:
-        ${flyWon ? "KAZANDI" : "KAYBETTİ"}
-
-      </div>
-
-    `;
-
-
-  if(
-    userWon &&
-    flyWon
-  ){
-
-    notice(
-      "İkiniz de kazandınız. Nadir bir nöral uyum.",
-      "win"
-    );
-
-  }else if(
-    userWon
-  ){
-
-    notice(
-      "Sen kazandın. Sinek bu sonucu analiz ediyor.",
-      "win"
-    );
-
-  }else if(
-    flyWon
-  ){
-
-    notice(
-      "Sinek kazandı. Biyolojik rakibin senden iyi oynadı.",
-      "loss"
-    );
-
-  }else{
-
-    notice(
-      "İkiniz de kaybettiniz. Rulet merhamet göstermedi.",
-      "loss"
-    );
-
-  }
-
-
-  spinning =
-    false;
-
-
-  round++;
-
-
-  /*
-    Yeni tur hemen başlar.
-    15 saniyelik yeni bahis süresi.
-  */
-
-  setTimeout(
-
-    () => {
-
-      startRound();
-
-    },
-
-    1600
-
-  );
-
-}
-
-
-/* start */
-
-updateBalances();
-
-startRound();
-
-
-/* =========================================================
-   BRAIN / THREE.JS
-========================================================= */
-
-const brainCanvas =
-  document.getElementById(
-    "brainCanvas"
-  );
-
-
-const renderer =
-  new THREE.WebGLRenderer({
-
-    canvas:
-      brainCanvas,
-
-    antialias:
-      true,
-
-    alpha:
-      true
-
-  });
-
-
-renderer.setPixelRatio(
-  Math.min(
-    window.devicePixelRatio || 1,
-    2
-  )
-);
-
-
-renderer.setClearColor(
-  0x000000,
-  0
-);
-
-
-const scene =
-  new THREE.Scene();
-
-
-const camera =
-  new THREE.PerspectiveCamera(
-
-    45,
-
-    1,
-
-    .1,
-
-    100000
-
-  );
-
-
-camera.position.set(
-  0,
-  0,
-  720
-);
-
-
-const brainGroup =
-  new THREE.Group();
-
-
-scene.add(
-  brainGroup
-);
-
-
-/* =========================================================
-   BRAIN LIGHT
-========================================================= */
-
-const ambientLight =
-  new THREE.AmbientLight(
-    0x6688ff,
-    1.8
-  );
-
-scene.add(
-  ambientLight
-);
-
-
-/*
-  Very subtle background particles.
-  This makes the brain area readable even
-  when the real API is unavailable.
-*/
-
-const backgroundGeometry =
-  new THREE.BufferGeometry();
-
-
-const backgroundPositions =
-  new Float32Array(
-    900 * 3
-  );
-
-
-for(
-  let i = 0;
-  i < 900;
-  i++
-){
-
-  const i3 =
-    i * 3;
-
-
-  backgroundPositions[
-    i3
-  ] =
-    (
-      Math.random()
-      -
-      .5
-    )
-    *
-    950;
-
-
-  backgroundPositions[
-    i3 + 1
-  ] =
-    (
-      Math.random()
-      -
-      .5
-    )
-    *
-    620;
-
-
-  backgroundPositions[
-    i3 + 2
-  ] =
-    (
-      Math.random()
-      -
-      .5
-    )
-    *
-    500;
-
-}
-
-
-backgroundGeometry.setAttribute(
-
-  "position",
-
-  new THREE.BufferAttribute(
-    backgroundPositions,
-    3
-  )
-
-);
-
-
-const backgroundMaterial =
-  new THREE.PointsMaterial({
-
-    color:
-      0x263b68,
-
-    size:
-      1.4,
-
-    transparent:
-      true,
-
-    opacity:
-      .30,
-
-    depthWrite:
-      false
-
-  });
-
-
-const backgroundPoints =
-  new THREE.Points(
-
-    backgroundGeometry,
-
-    backgroundMaterial
-
-  );
-
-
-scene.add(
-  backgroundPoints
-);
-
-
-/* =========================================================
-   REAL API DATA
-========================================================= */
-
-const neuronIds = [
-
-  12781,
-  556329
-
-];
-
-
-const neuronColors = [
-
-  new THREE.Color(
-    "#42a5ff"
-  ),
-
-  new THREE.Color(
-    "#ffc247"
-  )
-
-];
-
-
-let loadedNeuronCount =
-  0;
-
-
-let loadedNodeCount =
-  0;
-
-
-/* SWC */
-
-function parseSWC(
-  text
-){
-
-  const points =
-    [];
-
-
-  const lines =
-    text.split(
-      /\r?\n/
-    );
-
-
-  for(
-    const line
-    of lines
-  ){
-
-    const row =
-      line.trim();
-
-
-    if(
-      !row ||
-      row.startsWith(
-        "#"
-      )
-    ){
-
-      continue;
-
-    }
-
-
-    const parts =
-      row.split(
-        /\s+/
-      );
-
-
-    if(
-      parts.length
-      <
-      7
-    ){
-
-      continue;
-
-    }
-
-
-    const x =
-      Number(
-        parts[2]
-      );
-
-
-    const y =
-      Number(
-        parts[3]
-      );
-
-
-    const z =
-      Number(
-        parts[4]
-      );
-
-
-    if(
-
-      Number.isFinite(
-        x
-      ) &&
-
-      Number.isFinite(
-        y
-      ) &&
-
-      Number.isFinite(
-        z
-      )
-
-    ){
-
-      points.push({
-
-        x,
-        y,
-        z
-
-      });
-
-    }
-
-  }
-
-
-  return points;
-
-}
-
-
-/* load */
-
-async function loadNeuron(
-  id
-){
-
-  try{
-
-    const response =
-      await fetch(
-        `/api/neuron?id=${id}`,
-        {
-          cache:
-            "force-cache"
-        }
-      );
-
-
-    if(
-      !response.ok
-    ){
-
-      return [];
-
-    }
-
-
-    const text =
-      await response.text();
-
-
-    const points =
-      parseSWC(
-        text
-      );
-
-
-    if(
-      points.length
-    ){
-
-      loadedNeuronCount++;
-
-      loadedNodeCount +=
-        points.length;
-
-    }
-
-
-    return points;
-
-  }catch(
-    error
-  ){
-
-    console.warn(
-      "Neuron API unavailable."
-    );
-
-    return [];
-
-  }
-
-}
-
-
-/* =========================================================
-   FALLBACK BRAIN
-========================================================= */
-
-function createFallbackBrain(){
-
-  const positions =
-    [];
-
-
-  const colors =
-    [];
-
-
-  /*
-    Organic ellipsoid / neural cloud.
-  */
-
-  const neurons =
-    1100;
-
-
-  for(
-    let i = 0;
-    i < neurons;
-    i++
-  ){
-
-    const theta =
-      Math.random()
-      *
-      Math.PI
-      *
-      2;
-
-
-    const phi =
-      Math.acos(
-        2 *
-        Math.random()
-        -
-        1
-      );
-
-
-    const radius =
-      Math.pow(
-        Math.random(),
-        .65
-      );
-
-
-    const x =
-      Math.sin(phi)
-      *
-      Math.cos(theta)
-      *
-      270
-      *
-      radius;
-
-
-    const y =
-      Math.sin(phi)
-      *
-      Math.sin(theta)
-      *
-      180
-      *
-      radius;
-
-
-    const z =
-      Math.cos(phi)
-      *
-      145
-      *
-      radius;
-
-
-    positions.push(
-      x,
-      y,
-      z
+      {
+        passive: false
+      }
     );
 
 
     /*
-      central / lobe color distribution
+      iOS Safari çift dokunma zoomunu engelle.
+      Ama normal tek dokunma çalışmaya devam eder.
     */
 
-    if(
-      x > 70
-    ){
+    let lastTouchEnd = 0;
 
-      colors.push(
-        .26,
-        .65,
-        1
-      );
+    document.addEventListener(
+      "touchend",
+      function (e) {
 
-    }else if(
-      x < -80
-    ){
+        const now = Date.now();
 
-      colors.push(
-        .38,
-        .65,
-        1
-      );
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
 
-    }else{
+        lastTouchEnd = now;
 
-      colors.push(
-        1,
-        .76,
-        .28
-      );
+      },
+      {
+        passive: false
+      }
+    );
 
+
+    /* =====================================================
+       ROULETTE
+       ===================================================== */
+
+    const wheelCanvas =
+      document.getElementById("wheelCanvas");
+
+    const wheelCtx =
+      wheelCanvas.getContext("2d");
+
+    const wheelNumbers = [
+      0,
+      32,
+      15,
+      19,
+      4,
+      21,
+      2,
+      25,
+      17,
+      34,
+      6,
+      27,
+      13,
+      36,
+      11,
+      30,
+      8,
+      23,
+      10,
+      5,
+      24,
+      16,
+      33,
+      1,
+      20,
+      14,
+      31,
+      9,
+      22,
+      18,
+      29,
+      7,
+      28,
+      12,
+      35,
+      3,
+      26
+    ];
+
+
+    const redNumbers = new Set([
+      1,
+      3,
+      5,
+      7,
+      9,
+      12,
+      14,
+      16,
+      18,
+      19,
+      21,
+      23,
+      25,
+      27,
+      30,
+      32,
+      34,
+      36
+    ]);
+
+
+    function rouletteColor(number) {
+
+      if (number === 0) {
+        return "green";
+      }
+
+      return redNumbers.has(number)
+        ? "red"
+        : "black";
     }
 
-  }
 
+    function resizeWheel() {
 
-  /*
-    Add connecting neural strands.
-  */
+      const rect =
+        wheelCanvas.getBoundingClientRect();
 
-  const linePositions =
-    [];
-
-
-  for(
-    let i = 0;
-    i < 120;
-    i++
-  ){
-
-    const a =
-      Math.random()
-      *
-      Math.PI
-      *
-      2;
-
-
-    const y =
-      (
-        Math.random()
-        -
-        .5
-      )
-      *
-      220;
-
-
-    const x1 =
-      Math.cos(a)
-      *
-      270;
-
-
-    const z1 =
-      Math.sin(a)
-      *
-      145;
-
-
-    linePositions.push(
-
-      x1,
-      y,
-      z1,
-
-      x1 *
-      .45,
-
-      y *
-      .45,
-
-      z1 *
-      .45
-
-    );
-
-  }
-
-
-  const lineGeometry =
-    new THREE.BufferGeometry();
-
-
-  lineGeometry.setAttribute(
-
-    "position",
-
-    new THREE.Float32BufferAttribute(
-      linePositions,
-      3
-    )
-
-  );
-
-
-  const lineMaterial =
-    new THREE.LineBasicMaterial({
-
-      color:
-        0x3f79c8,
-
-      transparent:
-        true,
-
-      opacity:
-        .23,
-
-      blending:
-        THREE.AdditiveBlending
-
-    });
-
-
-  const lines =
-    new THREE.LineSegments(
-
-      lineGeometry,
-
-      lineMaterial
-
-    );
-
-
-  brainGroup.add(
-    lines
-  );
-
-
-  const geometry =
-    new THREE.BufferGeometry();
-
-
-  geometry.setAttribute(
-
-    "position",
-
-    new THREE.Float32BufferAttribute(
-      positions,
-      3
-    )
-
-  );
-
-
-  geometry.setAttribute(
-
-    "color",
-
-    new THREE.Float32BufferAttribute(
-      colors,
-      3
-    )
-
-  );
-
-
-  const material =
-    new THREE.PointsMaterial({
-
-      size:
-        3.6,
-
-      vertexColors:
-        true,
-
-      transparent:
-        true,
-
-      opacity:
-        .92,
-
-      sizeAttenuation:
-        true,
-
-      blending:
-        THREE.AdditiveBlending,
-
-      depthWrite:
-        false
-
-    });
-
-
-  const points =
-    new THREE.Points(
-
-      geometry,
-
-      material
-
-    );
-
-
-  brainGroup.add(
-    points
-  );
-
-
-  loadedNeuronCount =
-    2;
-
-
-  loadedNodeCount =
-    neurons;
-
-
-  document.getElementById(
-    "fired"
-  ).textContent =
-    "2";
-
-
-  document.getElementById(
-    "spikes"
-  ).textContent =
-    neurons.toLocaleString(
-      "tr-TR"
-    );
-
-
-  document.getElementById(
-    "motor"
-  ).textContent =
-    Math.floor(
-      neurons *
-      .08
-    ).toLocaleString(
-      "tr-TR"
-    );
-
-}
-
-
-/* =========================================================
-   REAL BRAIN
-========================================================= */
-
-function createRealBrain(
-  points
-){
-
-  const positions =
-    new Float32Array(
-      points.length * 3
-    );
-
-
-  const colorArray =
-    new Float32Array(
-      points.length * 3
-    );
-
-
-  let minX =
-    Infinity;
-
-  let minY =
-    Infinity;
-
-  let minZ =
-    Infinity;
-
-  let maxX =
-    -Infinity;
-
-  let maxY =
-    -Infinity;
-
-  let maxZ =
-    -Infinity;
-
-
-  for(
-    const point
-    of points
-  ){
-
-    minX =
-      Math.min(
-        minX,
-        point.x
-      );
-
-    maxX =
-      Math.max(
-        maxX,
-        point.x
-      );
-
-    minY =
-      Math.min(
-        minY,
-        point.y
-      );
-
-    maxY =
-      Math.max(
-        maxY,
-        point.y
-      );
-
-    minZ =
-      Math.min(
-        minZ,
-        point.z
-      );
-
-    maxZ =
-      Math.max(
-        maxZ,
-        point.z
-      );
-
-  }
-
-
-  const centerX =
-    (
-      minX +
-      maxX
-    ) / 2;
-
-
-  const centerY =
-    (
-      minY +
-      maxY
-    ) / 2;
-
-
-  const centerZ =
-    (
-      minZ +
-      maxZ
-    ) / 2;
-
-
-  const largest =
-    Math.max(
-
-      maxX -
-      minX,
-
-      maxY -
-      minY,
-
-      maxZ -
-      minZ
-
-    );
-
-
-  const scale =
-    largest > 0
-
-      ? 500 /
-        largest
-
-      : 1;
-
-
-  points.forEach(
-
-    (
-      point,
-      index
-    ) => {
-
-      const i =
-        index * 3;
-
-
-      positions[i] =
-        (
-          point.x -
-          centerX
-        )
-        *
-        scale;
-
-
-      positions[i+1] =
-        (
-          point.y -
-          centerY
-        )
-        *
-        scale;
-
-
-      positions[i+2] =
-        (
-          point.z -
-          centerZ
-        )
-        *
-        scale;
-
-
-      colorArray[i] =
-        point.color.r;
-
-
-      colorArray[i+1] =
-        point.color.g;
-
-
-      colorArray[i+2] =
-        point.color.b;
-
-    }
-
-  );
-
-
-  const geometry =
-    new THREE.BufferGeometry();
-
-
-  geometry.setAttribute(
-
-    "position",
-
-    new THREE.BufferAttribute(
-      positions,
-      3
-    )
-
-  );
-
-
-  geometry.setAttribute(
-
-    "color",
-
-    new THREE.BufferAttribute(
-      colorArray,
-      3
-    )
-
-  );
-
-
-  const material =
-    new THREE.PointsMaterial({
-
-      size:
-        3.2,
-
-      vertexColors:
-        true,
-
-      transparent:
-        true,
-
-      opacity:
-        .94,
-
-      sizeAttenuation:
-        true,
-
-      blending:
-        THREE.AdditiveBlending,
-
-      depthWrite:
-        false
-
-    });
-
-
-  const object =
-    new THREE.Points(
-
-      geometry,
-
-      material
-
-    );
-
-
-  brainGroup.clear();
-
-
-  brainGroup.add(
-    object
-  );
-
-
-  brainGroup.position.set(
-    0,
-    15,
-    0
-  );
-
-}
-
-
-/* =========================================================
-   BUILD BRAIN
-========================================================= */
-
-async function buildBrain(){
-
-  const results =
-    await Promise.all(
-
-      neuronIds.map(
-        id =>
-          loadNeuron(
-            id
+      const size =
+        Math.max(
+          300,
+          Math.floor(
+            Math.min(rect.width, rect.height)
           )
-      )
+        );
 
+      const dpr =
+        Math.min(
+          window.devicePixelRatio || 1,
+          2
+        );
+
+      wheelCanvas.width = size * dpr;
+      wheelCanvas.height = size * dpr;
+
+      wheelCtx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+      wheelCanvas._displaySize = size;
+
+      drawRoulette();
+    }
+
+
+    let wheelRotation = 0;
+
+
+    function drawRoulette() {
+
+      const size =
+        wheelCanvas._displaySize ||
+        wheelCanvas.clientWidth ||
+        400;
+
+      const cx = size / 2;
+      const cy = size / 2;
+
+      const radius =
+        size * .47;
+
+      wheelCtx.clearRect(
+        0,
+        0,
+        size,
+        size
+      );
+
+
+      wheelCtx.save();
+
+      wheelCtx.translate(
+        cx,
+        cy
+      );
+
+      wheelCtx.rotate(
+        wheelRotation
+      );
+
+
+      const segment =
+        Math.PI * 2 /
+        wheelNumbers.length;
+
+
+      wheelNumbers.forEach(
+        (number, index) => {
+
+          const start =
+            index * segment -
+            Math.PI / 2;
+
+          const end =
+            start + segment;
+
+          const color =
+            rouletteColor(number);
+
+
+          if (color === "red") {
+            wheelCtx.fillStyle =
+              "#a82f36";
+          }
+          else if (color === "black") {
+            wheelCtx.fillStyle =
+              "#111318";
+          }
+          else {
+            wheelCtx.fillStyle =
+              "#16875d";
+          }
+
+
+          wheelCtx.beginPath();
+
+          wheelCtx.moveTo(
+            0,
+            0
+          );
+
+          wheelCtx.arc(
+            0,
+            0,
+            radius,
+            start,
+            end
+          );
+
+          wheelCtx.closePath();
+
+          wheelCtx.fill();
+
+
+          wheelCtx.strokeStyle =
+            "rgba(255,255,255,.10)";
+
+          wheelCtx.lineWidth = 1;
+
+          wheelCtx.stroke();
+
+
+          /* Number */
+
+          const middle =
+            start +
+            segment / 2;
+
+          const textRadius =
+            radius * .82;
+
+
+          const tx =
+            Math.cos(middle) *
+            textRadius;
+
+          const ty =
+            Math.sin(middle) *
+            textRadius;
+
+
+          wheelCtx.save();
+
+          wheelCtx.translate(
+            tx,
+            ty
+          );
+
+          wheelCtx.rotate(
+            middle + Math.PI / 2
+          );
+
+          wheelCtx.fillStyle =
+            "#fff";
+
+          wheelCtx.font =
+            `600 ${Math.max(10, size * .027)}px Inter, Arial`;
+
+          wheelCtx.textAlign =
+            "center";
+
+          wheelCtx.textBaseline =
+            "middle";
+
+          wheelCtx.fillText(
+            number,
+            0,
+            0
+          );
+
+          wheelCtx.restore();
+
+        }
+      );
+
+
+      /* Outer ring */
+
+      wheelCtx.beginPath();
+
+      wheelCtx.arc(
+        0,
+        0,
+        radius,
+        0,
+        Math.PI * 2
+      );
+
+      wheelCtx.strokeStyle =
+        "rgba(255,255,255,.22)";
+
+      wheelCtx.lineWidth = 4;
+
+      wheelCtx.stroke();
+
+
+      wheelCtx.beginPath();
+
+      wheelCtx.arc(
+        0,
+        0,
+        radius * .58,
+        0,
+        Math.PI * 2
+      );
+
+      wheelCtx.strokeStyle =
+        "rgba(255,255,255,.08)";
+
+      wheelCtx.lineWidth = 2;
+
+      wheelCtx.stroke();
+
+
+      wheelCtx.restore();
+
+    }
+
+
+    window.addEventListener(
+      "resize",
+      resizeWheel
     );
 
 
-  const allPoints =
-    [];
+    setTimeout(
+      resizeWheel,
+      100
+    );
 
 
-  results.forEach(
+    /* =========================
+       ROULETTE STATE
+       ========================= */
 
-    (
-      points,
-      neuronIndex
-    ) => {
+    let userBalance = 1000;
+
+    let flyBalance = 1000;
+
+    let countdown = 15;
+
+    let roundTimer = null;
+
+    let spinning = false;
+
+    let userBets = [];
+
+    let flyBet = null;
+
+    let selectedKind = "color";
+
+    let selectedValue = "red";
+
+    let historyNumbers = [];
+
+
+    const userBalanceEl =
+      document.getElementById(
+        "userBalance"
+      );
+
+    const flyBalanceEl =
+      document.getElementById(
+        "flyBalance"
+      );
+
+    const countdownEl =
+      document.getElementById(
+        "countdown"
+      );
+
+    const placeBetButton =
+      document.getElementById(
+        "placeBet"
+      );
+
+    const numberSelect =
+      document.getElementById(
+        "numberSelect"
+      );
+
+    const betAmount =
+      document.getElementById(
+        "betAmount"
+      );
+
+    const rouletteNotice =
+      document.getElementById(
+        "rouletteNotice"
+      );
+
+    const flyDecision =
+      document.getElementById(
+        "flyDecision"
+      );
+
+    const wheelResult =
+      document.getElementById(
+        "wheelResult"
+      );
+
+
+    /* Number select */
+
+    for (
+      let i = 1;
+      i <= 36;
+      i++
+    ) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value = i;
+
+      option.textContent =
+        `${i} · ${
+          rouletteColor(i) === "red"
+            ? "Kırmızı"
+            : "Siyah"
+        }`;
+
+      numberSelect.appendChild(
+        option
+      );
+
+    }
+
+
+    numberSelect.style.display =
+      "none";
+
+
+    function updateBalances() {
+
+      userBalanceEl.textContent =
+        userBalance.toFixed(2);
+
+      flyBalanceEl.textContent =
+        flyBalance.toFixed(2);
+
+    }
+
+
+    /* =========================
+       BET TYPE BUTTONS
+       ========================= */
+
+    document
+      .querySelectorAll(".bet-option")
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              document
+                .querySelectorAll(
+                  ".bet-option"
+                )
+                .forEach(
+                  b =>
+                    b.classList.remove(
+                      "active"
+                    )
+                );
+
+
+              button.classList.add(
+                "active"
+              );
+
+
+              selectedKind =
+                button.dataset.kind;
+
+
+              if (
+                selectedKind ===
+                "number"
+              ) {
+
+                numberSelect.style.display =
+                  "block";
+
+                selectedValue =
+                  Number(
+                    numberSelect.value
+                  );
+
+              }
+              else {
+
+                numberSelect.style.display =
+                  "none";
+
+                selectedValue =
+                  button.dataset.value;
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+    numberSelect.addEventListener(
+      "change",
+      () => {
+
+        selectedValue =
+          Number(
+            numberSelect.value
+          );
+
+      }
+    );
+
+
+    /* =========================
+       USER BET
+       ========================= */
+
+    function placeUserBet() {
+
+      if (countdown <= 0 || spinning) {
+        return;
+      }
+
+
+      const amount =
+        Number(
+          betAmount.value
+        );
+
+
+      if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+      ) {
+
+        rouletteNotice.textContent =
+          "Geçerli bir bahis miktarı gir.";
+
+        return;
+      }
+
+
+      if (amount > userBalance) {
+
+        rouletteNotice.textContent =
+          "Yeterli bakiyen yok.";
+
+        return;
+      }
+
+
+      const bet = {
+        kind: selectedKind,
+        value: selectedValue,
+        amount: amount
+      };
+
+
+      userBets.push(bet);
+
+      userBalance -= amount;
+
+      updateBalances();
+
+
+      rouletteNotice.textContent =
+        `Bahis kabul edildi: ${
+          selectedKind === "color"
+            ? selectedValue === "red"
+              ? "Kırmızı"
+              : "Siyah"
+            : selectedValue
+        } · ${amount.toFixed(2)}`;
+
+
+      placeBetButton.textContent =
+        "BAHİS EKLENDİ";
+
+      setTimeout(
+        () => {
+          if (!spinning) {
+            placeBetButton.textContent =
+              "BAHİS YAP";
+          }
+        },
+        700
+      );
+
+    }
+
+
+    placeBetButton.addEventListener(
+      "click",
+      placeUserBet
+    );
+
+
+    document
+      .getElementById("clearBet")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (spinning) return;
+
+          const returned =
+            userBets.reduce(
+              (sum, bet) =>
+                sum + bet.amount,
+              0
+            );
+
+          userBalance += returned;
+
+          userBets = [];
+
+          updateBalances();
+
+          rouletteNotice.textContent =
+            "Bahisler temizlendi.";
+
+        }
+      );
+
+
+    /* =========================
+       FLY NEURON BET
+       ========================= */
+
+    function flyMakeBet() {
+
+      if (flyBet || spinning) {
+        return;
+      }
+
+
+      /*
+        Sinek kararını nöral aktivite
+        simülasyonu olarak üret.
+      */
+
+      const neuralSignal =
+        Math.random();
+
+
+      let kind;
+
+      let value;
+
+      if (neuralSignal < .65) {
+
+        kind = "color";
+
+        value =
+          Math.random() < .5
+            ? "red"
+            : "black";
+
+      }
+      else {
+
+        kind = "number";
+
+        value =
+          wheelNumbers[
+            Math.floor(
+              Math.random() *
+              wheelNumbers.length
+            )
+          ];
+
+      }
+
+
+      const amount =
+        Math.max(
+          20,
+          Math.min(
+            flyBalance * .09,
+            flyBalance *
+              (
+                .035 +
+                Math.random() * .055
+              )
+          )
+        );
+
+
+      flyBet = {
+        kind,
+        value,
+        amount
+      };
+
+
+      flyBalance -= amount;
+
+      updateBalances();
+
+
+      const readable =
+        kind === "color"
+          ? value === "red"
+            ? "KIRMIZI"
+            : "SİYAH"
+          : `#${value}`;
+
+
+      flyDecision.innerHTML =
+        `<strong>FLY NEURON</strong><br>
+         Nöral aktivite kararı verdi:
+         <b>${readable}</b> · ${amount.toFixed(2)} bahis`;
+
+    }
+
+
+    /* =========================
+       START ROUND
+       ========================= */
+
+    function startRound() {
+
+      clearInterval(
+        roundTimer
+      );
+
+
+      spinning = false;
+
+      countdown = 15;
+
+      userBets = [];
+
+      flyBet = null;
+
+
+      countdownEl.textContent =
+        countdown;
+
+
+      placeBetButton.disabled =
+        false;
+
+      placeBetButton.textContent =
+        "BAHİS YAP";
+
+
+      flyDecision.innerHTML =
+        `<strong>FLY NEURON</strong><br>
+         Nöral karar bekleniyor...`;
+
+
+      rouletteNotice.textContent =
+        "Bahis penceresi açık.";
+
+
+      wheelResult.textContent =
+        "Bahisleri yerleştir";
+
+
+      roundTimer =
+        setInterval(
+          () => {
+
+            countdown--;
+
+            countdownEl.textContent =
+              countdown;
+
+
+            if (
+              countdown === 10
+            ) {
+
+              rouletteNotice.textContent =
+                "Sinyal işleniyor...";
+
+            }
+
+
+            /*
+              Sinek, bahis penceresi
+              kapanmadan önce kesinlikle
+              karar veriyor.
+            */
+
+            if (
+              countdown === 5 &&
+              !flyBet
+            ) {
+
+              flyMakeBet();
+
+            }
+
+
+            if (
+              countdown <= 0
+            ) {
+
+              clearInterval(
+                roundTimer
+              );
+
+              lockBets();
+
+            }
+
+          },
+          1000
+        );
+
+    }
+
+
+    function lockBets() {
+
+      countdown = 0;
+
+      countdownEl.textContent =
+        "LOCK";
+
+
+      placeBetButton.disabled =
+        true;
+
+
+      if (!flyBet) {
+        flyMakeBet();
+      }
+
+
+      rouletteNotice.textContent =
+        "Bahisler kapandı. Rulet dönüyor...";
+
+
+      setTimeout(
+        spinRoulette,
+        350
+      );
+
+    }
+
+
+    /* =========================
+       SPIN
+       ========================= */
+
+    function spinRoulette() {
+
+      if (spinning) return;
+
+      spinning = true;
+
+
+      const resultIndex =
+        Math.floor(
+          Math.random() *
+          wheelNumbers.length
+        );
+
+
+      const result =
+        wheelNumbers[resultIndex];
+
+
+      const segment =
+        Math.PI * 2 /
+        wheelNumbers.length;
+
+
+      const targetAngle =
+        -(
+          resultIndex *
+          segment
+        ) -
+        segment / 2;
+
+
+      const rotations =
+        6 +
+        Math.floor(
+          Math.random() * 3
+        );
+
+
+      const startRotation =
+        wheelRotation;
+
+
+      const targetRotation =
+        startRotation +
+        rotations *
+          Math.PI * 2 +
+        targetAngle -
+        (
+          startRotation %
+          (Math.PI * 2)
+        );
+
+
+      const duration =
+        5200;
+
+
+      const startTime =
+        performance.now();
+
+
+      function animateSpin(
+        currentTime
+      ) {
+
+        const elapsed =
+          currentTime -
+          startTime;
+
+
+        const progress =
+          Math.min(
+            elapsed / duration,
+            1
+          );
+
+
+        /*
+          Ease out cubic
+        */
+
+        const eased =
+          1 -
+          Math.pow(
+            1 - progress,
+            3
+          );
+
+
+        wheelRotation =
+          startRotation +
+          (
+            targetRotation -
+            startRotation
+          ) *
+          eased;
+
+
+        drawRoulette();
+
+
+        if (
+          progress < 1
+        ) {
+
+          requestAnimationFrame(
+            animateSpin
+          );
+
+        }
+        else {
+
+          wheelRotation =
+            targetRotation;
+
+          drawRoulette();
+
+          finishRound(
+            result
+          );
+
+        }
+
+      }
+
+
+      requestAnimationFrame(
+        animateSpin
+      );
+
+    }
+
+
+    /* =========================
+       FINISH ROUND
+       ========================= */
+
+    function finishRound(
+      result
+    ) {
 
       const color =
-        neuronColors[
-          neuronIndex %
-          neuronColors.length
-        ];
+        rouletteColor(
+          result
+        );
 
 
-      points.forEach(
-        point => {
+      let userWin = 0;
 
-          allPoints.push({
+      let flyWin = 0;
 
-            x:
-              point.x,
 
-            y:
-              point.y,
+      /*
+        User bets
+      */
 
-            z:
-              point.z,
+      userBets.forEach(
+        bet => {
 
-            color
+          const won =
+            bet.kind === "color"
+              ? bet.value === color
+              : Number(
+                  bet.value
+                ) === result;
 
-          });
+
+          if (won) {
+
+            const multiplier =
+              bet.kind === "color"
+                ? 2
+                : 36;
+
+            const payout =
+              bet.amount *
+              multiplier;
+
+            userBalance += payout;
+
+            userWin += payout;
+
+          }
+
+        }
+      );
+
+
+      /*
+        Fly bet
+      */
+
+      if (flyBet) {
+
+        const won =
+          flyBet.kind === "color"
+            ? flyBet.value === color
+            : Number(
+                flyBet.value
+              ) === result;
+
+
+        if (won) {
+
+          const multiplier =
+            flyBet.kind === "color"
+              ? 2
+              : 36;
+
+          const payout =
+            flyBet.amount *
+            multiplier;
+
+          flyBalance += payout;
+
+          flyWin += payout;
+
+        }
+
+      }
+
+
+      updateBalances();
+
+
+      const colorText =
+        color === "red"
+          ? "KIRMIZI"
+          : color === "black"
+            ? "SİYAH"
+            : "YEŞİL";
+
+
+      wheelResult.textContent =
+        `${result} · ${colorText}`;
+
+
+      if (userWin > 0) {
+
+        rouletteNotice.textContent =
+          `Kazandın: +${userWin.toFixed(2)}`;
+
+      }
+      else {
+
+        rouletteNotice.textContent =
+          `Sonuç ${result}. Bu tur olmadı.`;
+
+      }
+
+
+      if (flyWin > 0) {
+
+        flyDecision.innerHTML +=
+          `<br><strong>FLY NEURON KAZANDI:
+          +${flyWin.toFixed(2)}</strong>`;
+
+      }
+      else {
+
+        flyDecision.innerHTML +=
+          `<br>Sinek bu tur kaybetti.`;
+
+      }
+
+
+      historyNumbers.unshift(
+        result
+      );
+
+
+      historyNumbers =
+        historyNumbers.slice(
+          0,
+          12
+        );
+
+
+      renderHistory();
+
+
+      setTimeout(
+        startRound,
+        1600
+      );
+
+    }
+
+
+    /* =========================
+       HISTORY
+       ========================= */
+
+    function renderHistory() {
+
+      const history =
+        document.getElementById(
+          "history"
+        );
+
+
+      history.innerHTML = "";
+
+
+      historyNumbers.forEach(
+        number => {
+
+          const dot =
+            document.createElement(
+              "div"
+            );
+
+          const color =
+            rouletteColor(
+              number
+            );
+
+
+          dot.className =
+            `history-dot ${color}`;
+
+
+          dot.textContent =
+            number;
+
+
+          history.appendChild(
+            dot
+          );
 
         }
       );
 
     }
 
-  );
+
+    updateBalances();
+
+    startRound();
 
 
-  /*
-    API yoksa artık siyah boş kutu olmayacak.
-  */
+    /* =====================================================
+       THREE.JS BRAIN
+       ===================================================== */
 
-  if(
-    allPoints.length < 50
-  ){
+    const brainCanvas =
+      document.getElementById(
+        "brainCanvas"
+      );
+
+
+    const brainViewer =
+      brainCanvas.parentElement;
+
+
+    const renderer =
+      new THREE.WebGLRenderer({
+        canvas: brainCanvas,
+        antialias: true,
+        alpha: true
+      });
+
+
+    renderer.setPixelRatio(
+      Math.min(
+        window.devicePixelRatio || 1,
+        2
+      )
+    );
+
+
+    renderer.setClearColor(
+      0x000000,
+      0
+    );
+
+
+    const scene =
+      new THREE.Scene();
+
+
+    const camera =
+      new THREE.PerspectiveCamera(
+        45,
+        1,
+        .1,
+        1000
+      );
+
+
+    camera.position.set(
+      0,
+      0,
+      8
+    );
+
+
+    const brainGroup =
+      new THREE.Group();
+
+
+    scene.add(
+      brainGroup
+    );
+
+
+    /* =========================
+       LIGHT
+       ========================= */
+
+    const ambientLight =
+      new THREE.AmbientLight(
+        0xffffff,
+        1
+      );
+
+
+    scene.add(
+      ambientLight
+    );
+
+
+    /* =========================
+       BACKGROUND PARTICLES
+       ========================= */
+
+    function createBackground() {
+
+      const count = 900;
+
+      const positions =
+        new Float32Array(
+          count * 3
+        );
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        positions[i * 3] =
+          (Math.random() - .5) *
+          24;
+
+        positions[i * 3 + 1] =
+          (Math.random() - .5) *
+          18;
+
+        positions[i * 3 + 2] =
+          (Math.random() - .5) *
+          15;
+
+      }
+
+
+      const geometry =
+        new THREE.BufferGeometry();
+
+
+      geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(
+          positions,
+          3
+        )
+      );
+
+
+      const material =
+        new THREE.PointsMaterial({
+          color: 0x1c4a7c,
+          size: .018,
+          transparent: true,
+          opacity: .45
+        });
+
+
+      const particles =
+        new THREE.Points(
+          geometry,
+          material
+        );
+
+
+      scene.add(
+        particles
+      );
+
+    }
+
+
+    createBackground();
+
+
+    /* =====================================================
+       FALLBACK NEURAL BRAIN
+       ===================================================== */
+
+    function createFallbackBrain() {
+
+      /*
+        Organik merkez yapı
+      */
+
+      const count = 1100;
+
+      const positions =
+        new Float32Array(
+          count * 3
+        );
+
+      const colors =
+        new Float32Array(
+          count * 3
+        );
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        const theta =
+          Math.random() *
+          Math.PI * 2;
+
+        const phi =
+          Math.acos(
+            2 * Math.random() - 1
+          );
+
+
+        const r =
+          Math.pow(
+            Math.random(),
+            .55
+          );
+
+
+        /*
+          Beyin elipsoidi
+        */
+
+        let x =
+          Math.sin(phi) *
+          Math.cos(theta) *
+          r *
+          2.6;
+
+        let y =
+          Math.cos(phi) *
+          r *
+          1.65;
+
+        let z =
+          Math.sin(phi) *
+          Math.sin(theta) *
+          r *
+          2.05;
+
+
+        /*
+          Orta bölge yoğunluğu
+        */
+
+        const central =
+          Math.exp(
+            -(
+              x*x +
+              y*y +
+              z*z
+            ) / 2.4
+          );
+
+
+        x +=
+          (Math.random() - .5) *
+          (.5 + central);
+
+        y +=
+          (Math.random() - .5) *
+          (.4 + central);
+
+        z +=
+          (Math.random() - .5) *
+          (.5 + central);
+
+
+        positions[i * 3] =
+          x;
+
+        positions[i * 3 + 1] =
+          y;
+
+        positions[i * 3 + 2] =
+          z;
+
+
+        /*
+          Renk dağılımı
+        */
+
+        let color;
+
+
+        if (
+          Math.abs(x) > 1.6
+        ) {
+
+          color =
+            new THREE.Color(
+              0x4ca3ff
+            );
+
+        }
+        else if (
+          Math.random() < .82
+        ) {
+
+          color =
+            new THREE.Color(
+              0xffc43d
+            );
+
+        }
+        else {
+
+          color =
+            new THREE.Color(
+              0x5ce1b2
+            );
+
+        }
+
+
+        colors[i * 3] =
+          color.r;
+
+        colors[i * 3 + 1] =
+          color.g;
+
+        colors[i * 3 + 2] =
+          color.b;
+
+      }
+
+
+      const geometry =
+        new THREE.BufferGeometry();
+
+
+      geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(
+          positions,
+          3
+        )
+      );
+
+
+      geometry.setAttribute(
+        "color",
+        new THREE.BufferAttribute(
+          colors,
+          3
+        )
+      );
+
+
+      const material =
+        new THREE.PointsMaterial({
+          size: .045,
+          vertexColors: true,
+          transparent: true,
+          opacity: .95,
+          sizeAttenuation: true
+        });
+
+
+      const points =
+        new THREE.Points(
+          geometry,
+          material
+        );
+
+
+      brainGroup.add(
+        points
+      );
+
+
+      /*
+        Nöral bağlantılar
+      */
+
+      const linePositions = [];
+
+
+      for (
+        let i = 0;
+        i < 150;
+        i++
+      ) {
+
+        const angle =
+          Math.random() *
+          Math.PI *
+          2;
+
+        const radius =
+          .4 +
+          Math.random() *
+          2.8;
+
+
+        const x1 =
+          Math.cos(angle) *
+          radius;
+
+        const y1 =
+          (
+            Math.random() -
+            .5
+          ) *
+          2.6;
+
+        const z1 =
+          Math.sin(angle) *
+          radius;
+
+
+        const x2 =
+          x1 *
+          (
+            .1 +
+            Math.random() *
+            .65
+          );
+
+        const y2 =
+          y1 *
+          (
+            .1 +
+            Math.random() *
+            .65
+          );
+
+        const z2 =
+          z1 *
+          (
+            .1 +
+            Math.random() *
+            .65
+          );
+
+
+        linePositions.push(
+          x1,
+          y1,
+          z1,
+          x2,
+          y2,
+          z2
+        );
+
+      }
+
+
+      const lineGeometry =
+        new THREE.BufferGeometry();
+
+
+      lineGeometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(
+          linePositions,
+          3
+        )
+      );
+
+
+      const lineMaterial =
+        new THREE.LineBasicMaterial({
+          color: 0x153b64,
+          transparent: true,
+          opacity: .5
+        });
+
+
+      const lines =
+        new THREE.LineSegments(
+          lineGeometry,
+          lineMaterial
+        );
+
+
+      brainGroup.add(
+        lines
+      );
+
+
+      /*
+        Motor output noktaları
+      */
+
+      for (
+        let i = 0;
+        i < 35;
+        i++
+      ) {
+
+        const geometry =
+          new THREE.SphereGeometry(
+            .045,
+            8,
+            8
+          );
+
+
+        const material =
+          new THREE.MeshBasicMaterial({
+            color: 0xff5555
+          });
+
+
+        const node =
+          new THREE.Mesh(
+            geometry,
+            material
+          );
+
+
+        node.position.set(
+          (
+            Math.random() -
+            .5
+          ) * 5,
+
+          (
+            Math.random() -
+            .5
+          ) * 3,
+
+          (
+            Math.random() -
+            .5
+          ) * 4
+        );
+
+
+        brainGroup.add(
+          node
+        );
+
+      }
+
+    }
+
 
     createFallbackBrain();
 
-  }else{
 
-    createRealBrain(
-      allPoints
-    );
+    /* =====================================================
+       LOAD REAL SWC DATA
+       ===================================================== */
 
+    async function loadRealBrain() {
 
-    document.getElementById(
-      "fired"
-    ).textContent =
-      loadedNeuronCount;
+      try {
 
-
-    document.getElementById(
-      "spikes"
-    ).textContent =
-      loadedNodeCount.toLocaleString(
-        "tr-TR"
-      );
+        const ids = [
+          12781,
+          556329
+        ];
 
 
-    document.getElementById(
-      "motor"
-    ).textContent =
-      Math.floor(
-        loadedNodeCount *
-        .08
-      ).toLocaleString(
-        "tr-TR"
-      );
-
-  }
-
-}
+        const allPoints = [];
 
 
-/* =========================================================
-   BRAIN INTERACTION
-========================================================= */
+        for (
+          const id of ids
+        ) {
 
-let pointerDown =
-  false;
+          try {
 
-let lastX =
-  0;
-
-let lastY =
-  0;
+            const response =
+              await fetch(
+                `/api/neuron?id=${id}`
+              );
 
 
-brainCanvas.addEventListener(
-
-  "pointerdown",
-
-  event => {
-
-    pointerDown =
-      true;
-
-    lastX =
-      event.clientX;
-
-    lastY =
-      event.clientY;
+            if (
+              !response.ok
+            ) {
+              continue;
+            }
 
 
-    brainCanvas.setPointerCapture(
-      event.pointerId
-    );
-
-  }
-
-);
+            const data =
+              await response.json();
 
 
-brainCanvas.addEventListener(
+            let points =
+              data.points ||
+              data.nodes ||
+              data;
 
-  "pointermove",
 
-  event => {
+            if (
+              !Array.isArray(points)
+            ) {
+              continue;
+            }
 
-    if(
-      !pointerDown
-    ){
 
-      return;
+            points.forEach(
+              point => {
+
+                const x =
+                  Number(
+                    point.x
+                  );
+
+                const y =
+                  Number(
+                    point.y
+                  );
+
+                const z =
+                  Number(
+                    point.z
+                  );
+
+
+                if (
+                  Number.isFinite(x) &&
+                  Number.isFinite(y) &&
+                  Number.isFinite(z)
+                ) {
+
+                  allPoints.push({
+                    x,
+                    y,
+                    z
+                  });
+
+                }
+
+              }
+            );
+
+          }
+          catch (error) {
+            console.log(
+              "Neuron data unavailable:",
+              error
+            );
+          }
+
+        }
+
+
+        /*
+          API'den yeterli gerçek veri
+          geldiyse gerçek beyni göster.
+        */
+
+        if (
+          allPoints.length < 50
+        ) {
+
+          return;
+
+        }
+
+
+        const sample =
+          allPoints.length > 6000
+            ? allPoints.filter(
+                (_, i) =>
+                  i % Math.ceil(
+                    allPoints.length /
+                    6000
+                  ) === 0
+              )
+            : allPoints;
+
+
+        let minX = Infinity;
+        let minY = Infinity;
+        let minZ = Infinity;
+
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+        let maxZ = -Infinity;
+
+
+        sample.forEach(
+          p => {
+
+            minX =
+              Math.min(
+                minX,
+                p.x
+              );
+
+            minY =
+              Math.min(
+                minY,
+                p.y
+              );
+
+            minZ =
+              Math.min(
+                minZ,
+                p.z
+              );
+
+            maxX =
+              Math.max(
+                maxX,
+                p.x
+              );
+
+            maxY =
+              Math.max(
+                maxY,
+                p.y
+              );
+
+            maxZ =
+              Math.max(
+                maxZ,
+                p.z
+              );
+
+          }
+        );
+
+
+        const scale =
+          5 /
+          Math.max(
+            maxX - minX,
+            maxY - minY,
+            maxZ - minZ
+          );
+
+
+        const geometry =
+          new THREE.BufferGeometry();
+
+
+        const positions = [];
+
+
+        sample.forEach(
+          p => {
+
+            positions.push(
+              (
+                p.x -
+                (minX + maxX) / 2
+              ) * scale,
+
+              (
+                p.y -
+                (minY + maxY) / 2
+              ) * scale,
+
+              (
+                p.z -
+                (minZ + maxZ) / 2
+              ) * scale
+            );
+
+          }
+        );
+
+
+        geometry.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(
+            positions,
+            3
+          )
+        );
+
+
+        const material =
+          new THREE.PointsMaterial({
+            color: 0xffc43d,
+            size: .035,
+            transparent: true,
+            opacity: .9
+          });
+
+
+        const realPoints =
+          new THREE.Points(
+            geometry,
+            material
+          );
+
+
+        /*
+          Fallback'ı kaldırıp gerçek
+          veriyi göster.
+        */
+
+        while (
+          brainGroup.children.length
+        ) {
+
+          const object =
+            brainGroup.children.pop();
+
+          if (
+            object.geometry
+          ) {
+            object.geometry.dispose();
+          }
+
+          if (
+            object.material
+          ) {
+            object.material.dispose();
+          }
+
+        }
+
+
+        brainGroup.add(
+          realPoints
+        );
+
+
+      }
+      catch (error) {
+
+        console.log(
+          "Real brain unavailable, fallback active."
+        );
+
+      }
 
     }
 
 
-    const dx =
-      event.clientX -
-      lastX;
+    loadRealBrain();
 
 
-    const dy =
-      event.clientY -
-      lastY;
+    /* =====================================================
+       BRAIN RESIZE
+       ===================================================== */
+
+    function resizeBrain() {
+
+      const width =
+        brainViewer.clientWidth;
+
+      const height =
+        brainViewer.clientHeight;
 
 
-    brainGroup.rotation.y +=
-      dx *
-      .006;
-
-
-    brainGroup.rotation.x +=
-      dy *
-      .004;
-
-
-    lastX =
-      event.clientX;
-
-    lastY =
-      event.clientY;
-
-  }
-
-);
-
-
-brainCanvas.addEventListener(
-
-  "pointerup",
-
-  event => {
-
-    pointerDown =
-      false;
-
-
-    try{
-
-      brainCanvas.releasePointerCapture(
-        event.pointerId
+      renderer.setSize(
+        width,
+        height,
+        false
       );
 
-    }catch(
-      error
-    ){}
 
-  }
+      camera.aspect =
+        width / height;
 
-);
-
-
-brainCanvas.addEventListener(
-
-  "pointercancel",
-
-  () => {
-
-    pointerDown =
-      false;
-
-  }
-
-);
-
-
-/* zoom */
-
-brainCanvas.addEventListener(
-
-  "wheel",
-
-  event => {
-
-    event.preventDefault();
-
-
-    camera.position.z +=
-      event.deltaY *
-      .5;
-
-
-    camera.position.z =
-      Math.max(
-
-        260,
-
-        Math.min(
-          1700,
-          camera.position.z
-        )
-
-      );
-
-  },
-
-  {
-    passive:
-      false
-  }
-
-);
-
-
-/* =========================================================
-   BRAIN RESIZE
-========================================================= */
-
-function resizeBrain(){
-
-  const rect =
-    brainCanvas.getBoundingClientRect();
-
-
-  const width =
-    Math.max(
-      1,
-      rect.width
-    );
-
-
-  const height =
-    Math.max(
-      1,
-      rect.height
-    );
-
-
-  renderer.setSize(
-    width,
-    height,
-    false
-  );
-
-
-  camera.aspect =
-    width /
-    height;
-
-
-  camera.updateProjectionMatrix();
-
-}
-
-
-window.addEventListener(
-  "resize",
-  resizeBrain
-);
-
-
-/* =========================================================
-   FULLSCREEN
-========================================================= */
-
-const brainWindow =
-  document.getElementById(
-    "brainWindow"
-  );
-
-
-const fullscreenButton =
-  document.getElementById(
-    "fullscreenButton"
-  );
-
-
-function enterBrainFullscreen(){
-
-  brainWindow.classList.add(
-    "fullscreen"
-  );
-
-  document.body.classList.add(
-    "viewer-fullscreen"
-  );
-
-  fullscreenButton.textContent =
-    "✕";
-
-  setTimeout(
-    resizeBrain,
-    50
-  );
-
-}
-
-
-function exitBrainFullscreen(){
-
-  brainWindow.classList.remove(
-    "fullscreen"
-  );
-
-  document.body.classList.remove(
-    "viewer-fullscreen"
-  );
-
-  fullscreenButton.textContent =
-    "⛶";
-
-  setTimeout(
-    resizeBrain,
-    50
-  );
-
-}
-
-
-fullscreenButton.addEventListener(
-
-  "click",
-
-  event => {
-
-    event.stopPropagation();
-
-
-    if(
-      brainWindow.classList.contains(
-        "fullscreen"
-      )
-    ){
-
-      exitBrainFullscreen();
-
-    }else{
-
-      enterBrainFullscreen();
+      camera.updateProjectionMatrix();
 
     }
 
-  }
 
-);
-
-
-/* =========================================================
-   BRAIN ANIMATION
-========================================================= */
-
-let simTime =
-  0;
+    window.addEventListener(
+      "resize",
+      resizeBrain
+    );
 
 
-function brainAnimate(){
-
-  requestAnimationFrame(
-    brainAnimate
-  );
+    resizeBrain();
 
 
-  simTime +=
-    .016;
+    /* =====================================================
+       CAMERA ZOOM
+       ===================================================== */
+
+    const DEFAULT_CAMERA_X =
+      camera.position.x;
+
+    const DEFAULT_CAMERA_Y =
+      camera.position.y;
+
+    const DEFAULT_CAMERA_Z =
+      camera.position.z;
 
 
-  document.getElementById(
-    "simTime"
-  ).textContent =
-    simTime.toFixed(
-      2
-    )
-    +
-    " s";
+    camera.userData.defaultX =
+      DEFAULT_CAMERA_X;
+
+    camera.userData.defaultY =
+      DEFAULT_CAMERA_Y;
+
+    camera.userData.defaultZ =
+      DEFAULT_CAMERA_Z;
 
 
-  /*
-    Very subtle autonomous motion.
-  */
+    const MIN_ZOOM = 2.2;
 
-  backgroundPoints.rotation.y +=
-    .00015;
+    const MAX_ZOOM = 14;
 
 
-  if(
-    !pointerDown
-  ){
+    function setBrainZoom(
+      value
+    ) {
 
-    brainGroup.rotation.z =
-      Math.sin(
-        simTime *
-        .18
-      )
-      *
-      .015;
+      camera.position.z =
+        THREE.MathUtils.clamp(
+          value,
+          MIN_ZOOM,
+          MAX_ZOOM
+        );
 
-  }
-
-
-  renderer.render(
-    scene,
-    camera
-  );
-
-}
+    }
 
 
-resizeBrain();
+    /* =========================
+       + ZOOM
+       ========================= */
 
-buildBrain();
+    document
+      .getElementById("zoomIn")
+      .addEventListener(
+        "click",
+        e => {
 
-brainAnimate();
+          e.stopPropagation();
 
-</script>
+          setBrainZoom(
+            camera.position.z -
+            .8
+          );
+
+        }
+      );
+
+
+    /* =========================
+       - ZOOM
+       ========================= */
+
+    document
+      .getElementById("zoomOut")
+      .addEventListener(
+        "click",
+        e => {
+
+          e.stopPropagation();
+
+          setBrainZoom(
+            camera.position.z +
+            .8
+          );
+
+        }
+      );
+
+
+    /* =========================
+       RESET
+       ========================= */
+
+    document
+      .getElementById("zoomReset")
+      .addEventListener(
+        "click",
+        e => {
+
+          e.stopPropagation();
+
+          camera.position.set(
+            camera.userData.defaultX,
+            camera.userData.defaultY,
+            camera.userData.defaultZ
+          );
+
+
+          brainGroup.rotation.set(
+            0,
+            0,
+            0
+          );
+
+        }
+      );
+
+
+    /* =====================================================
+       MOUSE WHEEL ZOOM
+       ===================================================== */
+
+    brainCanvas.addEventListener(
+      "wheel",
+      e => {
+
+        e.preventDefault();
+
+        const zoomSpeed =
+          .008;
+
+
+        setBrainZoom(
+          camera.position.z +
+          e.deltaY *
+          zoomSpeed
+        );
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    /* =====================================================
+       MOUSE DRAG ROTATION
+       ===================================================== */
+
+    let mouseDown = false;
+
+    let lastMouseX = 0;
+
+    let lastMouseY = 0;
+
+
+    brainCanvas.addEventListener(
+      "mousedown",
+      e => {
+
+        mouseDown = true;
+
+        lastMouseX =
+          e.clientX;
+
+        lastMouseY =
+          e.clientY;
+
+      }
+    );
+
+
+    window.addEventListener(
+      "mouseup",
+      () => {
+
+        mouseDown = false;
+
+      }
+    );
+
+
+    window.addEventListener(
+      "mousemove",
+      e => {
+
+        if (!mouseDown) {
+          return;
+        }
+
+
+        const dx =
+          e.clientX -
+          lastMouseX;
+
+        const dy =
+          e.clientY -
+          lastMouseY;
+
+
+        brainGroup.rotation.y +=
+          dx *
+          .006;
+
+
+        brainGroup.rotation.x +=
+          dy *
+          .004;
+
+
+        lastMouseX =
+          e.clientX;
+
+        lastMouseY =
+          e.clientY;
+
+      }
+    );
+
+
+    /* =====================================================
+       TOUCH ROTATION + TWO FINGER PINCH ZOOM
+       ===================================================== */
+
+    let activeTouches =
+      new Map();
+
+    let pinchStartDistance =
+      null;
+
+    let pinchStartZoom =
+      null;
+
+    let singleTouchX = 0;
+
+    let singleTouchY = 0;
+
+
+    function getTouchDistance(
+      t1,
+      t2
+    ) {
+
+      const dx =
+        t1.clientX -
+        t2.clientX;
+
+      const dy =
+        t1.clientY -
+        t2.clientY;
+
+
+      return Math.sqrt(
+        dx * dx +
+        dy * dy
+      );
+
+    }
+
+
+    brainCanvas.addEventListener(
+      "touchstart",
+      e => {
+
+        e.preventDefault();
+
+
+        activeTouches.clear();
+
+
+        for (
+          const touch of e.touches
+        ) {
+
+          activeTouches.set(
+            touch.identifier,
+            touch
+          );
+
+        }
+
+
+        /*
+          İKİ PARMAK
+        */
+
+        if (
+          e.touches.length === 2
+        ) {
+
+          const distance =
+            getTouchDistance(
+              e.touches[0],
+              e.touches[1]
+            );
+
+
+          pinchStartDistance =
+            distance;
+
+
+          pinchStartZoom =
+            camera.position.z;
+
+        }
+
+
+        /*
+          TEK PARMAK
+          döndürme
+        */
+
+        else if (
+          e.touches.length === 1
+        ) {
+
+          singleTouchX =
+            e.touches[0].clientX;
+
+          singleTouchY =
+            e.touches[0].clientY;
+
+        }
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    brainCanvas.addEventListener(
+      "touchmove",
+      e => {
+
+        e.preventDefault();
+
+
+        /*
+          =================================
+          TWO FINGER PINCH
+          =================================
+
+          Parmaklar açılır:
+          distance büyür
+          camera Z küçülür
+          = YAKINLAŞ
+
+          Parmaklar kapanır:
+          distance küçülür
+          camera Z büyür
+          = UZAKLAŞ
+        */
+
+        if (
+          e.touches.length === 2
+        ) {
+
+          const distance =
+            getTouchDistance(
+              e.touches[0],
+              e.touches[1]
+            );
+
+
+          if (
+            pinchStartDistance ===
+            null
+          ) {
+
+            pinchStartDistance =
+              distance;
+
+            pinchStartZoom =
+              camera.position.z;
+
+            return;
+
+          }
+
+
+          const difference =
+            distance -
+            pinchStartDistance;
+
+
+          const zoomAmount =
+            difference *
+            .012;
+
+
+          setBrainZoom(
+            pinchStartZoom -
+            zoomAmount
+          );
+
+
+          return;
+
+        }
+
+
+        /*
+          =================================
+          ONE FINGER ROTATION
+          =================================
+        */
+
+        if (
+          e.touches.length === 1
+        ) {
+
+          const touch =
+            e.touches[0];
+
+
+          const dx =
+            touch.clientX -
+            singleTouchX;
+
+          const dy =
+            touch.clientY -
+            singleTouchY;
+
+
+          brainGroup.rotation.y +=
+            dx *
+            .006;
+
+
+          brainGroup.rotation.x +=
+            dy *
+            .004;
+
+
+          singleTouchX =
+            touch.clientX;
+
+          singleTouchY =
+            touch.clientY;
+
+        }
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    brainCanvas.addEventListener(
+      "touchend",
+      e => {
+
+        e.preventDefault();
+
+
+        if (
+          e.touches.length < 2
+        ) {
+
+          pinchStartDistance =
+            null;
+
+          pinchStartZoom =
+            null;
+
+        }
+
+
+        activeTouches.clear();
+
+
+        for (
+          const touch of e.touches
+        ) {
+
+          activeTouches.set(
+            touch.identifier,
+            touch
+          );
+
+        }
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    brainCanvas.addEventListener(
+      "touchcancel",
+      () => {
+
+        pinchStartDistance =
+          null;
+
+        pinchStartZoom =
+          null;
+
+        activeTouches.clear();
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    /* =====================================================
+       FULLSCREEN
+       ===================================================== */
+
+    const fullscreenButton =
+      document.getElementById(
+        "fullscreenButton"
+      );
+
+
+    fullscreenButton.addEventListener(
+      "click",
+      async e => {
+
+        e.stopPropagation();
+
+
+        try {
+
+          if (
+            !document.fullscreenElement
+          ) {
+
+            await brainViewer.requestFullscreen();
+
+          }
+          else {
+
+            await document.exitFullscreen();
+
+          }
+
+        }
+        catch (error) {
+
+          console.log(
+            "Fullscreen unavailable:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "fullscreenchange",
+      () => {
+
+        fullscreenButton.textContent =
+          document.fullscreenElement
+            ? "×"
+            : "⛶";
+
+
+        setTimeout(
+          resizeBrain,
+          100
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       LIVE NEURAL ANIMATION
+       ===================================================== */
+
+    let simulationTime = 35.34;
+
+
+    function updateNeuralStats() {
+
+      simulationTime +=
+        .016;
+
+
+      document.getElementById(
+        "simTime"
+      ).textContent =
+        simulationTime.toFixed(2) +
+        " s";
+
+
+      /*
+        Küçük canlı aktivite
+      */
+
+      const fired =
+        1 +
+        Math.floor(
+          Math.random() * 4
+        );
+
+
+      const spikes =
+        1000 +
+        Math.floor(
+          Math.random() * 180
+        );
+
+
+      const motor =
+        60 +
+        Math.floor(
+          Math.random() * 50
+        );
+
+
+      document.getElementById(
+        "fired"
+      ).textContent =
+        fired;
+
+
+      document.getElementById(
+        "spikes"
+      ).textContent =
+        spikes.toLocaleString(
+          "tr-TR"
+        );
+
+
+      document.getElementById(
+        "motor"
+      ).textContent =
+        motor;
+
+    }
+
+
+    /* =====================================================
+       RENDER LOOP
+       ===================================================== */
+
+    const clock =
+      new THREE.Clock();
+
+
+    function animate() {
+
+      requestAnimationFrame(
+        animate
+      );
+
+
+      const elapsed =
+        clock.getElapsedTime();
+
+
+      /*
+        Çok hafif otomatik hareket.
+        Kullanıcı sürüklediğinde de kontrol
+        onda kalır.
+      */
+
+      brainGroup.rotation.z =
+        Math.sin(
+          elapsed * .12
+        ) *
+        .025;
+
+
+      renderer.render(
+        scene,
+        camera
+      );
+
+    }
+
+
+    animate();
+
+
+    setInterval(
+      updateNeuralStats,
+      700
+    );
+
+
+  </script>
 
 </body>
 </html>
